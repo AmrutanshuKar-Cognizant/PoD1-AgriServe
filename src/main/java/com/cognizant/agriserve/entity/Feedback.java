@@ -12,12 +12,60 @@ public class Feedback {
     private Integer feedbackId;
 
     @OneToOne
-    @JoinColumn(name = "session_id")
+    @JoinColumn(name = "sessionId")
     private AdvisorySession session;
 
     @ManyToOne
-    @JoinColumn(name = "farmer_id")
+    @JoinColumn(name = "farmerId")
     private Farmer farmer;
+
+    public Integer getFeedbackId() {
+        return feedbackId;
+    }
+
+    public void setFeedbackId(Integer feedbackId) {
+        this.feedbackId = feedbackId;
+    }
+
+    public AdvisorySession getSession() {
+        return session;
+    }
+
+    public void setSession(AdvisorySession session) {
+        this.session = session;
+    }
+
+    public Farmer getFarmer() {
+        return farmer;
+    }
+
+    public void setFarmer(Farmer farmer) {
+        this.farmer = farmer;
+    }
+
+    public Integer getRating() {
+        return rating;
+    }
+
+    public void setRating(Integer rating) {
+        this.rating = rating;
+    }
+
+    public String getComments() {
+        return comments;
+    }
+
+    public void setComments(String comments) {
+        this.comments = comments;
+    }
+
+    public LocalDateTime getDate() {
+        return date;
+    }
+
+    public void setDate(LocalDateTime date) {
+        this.date = date;
+    }
 
     private Integer rating; // Usually 1-5
 
@@ -26,5 +74,4 @@ public class Feedback {
 
     private LocalDateTime date;
 
-    // Getters and Setters
 }
