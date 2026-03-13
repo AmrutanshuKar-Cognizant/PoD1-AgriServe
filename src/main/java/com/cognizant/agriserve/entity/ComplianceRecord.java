@@ -11,14 +11,16 @@ import jakarta.persistence.EnumType;
 import jakarta.persistence.PrePersist;
 import java.time.LocalDateTime;
 
-enum ComplianceType {
-    ADVISORY,
-    TRAINING
-}
+
 
 @Entity
 @Table(name = "compliance_record")
 public class ComplianceRecord {
+    enum ComplianceType {
+        ADVISORY,
+        TRAINING
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "compliance_id")

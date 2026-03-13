@@ -11,21 +11,23 @@ import jakarta.persistence.EnumType;
 import jakarta.persistence.PrePersist;
 import java.time.LocalDateTime;
 
-enum NotificationCategory {
-    ADVISORY,
-    TRAINING,
-    FEEDBACK,
-    COMPLIANCE
-}
 
-enum NotificationStatus {
-    UNREAD,
-    READ
-}
 
 @Entity
 @Table(name="notification")
 public class Notification {
+    enum NotificationCategory {
+        ADVISORY,
+        TRAINING,
+        FEEDBACK,
+        COMPLIANCE
+    }
+
+    enum NotificationStatus {
+        UNREAD,
+        READ
+    }
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "notification_id")

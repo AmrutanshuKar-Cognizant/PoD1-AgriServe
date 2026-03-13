@@ -11,15 +11,17 @@ import jakarta.persistence.EnumType;
 import jakarta.persistence.PrePersist;
 import java.time.LocalDateTime;
 
-enum AuditStatus {
-    PENDING,
-    IN_PROGRESS,
-    COMPLETED
-}
+
 
 @Entity
 @Table(name = "audit")
 public class Audit {
+    enum AuditStatus {
+        PENDING,
+        IN_PROGRESS,
+        COMPLETED
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "audit_id")
