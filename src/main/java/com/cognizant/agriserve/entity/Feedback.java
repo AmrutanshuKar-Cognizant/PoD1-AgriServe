@@ -55,7 +55,6 @@ public class Feedback {
         return comments;
     }
 
-
     public void setComments(String comments) {
         this.comments = comments;
     }
