@@ -17,7 +17,7 @@ public class FarmerDocument {
     private String verificationStatus;
 
     @ManyToOne
-    @JoinColumn(name="farmer_id")
+    @JoinColumn(name="farmerID")
     private Farmer farmer;
 
     public FarmerDocument()

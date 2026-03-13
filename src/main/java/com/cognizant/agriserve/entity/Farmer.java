@@ -5,7 +5,7 @@ import org.apache.catalina.User;
 
 
 @Entity
-@Table(name="farmers")
+@Table(name="farmer")
 public class Farmer {
 
     @Id
