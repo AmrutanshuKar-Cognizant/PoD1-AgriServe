@@ -24,26 +24,25 @@ public class Audit {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "audit_id")
     private Long auditId;
 
     // Links to the User table (the Compliance Officer who created it)
-    @Column(name = "officer_id", nullable = false)
+    @Column(nullable = false)
     private Long officerId;
 
     // What is being audited (e.g., "Q3 Northern Region Workshops")
-    @Column(name = "scope", nullable = false, length = 255)
+    @Column(nullable = false, length = 255)
     private String scope;
 
     // The detailed report/result of the investigation
-    @Column(name = "findings", columnDefinition = "TEXT")
+    @Column(columnDefinition = "TEXT")
     private String findings;
 
-    @Column(name = "date", nullable = false)
+    @Column(nullable = false)
     private LocalDateTime date;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "status", nullable = false)
+    @Column(nullable = false)
     private AuditStatus status;
 
     // Default Constructor

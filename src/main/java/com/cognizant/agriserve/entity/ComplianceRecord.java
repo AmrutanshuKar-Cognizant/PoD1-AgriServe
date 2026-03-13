@@ -23,24 +23,22 @@ public class ComplianceRecord {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "compliance_id")
     private Long complianceId;
 
     // Polymorphic Foreign Key (Can be SessionID or ProgramID)
-    @Column(name = "entity_id", nullable = false)
+    @Column(nullable = false)
     private Long entityId;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "type", nullable = false)
+    @Column(nullable = false)
     private ComplianceType type;
 
-    @Column(name = "result", nullable = false)
+    @Column(nullable = false)
     private String result;
 
-    @Column(name = "date", nullable = false)
+    @Column(nullable = false)
     private LocalDateTime date;
 
-    @Column(name = "notes")
     private String notes;
 
     // Default Constructor

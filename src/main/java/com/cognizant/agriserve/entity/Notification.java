@@ -30,29 +30,28 @@ public class Notification {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "notification_id")
     private Long notificationId;
 
     // The user receiving the notification (e.g., a Farmer or an Officer)
-    @Column(name = "user_id", nullable = false)
+    @Column(nullable = false)
     private Long userId;
 
     // Soft Foreign Key pointing to the specific WorkshopID, SessionID, etc.
-    @Column(name = "entity_id", nullable = false)
+    @Column(nullable = false)
     private Long entityId;
 
-    @Column(name = "message", nullable = false, length = 500)
+    @Column(nullable = false, length = 500)
     private String message;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "category", nullable = false)
+    @Column(nullable = false)
     private NotificationCategory category;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "status", nullable = false)
+    @Column(nullable = false)
     private NotificationStatus status;
 
-    @Column(name = "created_date", nullable = false)
+    @Column(nullable = false)
     private LocalDateTime createdDate;
 
     // Default Constructor
