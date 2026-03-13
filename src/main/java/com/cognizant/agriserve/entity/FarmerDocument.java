@@ -3,7 +3,7 @@ package com.cognizant.agriserve.entity;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name="farmer_documents")
+@Table(name="farmerDocument")
 public class FarmerDocument {
 
     @Id
