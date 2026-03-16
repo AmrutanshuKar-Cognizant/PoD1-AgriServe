@@ -16,14 +16,14 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name="notification")
 public class Notification {
-    enum NotificationCategory {
+    public enum NotificationCategory {
         ADVISORY,
         TRAINING,
         FEEDBACK,
         COMPLIANCE
     }
 
-    enum NotificationStatus {
+    public enum NotificationStatus {
         UNREAD,
         READ
     }

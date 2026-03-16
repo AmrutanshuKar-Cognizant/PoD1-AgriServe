@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "compliance_record")
 public class ComplianceRecord {
-    enum ComplianceType {
+    public enum ComplianceType {
         ADVISORY,
         TRAINING
     }

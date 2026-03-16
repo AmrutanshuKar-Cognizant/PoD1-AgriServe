@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "audit")
 public class Audit {
-    enum AuditStatus {
+    public enum AuditStatus {
         PENDING,
         IN_PROGRESS,
         COMPLETED
