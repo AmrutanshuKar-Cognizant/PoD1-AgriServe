@@ -2,6 +2,7 @@ package com.cognizant.agriserve.entity;
 
 import jakarta.persistence.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -59,11 +60,11 @@ public class Feedback {
         this.comments = comments;
     }
 
-    public LocalDateTime getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
-    public void setDate(LocalDateTime date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 
@@ -72,6 +73,6 @@ public class Feedback {
     @Column(columnDefinition = "TEXT")
     private String comments;
 
-    private LocalDateTime date;
+    private LocalDate date;
 
 }

@@ -32,7 +32,7 @@ public class SatisfactionMetric {
     }
 
     public Farmer getFarmer() {
-        return farmer;
+        return farmer ;
     }
 
     public void setFarmer(Farmer farmer) {
