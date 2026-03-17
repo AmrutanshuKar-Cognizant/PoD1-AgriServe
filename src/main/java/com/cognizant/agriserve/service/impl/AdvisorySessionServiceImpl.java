@@ -31,7 +31,8 @@ public class AdvisorySessionServiceImpl implements AdvisorySessionService {
         session.setFeedback(dto.getFeedback());
 
         // 3. Linking the Guide: Find the AdvisoryContent by the ID provided in DTO
-        AdvisoryContent content = contentRepo.findById(dto.getContentId()).orElse(null);
+        AdvisoryContent content = contentRepo.findById(dto.getContentId())
+                .orElseThrow(() -> new RuntimeException("Content not found with ID: " + dto.getContentId()));
         session.setContent(content);
 
         // 4. Secure System Fields: These are NOT in the DTO for security reasons
