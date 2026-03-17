@@ -2,8 +2,10 @@ package com.cognizant.agriserve.entity;
 
 import jakarta.persistence.*;
 
+import java.time.LocalDate;
+
 @Entity
-@Table(name="farmerDocument")
+@Table(name="farmer_Document")
 public class FarmerDocument {
 
     @Id
@@ -14,6 +16,7 @@ public class FarmerDocument {
 
     private String fileURI;
 
+    private LocalDate uploadedDate;
     private String verificationStatus;
 
     @ManyToOne
@@ -23,6 +26,15 @@ public class FarmerDocument {
     public FarmerDocument()
     {
 
+    }
+
+    public FarmerDocument(String docType, String fileURI, LocalDate uploadedDate, String verificationStatus, Farmer farmer)
+    {
+        this.docType=docType;
+        this.fileURI=fileURI;
+        this.uploadedDate=uploadedDate;
+        this.verificationStatus=verificationStatus;
+        this.farmer=farmer;
     }
 
     public Long getDocumentId()
@@ -48,6 +60,14 @@ public class FarmerDocument {
 
     public void setFileURI(String fileURI) {
         this.fileURI = fileURI;
+    }
+
+    public LocalDate getUploadedDate() {
+        return uploadedDate;
+    }
+
+    public void setUploadedDate(LocalDate uploadedDate) {
+        this.uploadedDate = uploadedDate;
     }
 
     public String getVerificationStatus() {
