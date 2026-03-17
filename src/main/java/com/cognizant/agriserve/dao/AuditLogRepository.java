@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
 import java.util.List;
-
+//dao layer
 @Repository
 public interface AuditLogRepository extends JpaRepository<AuditLog, Integer> {
 
