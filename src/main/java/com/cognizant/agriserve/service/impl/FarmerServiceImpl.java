@@ -15,7 +15,7 @@ import java.util.Optional;
 public class FarmerServiceImpl implements FarmerService {
 
     @Autowired
-    private FarmerRepository farmerRepository;
+    private FarmerRepository farmerRepository;  // to access database operations in service layer
 
     @Override
     public Farmer createFarmer(FarmerDTO dto)
@@ -36,9 +36,26 @@ public class FarmerServiceImpl implements FarmerService {
     }
 
     @Override
-    public Optional<Farmer> getFarmerById(Long farmerId)
+    public Farmer updateFarmer(Long farmerId, FarmerDTO dto)
     {
-        return farmerRepository.findById(farmerId);
+        Farmer farmer=farmerRepository.findById(farmerId).orElseThrow(() -> new RuntimeException("Farmer not found"));
+
+        farmer.setName(dto.getName());
+        farmer.setDob(dto.getDob());
+        farmer.setGender(dto.getGender());
+        farmer.setAddress(dto.getAddress());
+        farmer.setContactInfo(dto.getContactInfo());
+        farmer.setLandSize(dto.getLandSize());
+
+        farmer.setCropType(dto.getCropType());
+
+        return farmerRepository.save(farmer);
+    }
+
+    @Override
+    public Optional<Farmer> getFarmerById(Long farmerId) //if farmer not found
+    {
+        return farmerRepository.findById(farmerId);  //searches db using farmerID
     }
 
 }

@@ -9,6 +9,8 @@ import java.util.Optional;
 public interface FarmerService {
     Farmer createFarmer(FarmerDTO dto);
 
+    Farmer updateFarmer(Long farmerId, FarmerDTO dto);
+
     Optional<Farmer> getFarmerById(Long farmerId);
 
 
