@@ -7,7 +7,6 @@ import com.cognizant.agriserve.entity.AdvisoryContent;
 import com.cognizant.agriserve.entity.AdvisorySession;
 import com.cognizant.agriserve.service.AdvisorySessionService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -16,10 +15,8 @@ import java.util.Map;
 @Service
 public class AdvisorySessionServiceImpl implements AdvisorySessionService {
 
-//    @Autowired
     private final AdvisorySessionRepository sessionRepo;
 
-//    @Autowired
     private final AdvisoryContentRepository contentRepo;
 
     @Override
