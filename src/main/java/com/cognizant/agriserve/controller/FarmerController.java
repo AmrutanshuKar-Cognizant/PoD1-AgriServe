@@ -25,4 +25,10 @@ public class FarmerController {
     {
         return farmerService.getFarmerById(farmerId).orElseThrow(() -> new RuntimeException("Farmer not found"));
     }
+
+    @PutMapping("/{farmerId}")
+    public Farmer updateFarmer(@PathVariable Long farmerId, @RequestBody FarmerDTO dto)
+    {
+        return farmerService.updateFarmer(farmerId, dto);
+    }
 }

@@ -4,6 +4,7 @@ import com.cognizant.agriserve.dao.FarmerRepository;
 import com.cognizant.agriserve.dto.FarmerDTO;
 import com.cognizant.agriserve.entity.Farmer;
 
+import com.cognizant.agriserve.exception.ResourceNotFoundException;
 import com.cognizant.agriserve.service.FarmerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -38,7 +39,7 @@ public class FarmerServiceImpl implements FarmerService {
     @Override
     public Farmer updateFarmer(Long farmerId, FarmerDTO dto)
     {
-        Farmer farmer=farmerRepository.findById(farmerId).orElseThrow(() -> new RuntimeException("Farmer not found"));
+        Farmer farmer=farmerRepository.findById(farmerId).orElseThrow(() -> new ResourceNotFoundException("Farmer not found"));
 
         farmer.setName(dto.getName());
         farmer.setDob(dto.getDob());
