@@ -3,7 +3,6 @@ package com.cognizant.agriserve.entity;
 import jakarta.persistence.*;
 
 @Entity
-
 public class User {
     public enum Role {
         Admin, ExtensionOfficer, ComplianceOfficer,Farmer,Auditor,ProgramManager

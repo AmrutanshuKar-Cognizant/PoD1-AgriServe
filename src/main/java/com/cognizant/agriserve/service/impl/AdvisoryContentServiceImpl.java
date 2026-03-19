@@ -3,15 +3,20 @@ package com.cognizant.agriserve.service.impl;
 import com.cognizant.agriserve.dao.AdvisoryContentRepository;
 import com.cognizant.agriserve.entity.AdvisoryContent;
 import com.cognizant.agriserve.service.AdvisoryContentService;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
-
+//@Data
+@RequiredArgsConstructor
 @Service
 public class AdvisoryContentServiceImpl implements AdvisoryContentService {
 
-    @Autowired
-    private AdvisoryContentRepository contentRepo;
+//    @Autowired
+    private final AdvisoryContentRepository contentRepo;
 
     @Override
     public AdvisoryContent saveContent(AdvisoryContent content) {
