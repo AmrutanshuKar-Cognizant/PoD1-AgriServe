@@ -18,9 +18,11 @@ public class AdvisorySession {
     private Integer sessionId;
 
     @Column(name = "OfficerID")
+
     private Integer officerId;
 
     @Column(name = "FarmerID")
+
     private Integer farmerId;
 
     @ManyToOne
