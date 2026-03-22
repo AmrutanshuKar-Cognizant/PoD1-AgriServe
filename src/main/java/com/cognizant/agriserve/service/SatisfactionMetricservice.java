@@ -1,0 +1,53 @@
+package com.cognizant.agriserve.service;
+
+import com.cognizant.agriserve.dao.*;
+import com.cognizant.agriserve.dto.SatisfactionMetricDTO;
+import com.cognizant.agriserve.entity.*;
+import com.cognizant.agriserve.exception.ResourceNotFoundException;
+import com.cognizant.agriserve.util.Satisfactionutil;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import java.util.List;
+
+@Slf4j
+@Service
+public class SatisfactionMetricservice {
+
+    @Autowired private SatisfactionMetricRepository metricrepo;
+    @Autowired private FeedbackRepository feedbackRepo;
+    @Autowired private TrainingProgramRepository trainingRepo;
+    @Autowired private UserRepository userRepo;
+
+    public SatisfactionMetric evaluate(SatisfactionMetricDTO dto) {
+        log.info("Calculating performance metrics for Program ID: {}", dto.getProgramId());
+
+        // 1. Fetch dependencies
+        TrainingProgram p = trainingRepo.findById(dto.getProgramId())
+                .orElseThrow(() -> new ResourceNotFoundException("Program not found"));
+
+        User m = userRepo.findById(dto.getOfficeId())
+                .orElseThrow(() -> new ResourceNotFoundException("Officer not found"));
+
+        // 2. Aggregate logic: Fetch all feedback for this program
+        List<Feedback> list = feedbackRepo.findByTrainingProgram_ProgramId(dto.getProgramId());
+
+        if (list.isEmpty()) {
+            log.warn("No feedback found for Program ID: {}", dto.getProgramId());
+            throw new RuntimeException("No feedback available for this program");
+        }
+
+        // 3. Calculate average score
+        double average = list.stream()
+                .mapToDouble(Feedback::getRating)
+                .average()
+                .orElse(0.0);
+
+        log.info("Calculated Average Score for Program {}: {}", dto.getProgramId(), average);
+
+        // 4. Use Utility to map and Save
+        SatisfactionMetric metric = Satisfactionutil.Satisfactionutili(dto, p, m, average);
+
+        return metricrepo.save(metric);
+    }
+}
