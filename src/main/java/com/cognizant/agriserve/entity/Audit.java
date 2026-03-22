@@ -45,11 +45,9 @@ public class Audit {
     @Column(nullable = false)
     private AuditStatus status;
 
-    // Default Constructor
     public Audit() {
     }
 
-    // Parameterized Constructor
     public Audit(Long officerId, String scope, String findings, AuditStatus status) {
         this.officerId = officerId;
         this.scope = scope;

@@ -3,7 +3,7 @@ package com.cognizant.agriserve.entity;
 import jakarta.persistence.*;
 
 @Entity
-
+@Table(name = "user")
 public class User {
     public enum Role {
         Admin, ExtensionOfficer, ComplianceOfficer,Farmer,Auditor,ProgramManager

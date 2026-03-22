@@ -3,7 +3,7 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-
+@Table(name = "auditLog")
 public class AuditLog {
 
     @Id

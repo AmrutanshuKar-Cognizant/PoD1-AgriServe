@@ -1,55 +1,104 @@
 package com.cognizant.agriserve.entity;
 
 import jakarta.persistence.*;
-import org.apache.catalina.User;
-
+import com.cognizant.agriserve.entity.User;
 
 @Entity
-@Table(name="farmer")
+@Table(name = "farmer")
 public class Farmer {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long farmerID;
+    private Long farmerId;
+
+    private String name;
+    private String dob;
+    private String gender;
 
     private String address;
+    private String contactInfo;
 
     private Double landSize;
-
     private String cropType;
 
     private String status;
 
     @OneToOne
-    @JoinColumn(name="user_id")
+    @JoinColumn(name = "user_id")
     private User user;
 
-    public Farmer()
-    {
-
+    // 1. Default Constructor (MANDATORY for JPA)
+    public Farmer() {
     }
 
-    public Long getFarmerID()
-    {
-        return farmerID;
+    // 2. Parameterized Constructor (WITH ID)
+    public Farmer(String name, String dob, String gender,
+                  String address, String contactInfo, Double landSize,
+                  String cropType, String status, User user) {
+
+        this.name = name;
+        this.dob = dob;
+        this.gender = gender;
+        this.address = address;
+        this.contactInfo = contactInfo;
+        this.landSize = landSize;
+        this.cropType = cropType;
+        this.status = status;
+        this.user = user;
     }
 
-    public void setFarmerID(Long farmerID) {
-        this.farmerID = farmerID;
+
+    // Getters and Setters
+
+    public Long getFarmerId() {
+        return farmerId;
     }
 
-    public String getAddress()
-    {
+    public void setFarmerId(Long farmerId) {
+        this.farmerId = farmerId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDob() {
+        return dob;
+    }
+
+    public void setDob(String dob) {
+        this.dob = dob;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public String getAddress() {
         return address;
     }
 
-    public void setAddress(String address)
-    {
-        this.address=address;
+    public void setAddress(String address) {
+        this.address = address;
     }
 
-    public Double getLandSize()
-    {
+    public String getContactInfo() {
+        return contactInfo;
+    }
+
+    public void setContactInfo(String contactInfo) {
+        this.contactInfo = contactInfo;
+    }
+
+    public Double getLandSize() {
         return landSize;
     }
 

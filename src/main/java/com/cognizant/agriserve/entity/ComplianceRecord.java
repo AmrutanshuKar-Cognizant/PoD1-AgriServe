@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 
 
 @Entity
-@Table(name = "compliance_record")
+@Table(name = "complianceRecord")
 public class ComplianceRecord {
     public enum ComplianceType {
         ADVISORY,
@@ -29,6 +29,9 @@ public class ComplianceRecord {
     @Column(nullable = false)
     private Long entityId;
 
+    @Column(nullable = false)
+    private Long officerId;
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private ComplianceType type;
@@ -41,11 +44,9 @@ public class ComplianceRecord {
 
     private String notes;
 
-    // Default Constructor
     public ComplianceRecord() {
     }
 
-    // Parameterized Constructor
     public ComplianceRecord(Long entityId, ComplianceType type, String result, LocalDateTime date, String notes) {
         this.entityId = entityId;
         this.type = type;
@@ -75,6 +76,14 @@ public class ComplianceRecord {
 
     public void setEntityId(Long entityId) {
         this.entityId = entityId;
+    }
+
+    public Long getOfficerId() {
+        return officerId;
+    }
+
+    public void setOfficerId(Long officerId) {
+        this.officerId = officerId;
     }
 
     public ComplianceType getType() {
