@@ -3,6 +3,7 @@ package com.cognizant.agriserve.controller;
 import com.cognizant.agriserve.dto.AdvisoryContentResponseDTO;
 import com.cognizant.agriserve.entity.AdvisoryContent;
 import com.cognizant.agriserve.service.AdvisoryContentService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,7 +16,7 @@ public class AdvisoryContentController {
     private final AdvisoryContentService contentService;
 
     @PostMapping("/upload")
-    public ResponseEntity<AdvisoryContentResponseDTO> uploadContent(@RequestBody AdvisoryContent content) {
+    public ResponseEntity<AdvisoryContentResponseDTO> uploadContent(@Valid @RequestBody AdvisoryContent content) {
         return ResponseEntity.ok(contentService.saveContent(content));
     }
 

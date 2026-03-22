@@ -1,5 +1,9 @@
 package com.cognizant.agriserve.dto;
 
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -8,17 +12,16 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AdvisorySessionRequestDTO {
-    private Long farmerId;
-    private Long contentId;
-    private String feedback; // These are the Officer's consultation notes
 
-    // Getters and Setters
-//    public Integer getFarmerId() { return farmerId; }
-//    public void setFarmerId(Integer farmerId) { this.farmerId = farmerId; }
-//
-//    public Integer getContentId() { return contentId; }
-//    public void setContentId(Integer contentId) { this.contentId = contentId; }
-//
-//    public String getFeedback() { return feedback; }
-//    public void setFeedback(String feedback) { this.feedback = feedback; }
+    @NotNull(message = "Farmer ID cannot be null")
+    @Min(value = 1, message = "Farmer ID must be a positive number")
+    private Long farmerId;
+
+    @NotNull(message = "Content ID cannot be null")
+    @Min(value = 1, message = "Content ID must be a positive number")
+    private Long contentId;
+
+    @NotBlank(message = "Feedback/Notes cannot be blank")
+    @Size(min = 10, max = 500, message = "Feedback must be between 10 and 500 characters")
+    private String feedback;
 }

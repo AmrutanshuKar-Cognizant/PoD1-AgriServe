@@ -3,6 +3,7 @@ package com.cognizant.agriserve.controller;
 import com.cognizant.agriserve.dto.AdvisorySessionRequestDTO;
 import com.cognizant.agriserve.dto.AdvisorySessionResponseDTO;
 import com.cognizant.agriserve.service.AdvisorySessionService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,7 +18,7 @@ public class AdvisorySessionController {
 
     @PostMapping("/log")
     public ResponseEntity<AdvisorySessionResponseDTO> logSession(
-            @RequestBody AdvisorySessionRequestDTO dto,
+            @Valid @RequestBody AdvisorySessionRequestDTO dto,
             @RequestHeader("Officer-ID") Long officerId) {
         return ResponseEntity.ok(sessionService.logAdvisorySession(dto, officerId));
     }
