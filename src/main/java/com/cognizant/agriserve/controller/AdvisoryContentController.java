@@ -24,7 +24,7 @@ public class AdvisoryContentController {
     }
 
     @PutMapping("/delete/{id}")
-    public ResponseEntity<String> removeContent(@PathVariable Integer id) {
+    public ResponseEntity<String> removeContent(@PathVariable Long id) {
         contentService.softDeleteContent(id);
         return ResponseEntity.ok("Content with ID " + id + " has been marked as Inactive.");
     }

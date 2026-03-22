@@ -7,7 +7,7 @@ import java.util.Map;
 
 public interface AdvisorySessionService {
     // Links the DTO from the app with the secure OfficerID from the token
-    AdvisorySession logAdvisorySession(AdvisorySessionRequestDTO dto, Integer officerId);
-    List<AdvisorySession> getFarmerHistory(Integer farmerId);
+    AdvisorySession logAdvisorySession(AdvisorySessionRequestDTO dto, Long officerId);
+    List<AdvisorySession> getFarmerHistory(Long farmerId);
     List<Map<String, Object>> getUsageAnalytics();
 }

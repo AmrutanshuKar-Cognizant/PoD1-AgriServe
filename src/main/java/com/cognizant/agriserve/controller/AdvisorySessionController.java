@@ -18,12 +18,12 @@ public class AdvisorySessionController {
     @PostMapping("/log")
     public ResponseEntity<AdvisorySession> logSession(
             @RequestBody AdvisorySessionRequestDTO dto,
-            @RequestHeader("Officer-ID") Integer officerId) {
+            @RequestHeader("Officer-ID") Long officerId) {
         return ResponseEntity.ok(sessionService.logAdvisorySession(dto, officerId));
     }
 
     @GetMapping("/history/{farmerId}")
-    public ResponseEntity<List<AdvisorySession>> getHistory(@PathVariable Integer farmerId) {
+    public ResponseEntity<List<AdvisorySession>> getHistory(@PathVariable Long farmerId) {
         return ResponseEntity.ok(sessionService.getFarmerHistory(farmerId));
     }
 

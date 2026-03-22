@@ -15,15 +15,15 @@ public class AdvisorySession {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer sessionId;
+    private Long sessionId;
 
-    @Column(name = "OfficerID")
+    @ManyToOne
+    @JoinColumn(name = "officer_id") // Assuming User has userId
+    private User officer;
 
-    private Integer officerId;
-
-    @Column(name = "FarmerID")
-
-    private Integer farmerId;
+    @ManyToOne
+    @JoinColumn(name = "farmer_id") // Assuming Farmer has farmerId
+    private Farmer farmer;
 
     @ManyToOne
     @JoinColumn(name = "ContentID")

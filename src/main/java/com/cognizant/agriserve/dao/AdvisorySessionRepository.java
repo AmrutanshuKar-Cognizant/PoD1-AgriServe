@@ -8,10 +8,10 @@ import java.util.List;
 import java.util.Map;
 
 @Repository
-public interface AdvisorySessionRepository extends JpaRepository<AdvisorySession, Integer> {
+public interface AdvisorySessionRepository extends JpaRepository<AdvisorySession, Long> {
 
     // For P1A-30: Retrieve the history of advice given to a specific farmer
-    List<AdvisorySession> findByFarmerId(Integer farmerId);
+    List<AdvisorySession> findByFarmer_FarmerId(Long farmerId);
 
     // For P1A-31: Track Advisory Usage (The Manager's Report)
     // This Native Query counts sessions grouped by ContentID

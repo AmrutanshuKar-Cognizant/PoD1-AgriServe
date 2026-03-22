@@ -15,7 +15,7 @@ public class AdvisoryContent {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer contentId;
+    private Long contentId;
 
     private String title;
     private String category;

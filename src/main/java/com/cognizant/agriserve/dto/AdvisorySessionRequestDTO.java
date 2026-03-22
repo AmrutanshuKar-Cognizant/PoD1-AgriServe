@@ -8,8 +8,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AdvisorySessionRequestDTO {
-    private Integer farmerId;
-    private Integer contentId;
+    private Long farmerId;
+    private Long contentId;
     private String feedback; // These are the Officer's consultation notes
 
     // Getters and Setters

@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface AdvisoryContentRepository extends JpaRepository<AdvisoryContent, Integer> {
+public interface AdvisoryContentRepository extends JpaRepository<AdvisoryContent, Long> {
 
     // For P1A-28: Allows the Officer to see only current, non-deleted materials
     List<AdvisoryContent> findByStatus(String status);

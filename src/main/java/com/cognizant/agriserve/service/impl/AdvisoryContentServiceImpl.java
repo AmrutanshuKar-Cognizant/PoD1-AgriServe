@@ -26,7 +26,7 @@ public class AdvisoryContentServiceImpl implements AdvisoryContentService {
     }
 
     @Override
-    public void softDeleteContent(Integer id) {
+    public void softDeleteContent(Long id) {
         AdvisoryContent content = contentRepo.findById(id).orElse(null);
         if (content != null) {
             content.setStatus("Inactive");
