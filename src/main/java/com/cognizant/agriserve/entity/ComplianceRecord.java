@@ -9,12 +9,19 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.PrePersist;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.time.LocalDateTime;
 
 
 
 @Entity
 @Table(name = "complianceRecord")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class ComplianceRecord {
     public enum ComplianceType {
         ADVISORY,
@@ -44,16 +51,7 @@ public class ComplianceRecord {
 
     private String notes;
 
-    public ComplianceRecord() {
-    }
 
-    public ComplianceRecord(Long entityId, ComplianceType type, String result, LocalDateTime date, String notes) {
-        this.entityId = entityId;
-        this.type = type;
-        this.result = result;
-        this.date = date;
-        this.notes = notes;
-    }
     // Automatically set the date to the current server time if not provided
     @PrePersist
     protected void onCreate() {
@@ -62,59 +60,4 @@ public class ComplianceRecord {
         }
     }
 
-    public Long getComplianceId() {
-        return complianceId;
-    }
-
-    public void setComplianceId(Long complianceId) {
-        this.complianceId = complianceId;
-    }
-
-    public Long getEntityId() {
-        return entityId;
-    }
-
-    public void setEntityId(Long entityId) {
-        this.entityId = entityId;
-    }
-
-    public Long getOfficerId() {
-        return officerId;
-    }
-
-    public void setOfficerId(Long officerId) {
-        this.officerId = officerId;
-    }
-
-    public ComplianceType getType() {
-        return type;
-    }
-
-    public void setType(ComplianceType type) {
-        this.type = type;
-    }
-
-    public String getResult() {
-        return result;
-    }
-
-    public void setResult(String result) {
-        this.result = result;
-    }
-
-    public LocalDateTime getDate() {
-        return date;
-    }
-
-    public void setDate(LocalDateTime date) {
-        this.date = date;
-    }
-
-    public String getNotes() {
-        return notes;
-    }
-
-    public void setNotes(String notes) {
-        this.notes = notes;
-    }
 }

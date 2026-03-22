@@ -1,9 +1,16 @@
 package com.cognizant.agriserve.entity;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "auditLog")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class AuditLog {
 
     @Id
@@ -20,43 +27,5 @@ public class AuditLog {
 
     private LocalDateTime timestamp;
 
-    public Integer getAuditID() {
-        return auditID;
-    }
 
-    public void setAuditID(Integer auditID) {
-        this.auditID = auditID;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public String getAction() {
-        return action;
-    }
-
-    public void setAction(String action) {
-        this.action = action;
-    }
-
-    public String getResource() {
-        return resource;
-    }
-
-    public void setResource(String resource) {
-        this.resource = resource;
-    }
-
-    public LocalDateTime getTimestamp() {
-        return timestamp;
-    }
-
-    public void setTimestamp(LocalDateTime timestamp) {
-        this.timestamp = timestamp;
-    }
 }
