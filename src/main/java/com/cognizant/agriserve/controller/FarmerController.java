@@ -5,6 +5,8 @@ import com.cognizant.agriserve.entity.Farmer;
 import com.cognizant.agriserve.exception.ResourceNotFoundException;
 import com.cognizant.agriserve.service.FarmerService;
 
+import jakarta.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,7 +18,7 @@ public class FarmerController {
     private FarmerService farmerService;
 
     @PostMapping
-    public Farmer createFarmer(@RequestBody FarmerDTO dto)
+    public Farmer createFarmer(@Valid @RequestBody FarmerDTO dto)
     {
         return farmerService.createFarmer(dto);
     }
@@ -28,7 +30,7 @@ public class FarmerController {
     }
 
     @PutMapping("/{farmerId}")
-    public Farmer updateFarmer(@PathVariable Long farmerId, @RequestBody FarmerDTO dto)
+    public Farmer updateFarmer(@PathVariable Long farmerId, @Valid @RequestBody FarmerDTO dto)
     {
         return farmerService.updateFarmer(farmerId, dto);
     }
