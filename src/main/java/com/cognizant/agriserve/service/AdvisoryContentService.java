@@ -1,10 +1,15 @@
 package com.cognizant.agriserve.service;
 
+import com.cognizant.agriserve.dto.AdvisoryContentResponseDTO;
 import com.cognizant.agriserve.entity.AdvisoryContent;
 import java.util.List;
 
 public interface AdvisoryContentService {
-    AdvisoryContent saveContent(AdvisoryContent content);
-    List<AdvisoryContent> getAllActiveContent();
+    // Returns DTO to keep Entity private
+    AdvisoryContentResponseDTO saveContent(AdvisoryContent content);
+
+    // Returns a list of DTOs for the UI/Frontend
+    List<AdvisoryContentResponseDTO> getAllActiveContent();
+
     void softDeleteContent(Long id);
 }

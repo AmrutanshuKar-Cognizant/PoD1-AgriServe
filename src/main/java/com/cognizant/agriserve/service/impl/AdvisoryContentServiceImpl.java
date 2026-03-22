@@ -1,36 +1,41 @@
 package com.cognizant.agriserve.service.impl;
 
 import com.cognizant.agriserve.dao.AdvisoryContentRepository;
+import com.cognizant.agriserve.dto.AdvisoryContentResponseDTO;
 import com.cognizant.agriserve.entity.AdvisoryContent;
 import com.cognizant.agriserve.service.AdvisoryContentService;
-
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import java.util.List;
-@RequiredArgsConstructor
-@Service
+import java.util.stream.Collectors;
 
+@Service
+@RequiredArgsConstructor
 public class AdvisoryContentServiceImpl implements AdvisoryContentService {
 
     private final AdvisoryContentRepository contentRepo;
+    private final ModelMapper modelMapper;
 
     @Override
-    public AdvisoryContent saveContent(AdvisoryContent content) {
-        return contentRepo.save(content);
+    public AdvisoryContentResponseDTO saveContent(AdvisoryContent content) {
+        if (content.getStatus() == null) content.setStatus("Active");
+        AdvisoryContent saved = contentRepo.save(content);
+        return modelMapper.map(saved, AdvisoryContentResponseDTO.class);
     }
 
     @Override
-    public List<AdvisoryContent> getAllActiveContent() {
-        // Uses the Repository method you wrote to filter for 'Active' status
-        return contentRepo.findByStatus("Active");
+    public List<AdvisoryContentResponseDTO> getAllActiveContent() {
+        return contentRepo.findByStatus("Active").stream()
+                .map(content -> modelMapper.map(content, AdvisoryContentResponseDTO.class))
+                .collect(Collectors.toList());
     }
 
     @Override
     public void softDeleteContent(Long id) {
-        AdvisoryContent content = contentRepo.findById(id).orElse(null);
-        if (content != null) {
-            content.setStatus("Inactive");
-            contentRepo.save(content);
-        }
+        contentRepo.findById(id).ifPresent(c -> {
+            c.setStatus("Inactive");
+            contentRepo.save(c);
+        });
     }
 }

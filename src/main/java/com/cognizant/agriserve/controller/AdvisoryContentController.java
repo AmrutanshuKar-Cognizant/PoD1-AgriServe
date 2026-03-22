@@ -1,5 +1,6 @@
 package com.cognizant.agriserve.controller;
 
+import com.cognizant.agriserve.dto.AdvisoryContentResponseDTO;
 import com.cognizant.agriserve.entity.AdvisoryContent;
 import com.cognizant.agriserve.service.AdvisoryContentService;
 import lombok.RequiredArgsConstructor;
@@ -14,18 +15,18 @@ public class AdvisoryContentController {
     private final AdvisoryContentService contentService;
 
     @PostMapping("/upload")
-    public ResponseEntity<AdvisoryContent> uploadContent(@RequestBody AdvisoryContent content) {
+    public ResponseEntity<AdvisoryContentResponseDTO> uploadContent(@RequestBody AdvisoryContent content) {
         return ResponseEntity.ok(contentService.saveContent(content));
     }
 
     @GetMapping("/active")
-    public ResponseEntity<List<AdvisoryContent>> getActiveContent() {
+    public ResponseEntity<List<AdvisoryContentResponseDTO>> getActiveContent() {
         return ResponseEntity.ok(contentService.getAllActiveContent());
     }
 
     @PutMapping("/delete/{id}")
     public ResponseEntity<String> removeContent(@PathVariable Long id) {
         contentService.softDeleteContent(id);
-        return ResponseEntity.ok("Content with ID " + id + " has been marked as Inactive.");
+        return ResponseEntity.ok("Content marked as Inactive.");
     }
 }

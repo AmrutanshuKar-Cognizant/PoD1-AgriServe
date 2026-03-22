@@ -1,7 +1,7 @@
 package com.cognizant.agriserve.controller;
 
 import com.cognizant.agriserve.dto.AdvisorySessionRequestDTO;
-import com.cognizant.agriserve.entity.AdvisorySession;
+import com.cognizant.agriserve.dto.AdvisorySessionResponseDTO;
 import com.cognizant.agriserve.service.AdvisorySessionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -16,14 +16,14 @@ public class AdvisorySessionController {
     private final AdvisorySessionService sessionService;
 
     @PostMapping("/log")
-    public ResponseEntity<AdvisorySession> logSession(
+    public ResponseEntity<AdvisorySessionResponseDTO> logSession(
             @RequestBody AdvisorySessionRequestDTO dto,
             @RequestHeader("Officer-ID") Long officerId) {
         return ResponseEntity.ok(sessionService.logAdvisorySession(dto, officerId));
     }
 
     @GetMapping("/history/{farmerId}")
-    public ResponseEntity<List<AdvisorySession>> getHistory(@PathVariable Long farmerId) {
+    public ResponseEntity<List<AdvisorySessionResponseDTO>> getHistory(@PathVariable Long farmerId) {
         return ResponseEntity.ok(sessionService.getFarmerHistory(farmerId));
     }
 
