@@ -1,6 +1,7 @@
-package com.cognizant.agriserve.exception;
+package com.cognizant.agriserve.globalexception;
 
 import com.cognizant.agriserve.dto.ErrorDetails;
+import com.cognizant.agriserve.exception.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -31,7 +32,6 @@ public class GlobalExceptionHandler {
     }
 
     // 2. Handles @Min, @NotBlank failures in PathVariables/Headers (e.g., ID is 0)
-    // Updated to give a much cleaner message
     @ExceptionHandler(ConstraintViolationException.class)
     public ResponseEntity<ErrorDetails> handleConstraintViolation(ConstraintViolationException ex, WebRequest request) {
         // This extracts just the message (e.g., "ID must be positive")

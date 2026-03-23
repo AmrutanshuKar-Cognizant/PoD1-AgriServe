@@ -10,8 +10,6 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
-//import java.time.LocalDateTime;
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -29,7 +27,8 @@ public class AdvisorySession {
     private User officer;
 
     @NotNull(message = "Farmer is required")
-    @ManyToOne(optional = false)//It tells Hibernate, "This relationship is mandatory." If you try to save an AdvisorySession without a Farmer, Hibernate will catch it before even trying to talk to the database.
+    @ManyToOne(optional = false)
+//It tells Hibernate, "This relationship is mandatory." If you try to save an AdvisorySession without a Farmer, Hibernate will catch it before even trying to talk to the database.
     @JoinColumn(name = "farmer_id", nullable = false)// Assuming Farmer has farmerId
     private Farmer farmer;
 
@@ -45,28 +44,4 @@ public class AdvisorySession {
     @Column(columnDefinition = "TEXT", nullable = false)
     private String feedback;
 
-    // Default Constructor
-//    public AdvisorySession() {}
-//
-//    // Getters and Setters
-//    public Integer getSessionId() { return sessionId; }
-//    public void setSessionId(Integer sessionId) { this.sessionId = sessionId; }
-//
-//    public Integer getOfficerId() { return officerId; }
-//    public void setOfficerId(Integer officerId) { this.officerId = officerId; }
-//
-//    public Integer getFarmerId() { return farmerId; }
-//    public void setFarmerId(Integer farmerId) { this.farmerId = farmerId; }
-//
-//    public AdvisoryContent getContent() { return content; }
-//    public void setContent(AdvisoryContent content) { this.content = content; }
-//
-//    public LocalDateTime getDate() { return date; }
-//    public void setDate(LocalDateTime date) { this.date = date; }
-//
-//    public String getStatus() { return status; }
-//    public void setStatus(String status) { this.status = status; }
-//
-//    public String getFeedback() { return feedback; }
-//    public void setFeedback(String feedback) { this.feedback = feedback; }
 }
