@@ -14,7 +14,6 @@ public class TrainingProgramServiceImpl implements TrainingProgramService {
 
     private final TrainingProgramRepository programRepository;
 
-    // Constructor injection ensures the repository is initialized when the bean is created.
     public TrainingProgramServiceImpl(TrainingProgramRepository programRepository) {
         this.programRepository = programRepository;
     }
@@ -22,25 +21,25 @@ public class TrainingProgramServiceImpl implements TrainingProgramService {
     @Override
     public TrainingProgramDto createProgram(TrainingProgramDto dto) {
 
-        // Business Rule Validation: Prevent illogical scheduling
         if (dto.getStartDate() != null && dto.getEndDate() != null
                 && dto.getStartDate().isAfter(dto.getEndDate())) {
             throw new IllegalArgumentException("Program start date cannot be later than the end date.");
         }
 
-        // Map DTO to Entity for database persistence
         TrainingProgram newProgram = new TrainingProgram();
         newProgram.setTitle(dto.getTitle());
         newProgram.setDescription(dto.getDescription());
         newProgram.setStartDate(dto.getStartDate());
         newProgram.setEndDate(dto.getEndDate());
 
-        // Default lifecycle status for a newly created program
+        // NEW LINE: Set the manager ID from the incoming DTO
+        newProgram.setManagerId(dto.getManagerId());
+
         newProgram.setStatus(dto.getStatus() != null ? dto.getStatus() : "Draft");
 
         TrainingProgram savedProgram = programRepository.save(newProgram);
 
-        // Map the generated ID and final status back to the DTO for the response
+        // Map the generated ID and final status back to the DTO
         dto.setProgramId(savedProgram.getProgramId());
         dto.setStatus(savedProgram.getStatus());
 
@@ -56,16 +55,18 @@ public class TrainingProgramServiceImpl implements TrainingProgramService {
     }
 
     /**
-     * Internal utility method to handle Entity-to-DTO conversion.
+     * Helper method to map Entity to DTO
      */
     private TrainingProgramDto convertToDto(TrainingProgram program) {
+        // Updated to include the Manager ID in the response
         return new TrainingProgramDto(
                 program.getProgramId(),
                 program.getTitle(),
                 program.getDescription(),
                 program.getStartDate(),
                 program.getEndDate(),
-                program.getStatus()
+                program.getStatus(),
+                program.getManagerId() // NEW LINE
         );
     }
 }

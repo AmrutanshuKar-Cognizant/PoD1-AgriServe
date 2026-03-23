@@ -11,22 +11,25 @@ public class TrainingProgramDto {
     private LocalDate endDate;
     private String status;
 
-    // Default Constructor (Required by frameworks like Spring/Jackson)
+    // NEW FIELD
+    private Long managerId;
+
     public TrainingProgramDto() {
     }
 
-    // Parameterized Constructor
+    // Updated Constructor
     public TrainingProgramDto(Long programId, String title, String description,
-                              LocalDate startDate, LocalDate endDate, String status) {
+                              LocalDate startDate, LocalDate endDate, String status, Long managerId) {
         this.programId = programId;
         this.title = title;
         this.description = description;
         this.startDate = startDate;
         this.endDate = endDate;
         this.status = status;
+        this.managerId = managerId;
     }
 
-    // Getters and Setters
+    // --- Getters and Setters ---
     public Long getProgramId() { return programId; }
     public void setProgramId(Long programId) { this.programId = programId; }
 
@@ -44,4 +47,7 @@ public class TrainingProgramDto {
 
     public String getStatus() { return status; }
     public void setStatus(String status) { this.status = status; }
+
+    public Long getManagerId() { return managerId; }
+    public void setManagerId(Long managerId) { this.managerId = managerId; }
 }
