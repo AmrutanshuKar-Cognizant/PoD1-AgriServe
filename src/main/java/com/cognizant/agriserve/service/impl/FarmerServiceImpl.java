@@ -1,62 +1,110 @@
 package com.cognizant.agriserve.service.impl;
 
 import com.cognizant.agriserve.dao.FarmerRepository;
+
 import com.cognizant.agriserve.dto.FarmerDTO;
+
+import com.cognizant.agriserve.dto.FarmerUpdateRequestDTO;
+
 import com.cognizant.agriserve.entity.Farmer;
 
 import com.cognizant.agriserve.exception.ResourceNotFoundException;
+
 import com.cognizant.agriserve.service.FarmerService;
-import org.springframework.beans.factory.annotation.Autowired;
+
+import lombok.RequiredArgsConstructor;
+
+import lombok.extern.slf4j.Slf4j;
+
+import org.modelmapper.ModelMapper; // Added ModelMapper import
+
 import org.springframework.stereotype.Service;
 
+import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDate;
+
 import java.util.List;
-import java.util.Optional;
+
+import java.util.stream.Collectors;
+
+@Slf4j
 
 @Service
+
+@RequiredArgsConstructor
+
 public class FarmerServiceImpl implements FarmerService {
 
-    @Autowired
-    private FarmerRepository farmerRepository;  // to access database operations in service layer
+    private final FarmerRepository farmerRepository;
+
+    private final ModelMapper modelMapper; // Injected ModelMapper
 
     @Override
-    public Farmer createFarmer(FarmerDTO dto)
-    {
-        Farmer farmer=new Farmer();
 
-        farmer.setName(dto.getName());
-        farmer.setDob(dto.getDob());
-        farmer.setGender(dto.getGender());
-        farmer.setAddress(dto.getAddress());
-        farmer.setContactInfo(dto.getContactInfo());
-        farmer.setLandSize(dto.getLandSize());
-        farmer.setCropType(dto.getCropType());
+    public FarmerDTO getFarmerProfile(String email) {
 
-        farmer.setStatus("Pending");  //backend control
+        log.debug("Fetching farmer profile for user email: {}", email);
 
-        return farmerRepository.save(farmer);
+        Farmer farmer = farmerRepository.findByEmail(email)
+
+                .orElseThrow(() -> new ResourceNotFoundException("Farmer profile not found for email: " + email));
+
+        return mapToDto(farmer);
+
     }
 
     @Override
-    public Farmer updateFarmer(Long farmerId, FarmerDTO dto)
-    {
-        Farmer farmer=farmerRepository.findById(farmerId).orElseThrow(() -> new ResourceNotFoundException("Farmer not found"));
 
-        farmer.setName(dto.getName());
-        farmer.setDob(dto.getDob());
-        farmer.setGender(dto.getGender());
-        farmer.setAddress(dto.getAddress());
-        farmer.setContactInfo(dto.getContactInfo());
-        farmer.setLandSize(dto.getLandSize());
+    @Transactional
 
-        farmer.setCropType(dto.getCropType());
+    public FarmerDTO updateFarmerProfile(String email, FarmerUpdateRequestDTO updateDto) {
 
-        return farmerRepository.save(farmer);
+        log.info("Updating farmer profile for user email: {}", email);
+
+        Farmer existingFarmer = farmerRepository.findByEmail(email)
+
+                .orElseThrow(() -> new ResourceNotFoundException("Farmer profile not found for email: " + email));
+
+        // 1. Let ModelMapper map all the standard Strings and Doubles automatically
+
+        modelMapper.map(updateDto, existingFarmer);
+
+        // 2. Safely override the strict types manually to prevent conversion crashes
+
+        existingFarmer.setDob(LocalDate.parse(updateDto.getDob()));
+
+        existingFarmer.setGender(Farmer.Gender.valueOf(updateDto.getGender().toUpperCase()));
+
+        Farmer updatedFarmer = farmerRepository.save(existingFarmer);
+
+        log.info("Successfully updated profile for farmer ID: {}", updatedFarmer.getFarmerId());
+
+        return mapToDto(updatedFarmer);
+
     }
 
     @Override
-    public Optional<Farmer> getFarmerById(Long farmerId) //if farmer not found
-    {
-        return farmerRepository.findById(farmerId);  //searches db using farmerID
+
+    public List<FarmerDTO> getAllFarmers() {
+
+        log.debug("Fetching all farmers from the database");
+
+        return farmerRepository.findAll().stream()
+
+                .map(this::mapToDto)
+
+                .collect(Collectors.toList());
+
+    }
+
+
+    private FarmerDTO mapToDto(Farmer farmer) {
+
+
+
+        return modelMapper.map(farmer, FarmerDTO.class);
+
     }
 
 }

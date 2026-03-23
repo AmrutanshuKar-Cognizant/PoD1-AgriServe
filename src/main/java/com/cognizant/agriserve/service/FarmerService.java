@@ -1,17 +1,17 @@
 package com.cognizant.agriserve.service;
 
 import com.cognizant.agriserve.dto.FarmerDTO;
-import com.cognizant.agriserve.entity.Farmer;
+import com.cognizant.agriserve.dto.FarmerUpdateRequestDTO;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface FarmerService {
-    Farmer createFarmer(FarmerDTO dto);
+    // For the logged-in Farmer to view their own profile
+    FarmerDTO getFarmerProfile(String email);
 
-    Farmer updateFarmer(Long farmerId, FarmerDTO dto);
+    // For the logged-in Farmer to update their own profile
+    FarmerDTO updateFarmerProfile(String email, FarmerUpdateRequestDTO updateDto);
 
-    Optional<Farmer> getFarmerById(Long farmerId);
-
-
+    // For Extension Officers or Admins to view all farmers
+    List<FarmerDTO> getAllFarmers();
 }

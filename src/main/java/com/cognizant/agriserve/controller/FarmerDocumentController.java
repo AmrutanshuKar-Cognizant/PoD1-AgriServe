@@ -1,29 +1,84 @@
 package com.cognizant.agriserve.controller;
 
-import com.cognizant.agriserve.dto.FarmerDocumentDTO;
-import com.cognizant.agriserve.entity.Farmer;
-import com.cognizant.agriserve.entity.FarmerDocument;
+import com.cognizant.agriserve.dto.FarmerDocumentResponseDTO;
+import com.cognizant.agriserve.dto.FarmerDocumentUploadRequestDto;
+
 import com.cognizant.agriserve.service.FarmerDocumentService;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.validation.Valid;
+
+import lombok.RequiredArgsConstructor;
+
+import lombok.extern.slf4j.Slf4j;
+
+import org.springframework.http.HttpStatus;
+
+import org.springframework.http.ResponseEntity;
+
 import org.springframework.web.bind.annotation.*;
 
-@RestController  //create rest api return data in json format
-@RequestMapping("/api/documents")  //base url
+import java.security.Principal;
+
+import java.util.List;
+
+@Slf4j
+
+@RestController
+
+@RequestMapping("/api/farmers/documents")
+
+@RequiredArgsConstructor
+
 public class FarmerDocumentController {
 
-    @Autowired  //inject service layer automatically
-    private FarmerDocumentService service;
+    private final FarmerDocumentService farmerDocumentService;
 
-    @PostMapping   //create and upload data
-    public FarmerDocument uploadDocument(@RequestBody FarmerDocumentDTO dto)
-    {
-        return service.uploadDocument(dto);
+    /**
+
+     * POST /api/farmers/documents
+
+     * Allows a logged-in farmer to securely upload a new document link.
+
+     */
+
+    @PostMapping
+
+    public ResponseEntity<FarmerDocumentResponseDTO> uploadDocument(
+
+            Principal principal,
+
+            @Valid @RequestBody FarmerDocumentUploadRequestDto requestDto) {
+
+        String email = principal.getName();
+
+        log.info("API Request: Uploading new document for farmer: {}", email);
+
+        FarmerDocumentResponseDTO uploadedDocument = farmerDocumentService.uploadDocument(email, requestDto);
+
+        return new ResponseEntity<>(uploadedDocument, HttpStatus.CREATED);
+
     }
 
-    @PutMapping("/verify/{farmerId}")   //update data gets verification status
-    public Farmer verifyFarmer(@PathVariable Long farmerId)
-    {
-        return service.verifyFarmer(farmerId);
+    /**
+
+     * GET /api/farmers/documents
+
+     * Fetches all documents uploaded by the currently logged-in farmer.
+
+     */
+
+    @GetMapping
+
+    public ResponseEntity<List<FarmerDocumentResponseDTO>> getMyDocuments(Principal principal) {
+
+        String email = principal.getName();
+
+        log.info("API Request: Fetching all documents for farmer: {}", email);
+
+        List<FarmerDocumentResponseDTO> documents = farmerDocumentService.getMyDocuments(email);
+
+        return ResponseEntity.ok(documents);
+
     }
+
 }

@@ -2,9 +2,9 @@ package com.cognizant.agriserve.dto;
 
 import jakarta.validation.constraints.*;
 
-public class FarmerDTO {
+public class FarmerDTO {  // DTO is used to receive data from client and validate input
 
-    @NotBlank(message="Name is required")
+    @NotBlank(message="Name is required") //name should not be empty
     private String name;
 
     @NotNull(message="DOB is required")
@@ -20,12 +20,12 @@ public class FarmerDTO {
     private String contactInfo;
 
     @NotBlank(message = "Land size is required")
-    @Positive(message = "Land size must be greater than 0")
+    @Positive(message = "Land size must be greater than 0")  //land size must be greater than 0
     private Double landSize;
 
     @NotBlank(message = "Crop type is required")
     private String cropType;
-    
+
     private String status;
 
     public String getCropType() {

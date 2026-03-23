@@ -1,132 +1,77 @@
 package com.cognizant.agriserve.entity;
 
 import jakarta.persistence.*;
-import com.cognizant.agriserve.entity.User;
+import jakarta.validation.constraints.*;
+import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "farmer")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Farmer {
+    public enum Status {
+        PENDING,
+        ACTIVE,
+        INACTIVE,
+        SUSPENDED
+    }
+
+    public enum Gender{
+        MALE,
+        FEMALE,
+        OTHER
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long farmerId;
 
+    @NotBlank(message = "Name cannot be empty")
+    @Column(nullable = false, length = 100)
     private String name;
-    private String dob;
-    private String gender;
 
+    @NotNull(message = "Date of birth is required")
+    @Past(message = "Date of birth must be in the past")
+    private LocalDate dob;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private Gender gender;
+
+    @NotBlank(message = "Address is required")
+    @Column(columnDefinition = "TEXT")
     private String address;
+
+    @NotBlank(message = "Contact info is required")
+    @Pattern(regexp = "^\\+?[0-9]{10,15}$", message = "Invalid phone number format")
+    @Column(unique = true, nullable = false)
     private String contactInfo;
 
+    @PositiveOrZero(message = "Land size cannot be negative")
     private Double landSize;
+
     private String cropType;
 
-    private String status;
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private Status status = Status.PENDING;
 
-    @OneToOne
-    @JoinColumn(name = "user_id")
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
-    // 1. Default Constructor (MANDATORY for JPA)
-    public Farmer() {
-    }
+    @CreationTimestamp
+    @Column(updatable = false)
+    private LocalDateTime createdAt;
 
-    // 2. Parameterized Constructor (WITH ID)
-    public Farmer(String name, String dob, String gender,
-                  String address, String contactInfo, Double landSize,
-                  String cropType, String status, User user) {
-
-        this.name = name;
-        this.dob = dob;
-        this.gender = gender;
-        this.address = address;
-        this.contactInfo = contactInfo;
-        this.landSize = landSize;
-        this.cropType = cropType;
-        this.status = status;
-        this.user = user;
-    }
-
-
-    // Getters and Setters
-
-    public Long getFarmerId() {
-        return farmerId;
-    }
-
-    public void setFarmerId(Long farmerId) {
-        this.farmerId = farmerId;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getDob() {
-        return dob;
-    }
-
-    public void setDob(String dob) {
-        this.dob = dob;
-    }
-
-    public String getGender() {
-        return gender;
-    }
-
-    public void setGender(String gender) {
-        this.gender = gender;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public String getContactInfo() {
-        return contactInfo;
-    }
-
-    public void setContactInfo(String contactInfo) {
-        this.contactInfo = contactInfo;
-    }
-
-    public Double getLandSize() {
-        return landSize;
-    }
-
-    public void setLandSize(Double landSize) {
-        this.landSize = landSize;
-    }
-
-    public String getCropType() {
-        return cropType;
-    }
-
-    public void setCropType(String cropType) {
-        this.cropType = cropType;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
+    @UpdateTimestamp
+    private LocalDateTime updatedAt;
 }
