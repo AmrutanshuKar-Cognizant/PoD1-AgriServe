@@ -1,36 +1,48 @@
 package com.cognizant.agriserve.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import jakarta.validation.constraints.*;
+import lombok.*;
 
 @Entity
-@Table(name = "user")
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class User {
+
     public enum Role {
-        Admin, ExtensionOfficer, ComplianceOfficer,Farmer,Auditor,ProgramManager
+        Admin, ExtensionOfficer, ComplianceOfficer, Farmer, Auditor, ProgramManager
     }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer userID;
+    private Integer userId;
 
+    @NotBlank(message = "Name cannot be empty")
     private String name;
 
+    @NotNull(message = "Role is required")
     @Enumerated(EnumType.STRING)
     private Role role;
 
+    @NotBlank(message = "Email cannot be empty")
+    @Email(message = "Invalid email format")
+    @Column(unique = true)
     private String email;
 
+    @NotBlank(message = "Phone number cannot be empty")
+    @Pattern(
+            regexp = "^[6-9]\\d{9}$",
+            message = "Phone number must be a valid 10-digit Indian number"
+    )
+    @Column(unique = true)
     private String phone;
 
+    @NotBlank(message = "Password cannot be empty")
+    @Size(min = 6, message = "Password must have at least 6 characters")
     private String password;
 
+    @NotBlank(message = "Status cannot be empty")
     private String status;
-
-
 }

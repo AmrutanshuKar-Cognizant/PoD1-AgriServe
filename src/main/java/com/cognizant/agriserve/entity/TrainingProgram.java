@@ -2,17 +2,20 @@ package com.cognizant.agriserve.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.LocalDate;
 import java.util.List;
 
 @Entity
 @Table(name = "trainingProgram")
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
+
 public class TrainingProgram {
 
     @Id
@@ -23,13 +26,15 @@ public class TrainingProgram {
     private String title;
 
     private String description;
-
-    private LocalDate startDate; // Using java.time for modern Java versions
+    private LocalDate startDate;
     private LocalDate endDate;
-
     private String status;
+
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "manager_id", nullable = false)
+    private User manager;
 
     @OneToMany(mappedBy = "trainingProgram", cascade = CascadeType.ALL)
     private List<Workshop> workshops;
-
 }

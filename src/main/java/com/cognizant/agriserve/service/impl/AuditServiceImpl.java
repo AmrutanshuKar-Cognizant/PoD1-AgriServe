@@ -5,7 +5,6 @@ import com.cognizant.agriserve.dto.AuditResponseDTO;
 import com.cognizant.agriserve.entity.Audit;
 import com.cognizant.agriserve.entity.Audit.AuditStatus;
 import com.cognizant.agriserve.dao.AuditRepository;
-import com.cognizant.agriserve.dao.UserRepository;
 import com.cognizant.agriserve.service.AuditService;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;

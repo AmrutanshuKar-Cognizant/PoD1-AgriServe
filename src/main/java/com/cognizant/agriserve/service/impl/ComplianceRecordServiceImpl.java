@@ -5,8 +5,6 @@ import com.cognizant.agriserve.dto.ComplianceRecordResponseDTO;
 import com.cognizant.agriserve.entity.ComplianceRecord;
 import com.cognizant.agriserve.entity.ComplianceRecord.ComplianceType;
 import com.cognizant.agriserve.dao.ComplianceRecordRepository;
-import com.cognizant.agriserve.dao.TrainingProgramRepository;
-import com.cognizant.agriserve.dao.AdvisorySessionRepository;
 import com.cognizant.agriserve.service.ComplianceRecordService;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;

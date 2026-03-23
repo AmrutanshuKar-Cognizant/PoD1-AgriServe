@@ -2,15 +2,18 @@ package com.cognizant.agriserve.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
+
 @Entity
 @Table(name = "workshop")
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class Workshop {
@@ -31,6 +34,7 @@ public class Workshop {
     private String status;
 
     @OneToMany(mappedBy = "workshop", cascade = CascadeType.ALL)
-    private List<Participation> participations;
+    private List<Participation> participation;
+
 
 }
