@@ -4,6 +4,7 @@ import com.cognizant.agriserve.dto.AdvisoryContentResponseDTO;
 import com.cognizant.agriserve.entity.AdvisoryContent;
 import com.cognizant.agriserve.service.AdvisoryContentService;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -26,7 +27,7 @@ public class AdvisoryContentController {
     }
 
     @PutMapping("/delete/{id}")
-    public ResponseEntity<String> removeContent(@PathVariable Long id) {
+    public ResponseEntity<String> removeContent(@PathVariable @Min(value = 1, message = "ID must be positive") Long id) {
         contentService.softDeleteContent(id);
         return ResponseEntity.ok("Content marked as Inactive.");
     }

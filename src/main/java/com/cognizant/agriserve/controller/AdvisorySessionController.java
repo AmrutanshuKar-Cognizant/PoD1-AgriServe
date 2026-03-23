@@ -4,6 +4,7 @@ import com.cognizant.agriserve.dto.AdvisorySessionRequestDTO;
 import com.cognizant.agriserve.dto.AdvisorySessionResponseDTO;
 import com.cognizant.agriserve.service.AdvisorySessionService;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,12 +20,12 @@ public class AdvisorySessionController {
     @PostMapping("/log")
     public ResponseEntity<AdvisorySessionResponseDTO> logSession(
             @Valid @RequestBody AdvisorySessionRequestDTO dto,
-            @RequestHeader("Officer-ID") Long officerId) {
+            @RequestHeader("Officer-ID") @Min(1) Long officerId) {
         return ResponseEntity.ok(sessionService.logAdvisorySession(dto, officerId));
     }
 
     @GetMapping("/history/{farmerId}")
-    public ResponseEntity<List<AdvisorySessionResponseDTO>> getHistory(@PathVariable Long farmerId) {
+    public ResponseEntity<List<AdvisorySessionResponseDTO>> getHistory(@PathVariable @Min(1) Long farmerId) {
         return ResponseEntity.ok(sessionService.getFarmerHistory(farmerId));
     }
 

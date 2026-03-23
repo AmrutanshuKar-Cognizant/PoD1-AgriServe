@@ -3,6 +3,7 @@ package com.cognizant.agriserve.service.impl;
 import com.cognizant.agriserve.dao.AdvisoryContentRepository;
 import com.cognizant.agriserve.dto.AdvisoryContentResponseDTO;
 import com.cognizant.agriserve.entity.AdvisoryContent;
+import com.cognizant.agriserve.exception.ResourceNotFoundException;
 import com.cognizant.agriserve.service.AdvisoryContentService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -33,9 +34,12 @@ public class AdvisoryContentServiceImpl implements AdvisoryContentService {
 
     @Override
     public void softDeleteContent(Long id) {
-        contentRepo.findById(id).ifPresent(c -> {
-            c.setStatus("Inactive");
-            contentRepo.save(c);
-        });
+        AdvisoryContent content=contentRepo.findById(id).orElseThrow(() -> new ResourceNotFoundException("Cannot delete. Advisory Content not found with ID: " + id));
+        content.setStatus("Inactive");
+        contentRepo.save(content);
+//        contentRepo.findById(id).ifPresent(c -> {
+//            c.setStatus("Inactive");
+//            contentRepo.save(c);
+//        });
     }
 }

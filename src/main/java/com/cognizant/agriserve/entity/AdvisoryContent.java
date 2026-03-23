@@ -20,7 +20,7 @@ public class AdvisoryContent {
     @NotBlank(message = "Title is mandatory")
     @Column(nullable = false)
     private String title;
-    @NotBlank(message = "Title is mandatory")
+    @NotBlank(message = "Category is mandatory")
     @Column(nullable = false)
     private String category;
     private String fileUri;
