@@ -8,8 +8,6 @@ import com.cognizant.agriserve.dto.FarmerUpdateRequestDTO;
 
 import com.cognizant.agriserve.entity.Farmer;
 
-import com.cognizant.agriserve.exception.ResourceNotFoundException;
-
 import com.cognizant.agriserve.service.FarmerService;
 
 import lombok.RequiredArgsConstructor;
