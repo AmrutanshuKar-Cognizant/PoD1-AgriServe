@@ -1,7 +1,13 @@
 package com.cognizant.agriserve.dto;
 
 import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class SatisfactionMetricDTO {
     @NotNull(message = "Feedback ID is required")
     private Long programId;
@@ -11,24 +17,4 @@ public class SatisfactionMetricDTO {
 
     private String status;
 
-    // Getters and Setters
-    public Long getProgramId() {
-        return programId;
-    }
-    public void setProgramId(Integer programId) {
-        this.programId = programId;
-    }
-    public Long getOfficeId() {
-        return officeId;
-    }
-    public void setOfficeId(Long officeId) {
-        this.officeId = officeId;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-    public void setStatus(String status) {
-        this.status = status;
-    }
 }

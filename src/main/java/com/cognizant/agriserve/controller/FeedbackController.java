@@ -1,8 +1,10 @@
 package com.cognizant.agriserve.controller;
 
 import com.cognizant.agriserve.dto.FeedbackDTO;
+import com.cognizant.agriserve.dto.FeedbackResponseDTO;
 import com.cognizant.agriserve.entity.Feedback;
 import com.cognizant.agriserve.service.FeedbackService;
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -18,13 +20,13 @@ public class FeedbackController {
     private FeedbackService feedbackService;
 
     @PostMapping("/Submit")
-    public ResponseEntity<Feedback> submitfeedback(@RequestBody FeedbackDTO dto) {
+    public ResponseEntity<Feedback> submitfeedback(@RequestBody @Valid FeedbackDTO dto) {
         log.info("REST request to submit feedback for Farmer ID: {}", dto.getFarmerId());
         return ResponseEntity.ok(feedbackService.addFeedback(dto));
     }
 
     @GetMapping("/all")
-    public List<Feedback> getAll() {
+    public List<FeedbackResponseDTO> getAll() {
         log.info("REST request to fetch all feedback records");
         return feedbackService.getAllFeedback();
     }

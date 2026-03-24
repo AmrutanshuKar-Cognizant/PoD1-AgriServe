@@ -2,23 +2,29 @@ package com.cognizant.agriserve.service.impl;
 
 import com.cognizant.agriserve.dao.FeedbackRepository;
 import com.cognizant.agriserve.dao.SatisfactionMetricRepository;
+import com.cognizant.agriserve.dao.TrainingProgramRepository;
+import com.cognizant.agriserve.dao.UserRepository;
 import com.cognizant.agriserve.dto.SatisfactionMetricDTO;
+import com.cognizant.agriserve.dto.SatisfactionMetricResponseDTO;
 import com.cognizant.agriserve.entity.Feedback;
 import com.cognizant.agriserve.entity.SatisfactionMetric;
+import com.cognizant.agriserve.entity.TrainingProgram;
+import com.cognizant.agriserve.entity.User;
+import com.cognizant.agriserve.exception.ResourceNotFoundException;
 import com.cognizant.agriserve.service.SatisfactionMetricservice;
 import com.cognizant.agriserve.util.Satisfactionutil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
 @Service
 public class Satisfactionmetricimpl implements SatisfactionMetricservice {
     @Autowired private SatisfactionMetricRepository metricrepo;
-    @Autowired
-    private FeedbackRepository feedbackRepo;
+    @Autowired private FeedbackRepository feedbackRepo;
     @Autowired private TrainingProgramRepository trainingRepo;
     @Autowired private UserRepository userRepo;
     @Override
@@ -52,5 +58,17 @@ public class Satisfactionmetricimpl implements SatisfactionMetricservice {
         SatisfactionMetric metric = Satisfactionutil.Satisfactionutili(dto, p, m, average);
 
         return metricrepo.save(metric);
+    }
+
+    public List<SatisfactionMetricResponseDTO> getSatisfactionmetric(){
+        List<SatisfactionMetric>entites =new ArrayList<>();
+
+        return entites.stream().map(entity->{
+            SatisfactionMetricResponseDTO dto=new SatisfactionMetricResponseDTO();
+            dto.setProgramId(entity.getTrainingProgram().getProgramId());
+            dto.setStatus(entity.getStatus());
+            dto.setScore(entity.getScore());
+            return dto;
+        }).toList();
     }
 }
