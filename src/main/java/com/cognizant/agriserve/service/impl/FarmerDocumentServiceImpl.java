@@ -6,7 +6,7 @@ import com.cognizant.agriserve.dao.FarmerRepository;
 
 import com.cognizant.agriserve.dto.FarmerDocumentResponseDTO;
 
-import com.cognizant.agriserve.dto.FarmerDocumentUploadRequestDto;
+import com.cognizant.agriserve.dto.FarmerDocumentUploadRequestDTO;
 
 import com.cognizant.agriserve.entity.Farmer;
 
@@ -47,7 +47,7 @@ public class FarmerDocumentServiceImpl implements FarmerDocumentService {
 
     @Transactional
 
-    public FarmerDocumentResponseDTO uploadDocument(String email, FarmerDocumentUploadRequestDto dto) {
+    public FarmerDocumentResponseDTO uploadDocument(String email, FarmerDocumentUploadRequestDTO dto) {
 
         log.info("Processing document upload for farmer email: {}", email);
 
