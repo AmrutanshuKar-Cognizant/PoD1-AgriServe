@@ -1,6 +1,7 @@
 package com.cognizant.agriserve.service.impl;
 
 import com.cognizant.agriserve.dao.AdvisoryContentRepository;
+import com.cognizant.agriserve.dto.AdvisoryContentRequestDTO;
 import com.cognizant.agriserve.dto.AdvisoryContentResponseDTO;
 import com.cognizant.agriserve.entity.AdvisoryContent;
 import com.cognizant.agriserve.exception.ResourceNotFoundException;
@@ -19,9 +20,18 @@ public class AdvisoryContentServiceImpl implements AdvisoryContentService {
     private final ModelMapper modelMapper;
 
     @Override
-    public AdvisoryContentResponseDTO saveContent(AdvisoryContent content) {
-        if (content.getStatus() == null) content.setStatus("Active");
+    public AdvisoryContentResponseDTO saveContent(AdvisoryContentRequestDTO requestDto) {
+        // 1. Convert DTO to Entity
+        AdvisoryContent content = modelMapper.map(requestDto, AdvisoryContent.class);
+
+        // 2. Set default server-side values
+        content.setStatus("Active");
+        content.setUploadedDate(java.time.LocalDateTime.now());
+
+        // 3. Save to database
         AdvisoryContent saved = contentRepo.save(content);
+
+        // 4. Convert saved Entity back to ResponseDTO
         return modelMapper.map(saved, AdvisoryContentResponseDTO.class);
     }
 

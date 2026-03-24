@@ -1,5 +1,6 @@
 package com.cognizant.agriserve.controller;
 
+import com.cognizant.agriserve.dto.AdvisoryContentRequestDTO;
 import com.cognizant.agriserve.dto.AdvisoryContentResponseDTO;
 import com.cognizant.agriserve.entity.AdvisoryContent;
 import com.cognizant.agriserve.service.AdvisoryContentService;
@@ -19,8 +20,9 @@ public class AdvisoryContentController {
     private final AdvisoryContentService contentService;
 
     @PostMapping("/upload")
-    public ResponseEntity<AdvisoryContentResponseDTO> uploadContent(@Valid @RequestBody AdvisoryContent content) {
-        return ResponseEntity.ok(contentService.saveContent(content));
+    public ResponseEntity<AdvisoryContentResponseDTO> uploadContent(
+            @Valid @RequestBody AdvisoryContentRequestDTO requestDto) { // Changed to RequestDTO
+        return ResponseEntity.ok(contentService.saveContent(requestDto));
     }
 
     @GetMapping("/active")
