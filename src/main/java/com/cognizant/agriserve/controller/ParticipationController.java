@@ -38,7 +38,7 @@ public class ParticipationController {
     @GetMapping("/farmer/{farmerId}")
     public ResponseEntity<List<ParticipationDTO>> getParticipationsByFarmerId(@PathVariable Long farmerId) {
         log.info("Fetching history for Farmer ID: {}", farmerId);
-        return ResponseEntity.ok(participationService.getParticipationsByFarmerId(farmerId));
+        return ResponseEntity.ok(participationService.getParticipationByFarmerId(farmerId));
     }
 
     @PutMapping("/attendance")

@@ -6,6 +6,8 @@ import com.cognizant.agriserve.dto.TrainingProgramDTO;
 import com.cognizant.agriserve.entity.TrainingProgram;
 import com.cognizant.agriserve.entity.User;
 import com.cognizant.agriserve.exception.ApiException;
+import com.cognizant.agriserve.exception.ResourceNotFoundException;
+import com.cognizant.agriserve.exception.UnauthorizedActionException;
 import com.cognizant.agriserve.service.TrainingProgramService;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -46,9 +48,9 @@ public class TrainingProgramServiceImpl implements TrainingProgramService {
 
         // 3. Security/Role Check (403 Forbidden)
         if (manager.getRole() != User.Role.ProgramManager && manager.getRole() != User.Role.Admin) {
-            log.error("Security breach attempt: User {} tried to create a program without proper roles.", manager.getUserID());
-            throw new UnauthorizedAccessException(
-                    "User ID " + manager.getUserID() + " does not have permission to create training programs."
+            log.error("Security breach attempt: User {} tried to create a program without proper roles.", manager.getUserId());
+            throw new UnauthorizedActionException(
+                    "User ID " + manager.getUserId() + " does not have permission to create training programs."
             );
         }
 
@@ -63,7 +65,7 @@ public class TrainingProgramServiceImpl implements TrainingProgramService {
 
         // 6. Map back to DTO to return to the frontend
         TrainingProgramDTO responseDto = modelMapper.map(savedProgram, TrainingProgramDTO.class);
-        responseDto.setManagerId(manager.getUserID());
+        responseDto.setManagerId(manager.getUserId().longValue());
 
         return responseDto;
     }
@@ -77,7 +79,7 @@ public class TrainingProgramServiceImpl implements TrainingProgramService {
                 .map(program -> {
                     TrainingProgramDTO dto = modelMapper.map(program, TrainingProgramDTO.class);
                     if (program.getManager() != null) {
-                        dto.setManagerId(program.getManager().getUserID());
+                        dto.setManagerId(program.getManager().getUserId().longValue());
                     }
                     return dto;
                 })
@@ -94,7 +96,7 @@ public class TrainingProgramServiceImpl implements TrainingProgramService {
 
         TrainingProgramDTO dto = modelMapper.map(program, TrainingProgramDTO.class);
         if (program.getManager() != null) {
-            dto.setManagerId(program.getManager().getUserID());
+            dto.setManagerId(program.getManager().getUserId().longValue());
         }
 
         return dto;
@@ -126,7 +128,7 @@ public class TrainingProgramServiceImpl implements TrainingProgramService {
         // 4. Save and return
         TrainingProgram updatedProgram = programRepository.save(existingProgram);
         TrainingProgramDTO responseDto = modelMapper.map(updatedProgram, TrainingProgramDTO.class);
-        if (updatedProgram.getManager() != null) responseDto.setManagerId(updatedProgram.getManager().getUserID());
+        if (updatedProgram.getManager() != null) responseDto.setManagerId(updatedProgram.getManager().getUserId().longValue());
         return responseDto;
     }
 

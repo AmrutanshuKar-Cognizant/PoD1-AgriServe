@@ -5,6 +5,7 @@ import com.cognizant.agriserve.dto.AttendanceUpdateRequestDTO;
 import com.cognizant.agriserve.dto.ParticipationDTO;
 import com.cognizant.agriserve.entity.Participation;
 import com.cognizant.agriserve.exception.ResourceConflictException;
+import com.cognizant.agriserve.exception.ResourceNotFoundException;
 import com.cognizant.agriserve.service.ParticipationService;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -82,7 +83,7 @@ public class ParticipationServiceImpl implements ParticipationService {
     }
     // --- NEW: FARMER DASHBOARD (VIEW MY REGISTRATIONS) ---
     @Override
-    public List<ParticipationDTO> getParticipationsByFarmerId(Long farmerId) {
+    public List<ParticipationDTO> getParticipationByFarmerId(Long farmerId) {
         log.info("Fetching all workshop registrations for Farmer ID: {}", farmerId);
 
         // Ensure you add findByFarmerId to your ParticipationRepository!

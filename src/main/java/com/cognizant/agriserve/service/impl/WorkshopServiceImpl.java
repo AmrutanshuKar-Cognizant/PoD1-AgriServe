@@ -3,6 +3,7 @@ package com.cognizant.agriserve.service.impl;
 import com.cognizant.agriserve.dao.WorkshopRepository;
 import com.cognizant.agriserve.dto.WorkshopDTO;
 import com.cognizant.agriserve.entity.Workshop;
+import com.cognizant.agriserve.exception.ResourceNotFoundException;
 import com.cognizant.agriserve.service.WorkshopService;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;

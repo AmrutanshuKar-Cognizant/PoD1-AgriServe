@@ -1,6 +1,7 @@
 package com.cognizant.agriserve.controller;
 
 import com.cognizant.agriserve.dto.WorkshopDTO;
+import com.cognizant.agriserve.exception.UnauthorizedActionException;
 import com.cognizant.agriserve.service.WorkshopService;
 import com.cognizant.agriserve.dao.UserRepository;
 import com.cognizant.agriserve.entity.User;
@@ -31,12 +32,12 @@ public class WorkshopController {
 
         // Security Check: Only Managers/Admins can schedule workshops
         User requester = userRepository.findById(workshopDto.getOfficerId())
-                .orElseThrow(() -> new UnauthorizedAccessException("User not found to verify permissions"));
+                .orElseThrow(() -> new UnauthorizedActionException("User not found to verify permissions"));
 
         // Note: You can replace 'getOfficerId' with a dedicated 'requesterId' field if preferred
         if (requester.getRole() != User.Role.ProgramManager && requester.getRole() != User.Role.Admin) {
-            log.error("Unauthorized Attempt: User {} is not a Program Manager", requester.getUserID());
-            throw new UnauthorizedAccessException("Only Program Managers are authorized to schedule workshops.");
+            log.error("Unauthorized Attempt: User {} is not a Program Manager", requester.getUserId());
+            throw new UnauthorizedActionException("Only Program Managers are authorized to schedule workshops.");
         }
 
         log.info("Scheduling a new workshop for Program: {}", workshopDto.getProgramTitle());

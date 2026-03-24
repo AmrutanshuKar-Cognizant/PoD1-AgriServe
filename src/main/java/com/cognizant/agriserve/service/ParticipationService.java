@@ -34,5 +34,5 @@ public interface ParticipationService {
      * @throws com.cognizant.agriserve.exception.ResourceNotFoundException if the record does not exist.
      */
     ParticipationDTO updateAttendance(AttendanceUpdateRequestDTO requestDto);
-    List<ParticipationDTO> getParticipationsByFarmerId(Long farmerId);
+    List<ParticipationDTO> getParticipationByFarmerId(Long farmerId);
 }
