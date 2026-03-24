@@ -1,62 +1,33 @@
 package com.cognizant.agriserve.entity;
+
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import lombok.*;
 import java.time.LocalDateTime;
 
 @Entity
-
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class AuditLog {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer auditID;
-
-    @ManyToOne
-    @JoinColumn(name = "userID")
+    private Integer auditId;
+    @NotNull(message = "User cannot be null")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "userId", nullable = false)
     private User user;
-
+    @NotBlank(message = "Action cannot be empty")
     private String action;
-
+    @NotBlank(message = "Resource cannot be empty")
     private String resource;
-
+    @NotNull(message = "Timestamp cannot be null")
     private LocalDateTime timestamp;
 
-    public Integer getAuditID() {
-        return auditID;
-    }
-
-    public void setAuditID(Integer auditID) {
-        this.auditID = auditID;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public String getAction() {
-        return action;
-    }
-
-    public void setAction(String action) {
-        this.action = action;
-    }
-
-    public String getResource() {
-        return resource;
-    }
-
-    public void setResource(String resource) {
-        this.resource = resource;
-    }
-
-    public LocalDateTime getTimestamp() {
-        return timestamp;
-    }
-
-    public void setTimestamp(LocalDateTime timestamp) {
-        this.timestamp = timestamp;
+    @PrePersist
+    protected void onCreate() {
+        this.timestamp = LocalDateTime.now();
     }
 }

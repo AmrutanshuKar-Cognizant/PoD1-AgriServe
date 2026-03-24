@@ -1,84 +1,48 @@
 package com.cognizant.agriserve.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
+import lombok.*;
 
 @Entity
-
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class User {
+
     public enum Role {
-        Admin, ExtensionOfficer, ComplianceOfficer,Farmer,Auditor,ProgramManager
+        Admin, ExtensionOfficer, ComplianceOfficer, Farmer, Auditor, ProgramManager
     }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer userID;
+    private Integer userId;
 
+    @NotBlank(message = "Name cannot be empty")
     private String name;
 
+    @NotNull(message = "Role is required")
     @Enumerated(EnumType.STRING)
     private Role role;
 
+    @NotBlank(message = "Email cannot be empty")
+    @Email(message = "Invalid email format")
+    @Column(unique = true)
     private String email;
 
+    @NotBlank(message = "Phone number cannot be empty")
+    @Pattern(
+            regexp = "^[6-9]\\d{9}$",
+            message = "Phone number must be a valid 10-digit Indian number"
+    )
+    @Column(unique = true)
     private String phone;
 
+    @NotBlank(message = "Password cannot be empty")
+    @Size(min = 6, message = "Password must have at least 6 characters")
     private String password;
 
+    @NotBlank(message = "Status cannot be empty")
     private String status;
-
-    public Integer getUserID() {
-        return userID;
-    }
-
-    public void setUserID(Integer userID) {
-        this.userID = userID;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Role getRole() {
-        return role;
-    }
-
-    public void setRole(Role role) {
-        this.role = role;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
 }
