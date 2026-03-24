@@ -15,7 +15,7 @@ public class AppConfig {
 
         // Teach ModelMapper how to map the User object to the managerId field
         mapper.typeMap(TrainingProgram.class, TrainingProgramDTO.class).addMappings(m -> {
-            m.map(src -> src.getManager().getUserID(), TrainingProgramDTO::setManagerId);
+            m.map(src -> src.getManager().getUserId(), TrainingProgramDTO::setManagerId);
         });
 
         return mapper;
