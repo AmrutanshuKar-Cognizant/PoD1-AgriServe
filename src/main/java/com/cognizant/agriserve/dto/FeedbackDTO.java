@@ -7,13 +7,13 @@ import jakarta.validation.constraints.NotNull;
 
 public class FeedbackDTO {
     @NotNull(message = "Session ID is mandatory")
-    private Integer sessionId;
+    private Long sessionId;
 
     @NotNull(message = "Farmer ID is mandatory")
-    private Integer farmerId;
+    private Long farmerId;
 
     @NotNull(message = "Program ID is mandatory")
-    private Integer programId;
+    private Long programId;
 
     @Min(value = 1, message = "Rating must be at least 1")
     @Max(value = 5, message = "Rating cannot exceed 5")
@@ -23,22 +23,22 @@ public class FeedbackDTO {
     private String comment;
 
     // Getters and Setters
-    public Integer getSessionId() {
+    public Long getSessionId() {
         return sessionId;
     }
-    public void setSessionId(Integer sessionId) {
+    public void setSessionId(Long sessionId) {
         this.sessionId = sessionId;
     }
-    public Integer getFarmerId() {
+    public Long getFarmerId() {
         return farmerId;
     }
-    public void setFarmerId(Integer farmerId) {
+    public void setFarmerId(Long farmerId) {
         this.farmerId = farmerId;
     }
-    public Integer getProgramId() {
+    public Long getProgramId() {
         return programId;
     }
-    public void setProgramId(Integer programId) {
+    public void setProgramId(Long programId) {
         this.programId = programId;
     }
     public int getRating() {

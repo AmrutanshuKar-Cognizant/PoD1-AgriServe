@@ -8,7 +8,7 @@ import java.time.LocalDate;
 public class SatisfactionMetric {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer metricId;
+    private Long metricId;
 
     @OneToOne
     @JoinColumn(name = "programID")
@@ -23,10 +23,10 @@ public class SatisfactionMetric {
     private String status;
 
     // Standard Getters/Setters
-    public Integer getMetricId() {
+    public Long getMetricId() {
         return metricId;
     }
-    public void setMetricId(Integer metricId) {
+    public void setMetricId(Long metricId) {
         this.metricId = metricId;
     }
     public TrainingProgram  getTrainingProgram () {

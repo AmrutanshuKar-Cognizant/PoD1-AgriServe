@@ -4,7 +4,7 @@ import jakarta.validation.constraints.NotNull;
 
 public class SatisfactionMetricDTO {
     @NotNull(message = "Feedback ID is required")
-    private Integer programId;
+    private Long programId;
 
     @NotNull(message = "Officer ID is required")
     private Long officeId;
@@ -12,7 +12,7 @@ public class SatisfactionMetricDTO {
     private String status;
 
     // Getters and Setters
-    public Integer getProgramId() {
+    public Long getProgramId() {
         return programId;
     }
     public void setProgramId(Integer programId) {
