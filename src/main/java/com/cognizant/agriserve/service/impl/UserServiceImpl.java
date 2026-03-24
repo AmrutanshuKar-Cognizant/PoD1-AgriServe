@@ -4,6 +4,7 @@ import com.cognizant.agriserve.dao.UserRepository;
 import com.cognizant.agriserve.dto.UserRequestDTO;
 import com.cognizant.agriserve.dto.UserResponseDTO;
 import com.cognizant.agriserve.entity.User;
+import com.cognizant.agriserve.exception.ResourceNotFoundException;
 import com.cognizant.agriserve.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,7 +29,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
 
-    public UserResponseDTO getUserById(Integer userId) {
+    public UserResponseDTO getUserById(Long userId) {
 
         log.debug("Fetching user with ID: {}", userId);
 
@@ -100,7 +101,7 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
 
-    public UserResponseDTO updateUser(Integer userId, UserRequestDTO updatedUserDTO) {
+    public UserResponseDTO updateUser(Long userId, UserRequestDTO updatedUserDTO) {
 
         log.info("Updating user with ID: {}", userId);
 
@@ -128,7 +129,7 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
 
-    public void deactivateUser(Integer userId) {
+    public void deactivateUser(Long userId) {
 
         log.info("Deactivating user with ID: {}", userId);
 
@@ -145,7 +146,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
 
-    public void deleteUser(Integer userId) {
+    public void deleteUser(Long userId) {
 
         log.warn("Hard deleting user with ID: {}", userId);
         if (!userRepository.existsById(userId)) {

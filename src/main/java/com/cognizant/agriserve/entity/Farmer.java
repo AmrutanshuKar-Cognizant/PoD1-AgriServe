@@ -65,7 +65,7 @@ public class Farmer {
     private Status status = Status.PENDING;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    @JoinColumn(name = "user_id", referencedColumnName = "userId")
     private User user;
 
     @CreationTimestamp

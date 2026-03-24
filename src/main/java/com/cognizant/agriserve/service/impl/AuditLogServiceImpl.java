@@ -126,7 +126,7 @@ public class AuditLogServiceImpl implements AuditLogService {
         // Manually map nested user fields to ensure they populate correctly in the flat DTO
         if (auditLog.getUser() != null) {
             dto.setUserName(auditLog.getUser().getName());
-            dto.setUserEmail(auditLog.getUser().getEmail());
+//            dto.setUserEmail(auditLog.getUser().getEmail());
 
         }
 

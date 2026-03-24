@@ -22,7 +22,7 @@ public class UserController {
 
     @GetMapping("/{id}")
 
-    public ResponseEntity<UserResponseDTO> getUserById(@PathVariable Integer id) {
+    public ResponseEntity<UserResponseDTO> getUserById(@PathVariable Long id) {
         log.info("API Request: Fetching user with ID: {}", id);
         return ResponseEntity.ok(userService.getUserById(id));
 
@@ -55,7 +55,7 @@ public class UserController {
     @PutMapping("/{id}")
 
     public ResponseEntity<UserResponseDTO> updateUser(
-            @PathVariable Integer id,
+            @PathVariable Long id,
             @Valid @RequestBody UserRequestDTO userRequestDTO) {
 
         log.info("API Request: Updating user ID: {}", id);
@@ -65,7 +65,7 @@ public class UserController {
 
     @PutMapping("/deactivate/{id}")
 
-    public ResponseEntity<String> deactivateUser(@PathVariable Integer id) {
+    public ResponseEntity<String> deactivateUser(@PathVariable Long id) {
         log.info("API Request: Deactivating user ID: {}", id);
         userService.deactivateUser(id);
         return ResponseEntity.ok("User deactivated successfully");
@@ -75,7 +75,7 @@ public class UserController {
 
     @DeleteMapping("/{id}")
 
-    public ResponseEntity<String> deleteUser(@PathVariable Integer id) {
+    public ResponseEntity<String> deleteUser(@PathVariable Long id) {
 
         log.warn("API Request: Hard deleting user ID: {}", id);
         userService.deleteUser(id);
