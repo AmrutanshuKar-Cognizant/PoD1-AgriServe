@@ -1,7 +1,8 @@
 package com.cognizant.agriserve.entity;
 
 import jakarta.persistence.*;
-import org.apache.catalina.User;
+//import org.apache.catalina.User;
+import com.cognizant.agriserve.entity.User;
 
 
 @Entity

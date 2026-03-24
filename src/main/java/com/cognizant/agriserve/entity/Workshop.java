@@ -1,11 +1,21 @@
 package com.cognizant.agriserve.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import java.time.LocalDateTime;
 import java.util.List;
 
+
 @Entity
 @Table(name = "workshop")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Workshop {
 
     @Id
@@ -24,29 +34,7 @@ public class Workshop {
     private String status;
 
     @OneToMany(mappedBy = "workshop", cascade = CascadeType.ALL)
-    private List<Participation> participations;
+    private List<Participation> participation;
 
-    public Workshop() {}
 
-    // Getters and Setters
-    public Long getWorkshopId() { return workshopId; }
-    public void setWorkshopId(Long workshopId) { this.workshopId = workshopId; }
-
-    public TrainingProgram getTrainingProgram() { return trainingProgram; }
-    public void setTrainingProgram(TrainingProgram trainingProgram) { this.trainingProgram = trainingProgram; }
-
-    public Long getOfficerId() { return officerId; }
-    public void setOfficerId(Long officerId) { this.officerId = officerId; }
-
-    public String getLocation() { return location; }
-    public void setLocation(String location) { this.location = location; }
-
-    public LocalDateTime getDate() { return date; }
-    public void setDate(LocalDateTime date) { this.date = date; }
-
-    public String getStatus() { return status; }
-    public void setStatus(String status) { this.status = status; }
-
-    public List<Participation> getParticipations() { return participations; }
-    public void setParticipations(List<Participation> participations) { this.participations = participations; }
 }

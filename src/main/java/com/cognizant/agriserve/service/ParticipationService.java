@@ -1,7 +1,7 @@
 package com.cognizant.agriserve.service;
 
-import com.cognizant.agriserve.dto.AttendanceUpdateRequestDto;
-import com.cognizant.agriserve.dto.ParticipationDto;
+import com.cognizant.agriserve.dto.AttendanceUpdateRequestDTO;
+import com.cognizant.agriserve.dto.ParticipationDTO;
 import java.util.List;
 
 /**
@@ -10,19 +10,29 @@ import java.util.List;
 public interface ParticipationService {
 
     /**
+     * Registers a farmer for a specific workshop.
+     *
+     * @param dto The DTO containing the workshop ID and farmer ID.
+     * @return The saved ParticipationDto with an initial status of "Registered".
+     * @throws com.cognizant.agriserve.exception.ResourceConflictException if the farmer is already registered for the workshop.
+     */
+    ParticipationDTO registerForWorkshop(ParticipationDTO dto);
+
+    /**
      * Fetches all registered participants for a specific workshop instance.
      *
      * @param workshopId The unique identifier of the workshop.
      * @return List of ParticipationDto representing the attendance roster.
      */
-    List<ParticipationDto> getParticipantsForWorkshop(Long workshopId);
+    List<ParticipationDTO> getParticipantsForWorkshop(Long workshopId);
 
     /**
      * Updates the attendance status (e.g., Present, Absent) for a specific participation record.
      *
      * @param requestDto The DTO containing the participation ID and the new status.
      * @return The updated ParticipationDto.
-     * @throws RuntimeException if the record does not exist.
+     * @throws com.cognizant.agriserve.exception.ResourceNotFoundException if the record does not exist.
      */
-    ParticipationDto updateAttendance(AttendanceUpdateRequestDto requestDto);
+    ParticipationDTO updateAttendance(AttendanceUpdateRequestDTO requestDto);
+    List<ParticipationDTO> getParticipationsByFarmerId(Long farmerId);
 }

@@ -1,11 +1,21 @@
 package com.cognizant.agriserve.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import java.time.LocalDate;
 import java.util.List;
 
 @Entity
-@Table(name = "training_programs")
+@Table(name = "trainingProgram")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+
 public class TrainingProgram {
 
     @Id
@@ -20,37 +30,13 @@ public class TrainingProgram {
     private LocalDate endDate;
     private String status;
 
-    // NEW FIELD: Tracks which Program Manager created this curriculum
-    @Column(nullable = false)
-    private Long managerId;
+    // --- NEW FOREIGN KEY MAPPING ---
+    // Many programs can be created by One manager (User)
+    // FetchType.LAZY is an industry standard to make database queries faster
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "manager_id", nullable = false)
+    private User manager;
 
     @OneToMany(mappedBy = "trainingProgram", cascade = CascadeType.ALL)
     private List<Workshop> workshops;
-
-    public TrainingProgram() {}
-
-    // --- Getters and Setters ---
-    public Long getProgramId() { return programId; }
-    public void setProgramId(Long programId) { this.programId = programId; }
-
-    public String getTitle() { return title; }
-    public void setTitle(String title) { this.title = title; }
-
-    public String getDescription() { return description; }
-    public void setDescription(String description) { this.description = description; }
-
-    public LocalDate getStartDate() { return startDate; }
-    public void setStartDate(LocalDate startDate) { this.startDate = startDate; }
-
-    public LocalDate getEndDate() { return endDate; }
-    public void setEndDate(LocalDate endDate) { this.endDate = endDate; }
-
-    public String getStatus() { return status; }
-    public void setStatus(String status) { this.status = status; }
-
-    public Long getManagerId() { return managerId; }
-    public void setManagerId(Long managerId) { this.managerId = managerId; }
-
-    public List<Workshop> getWorkshops() { return workshops; }
-    public void setWorkshops(List<Workshop> workshops) { this.workshops = workshops; }
 }

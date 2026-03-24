@@ -1,13 +1,17 @@
 package com.cognizant.agriserve.controller;
 
-import com.cognizant.agriserve.dto.AttendanceUpdateRequestDto;
-import com.cognizant.agriserve.dto.ParticipationDto;
+import com.cognizant.agriserve.dto.AttendanceUpdateRequestDTO;
+import com.cognizant.agriserve.dto.ParticipationDTO;
 import com.cognizant.agriserve.service.ParticipationService;
+import jakarta.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Slf4j
 @RestController
 @RequestMapping("/api/participations")
 public class ParticipationController {
@@ -18,20 +22,29 @@ public class ParticipationController {
         this.participationService = participationService;
     }
 
-    // --- ENDPOINT 1: View Attendance Roster ---
-    // Notice the {workshopId} in the URL path. This makes the URL dynamic!
-    @GetMapping("/workshop/{workshopId}")
-    public ResponseEntity<List<ParticipationDto>> getParticipantsForWorkshop(@PathVariable Long workshopId) {
-
-        List<ParticipationDto> participants = participationService.getParticipantsForWorkshop(workshopId);
-        return ResponseEntity.ok(participants);
+    @PostMapping("/register")
+    public ResponseEntity<ParticipationDTO> registerForWorkshop(@Valid @RequestBody ParticipationDTO dto) {
+        log.info("Registration request: Farmer {} for Workshop {}", dto.getFarmerId(), dto.getWorkshopId());
+        // registerForWorkshop throws ResourceConflictException if already registered
+        return new ResponseEntity<>(participationService.registerForWorkshop(dto), HttpStatus.CREATED);
     }
 
-    // --- ENDPOINT 2: Update Attendance Status ---
-    @PutMapping("/attendance")
-    public ResponseEntity<ParticipationDto> updateAttendance(@RequestBody AttendanceUpdateRequestDto requestDto) {
+    @GetMapping("/workshop/{workshopId}")
+    public ResponseEntity<List<ParticipationDTO>> getParticipantsForWorkshop(@PathVariable Long workshopId) {
+        log.info("Fetching roster for Workshop ID: {}", workshopId);
+        return ResponseEntity.ok(participationService.getParticipantsForWorkshop(workshopId));
+    }
 
-        ParticipationDto updatedRecord = participationService.updateAttendance(requestDto);
-        return ResponseEntity.ok(updatedRecord);
+    @GetMapping("/farmer/{farmerId}")
+    public ResponseEntity<List<ParticipationDTO>> getParticipationsByFarmerId(@PathVariable Long farmerId) {
+        log.info("Fetching history for Farmer ID: {}", farmerId);
+        return ResponseEntity.ok(participationService.getParticipationsByFarmerId(farmerId));
+    }
+
+    @PutMapping("/attendance")
+    public ResponseEntity<ParticipationDTO> updateAttendance(@Valid @RequestBody AttendanceUpdateRequestDTO requestDto) {
+        log.info("Updating attendance for Participation ID: {}", requestDto.getParticipationId());
+        // updateAttendance throws ResourceNotFoundException if ID is invalid
+        return ResponseEntity.ok(participationService.updateAttendance(requestDto));
     }
 }

@@ -1,6 +1,6 @@
 package com.cognizant.agriserve.service;
 
-import com.cognizant.agriserve.dto.TrainingProgramDto;
+import com.cognizant.agriserve.dto.TrainingProgramDTO;
 import java.util.List;
 
 /**
@@ -17,12 +17,16 @@ public interface TrainingProgramService {
      * @return The saved program as a DTO, including its generated ID.
      * @throws IllegalArgumentException if the start date is after the end date.
      */
-    TrainingProgramDto createProgram(TrainingProgramDto dto);
+    TrainingProgramDTO createProgram(TrainingProgramDTO dto);
 
     /**
      * Retrieves all training programs in the system.
      *
      * @return A list of TrainingProgramDto objects.
      */
-    List<TrainingProgramDto> getAllPrograms();
+    List<TrainingProgramDTO> getAllPrograms();
+
+    TrainingProgramDTO getProgramById(Long programId);
+    TrainingProgramDTO updateProgram(Long programId, TrainingProgramDTO dto);
+    void deleteProgram(Long programId);
 }

@@ -1,50 +1,81 @@
 package com.cognizant.agriserve.controller;
 
-import com.cognizant.agriserve.dto.WorkshopDto;
+import com.cognizant.agriserve.dto.WorkshopDTO;
 import com.cognizant.agriserve.service.WorkshopService;
+import com.cognizant.agriserve.dao.UserRepository;
+import com.cognizant.agriserve.entity.User;
+import jakarta.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Slf4j
 @RestController
 @RequestMapping("/api/workshops")
 public class WorkshopController {
 
     private final WorkshopService workshopService;
+    private final UserRepository userRepository; // Needed for role validation
 
-    public WorkshopController(WorkshopService workshopService) {
+    public WorkshopController(WorkshopService workshopService, UserRepository userRepository) {
         this.workshopService = workshopService;
+        this.userRepository = userRepository;
     }
 
-    // --- ENDPOINT 1: Schedule a New Workshop (Program Manager) ---
     @PostMapping
-    public ResponseEntity<WorkshopDto> scheduleWorkshop(@RequestBody WorkshopDto workshopDto) {
-        WorkshopDto scheduledWorkshop = workshopService.scheduleWorkshop(workshopDto);
+    public ResponseEntity<WorkshopDTO> scheduleWorkshop(@Valid @RequestBody WorkshopDTO workshopDto) {
+        log.info("Checking permissions for Workshop scheduling...");
+
+        // Security Check: Only Managers/Admins can schedule workshops
+        User requester = userRepository.findById(workshopDto.getOfficerId())
+                .orElseThrow(() -> new UnauthorizedAccessException("User not found to verify permissions"));
+
+        // Note: You can replace 'getOfficerId' with a dedicated 'requesterId' field if preferred
+        if (requester.getRole() != User.Role.ProgramManager && requester.getRole() != User.Role.Admin) {
+            log.error("Unauthorized Attempt: User {} is not a Program Manager", requester.getUserID());
+            throw new UnauthorizedAccessException("Only Program Managers are authorized to schedule workshops.");
+        }
+
+        log.info("Scheduling a new workshop for Program: {}", workshopDto.getProgramTitle());
+        WorkshopDTO scheduledWorkshop = workshopService.scheduleWorkshop(workshopDto);
         return new ResponseEntity<>(scheduledWorkshop, HttpStatus.CREATED);
     }
 
-    // --- ENDPOINT 2: Farmer Discovery View (Active Workshops) ---
     @GetMapping("/active")
-    public ResponseEntity<List<WorkshopDto>> getActiveWorkshops() {
+    public ResponseEntity<List<WorkshopDTO>> getActiveWorkshops() {
+        log.info("Fetching all active workshops for farmer discovery view");
         return ResponseEntity.ok(workshopService.getActiveWorkshopsForFarmers());
     }
 
-    // --- ENDPOINT 3: Extension Officer Schedule View ---
-    // The URL will look like: /api/workshops/officer/101
     @GetMapping("/officer/{officerId}")
-    public ResponseEntity<List<WorkshopDto>> getWorkshopsByOfficer(@PathVariable Long officerId) {
+    public ResponseEntity<List<WorkshopDTO>> getWorkshopsByOfficer(@PathVariable Long officerId) {
+        log.info("Fetching schedule for Extension Officer ID: {}", officerId);
         return ResponseEntity.ok(workshopService.getWorkshopsByOfficer(officerId));
     }
 
-    // --- ENDPOINT 4: Update Workshop Status (EXTO-005) ---
-    // The URL will look like: /api/workshops/5/status?status=Ongoing
     @PatchMapping("/{workshopId}/status")
-    public ResponseEntity<WorkshopDto> updateWorkshopStatus(
+    public ResponseEntity<WorkshopDTO> updateWorkshopStatus(
             @PathVariable Long workshopId,
             @RequestParam String status) {
-
+        log.info("Request to update Workshop ID: {} to status: {}", workshopId, status);
         return ResponseEntity.ok(workshopService.updateWorkshopStatus(workshopId, status));
+    }
+
+    @PutMapping("/{workshopId}")
+    public ResponseEntity<WorkshopDTO> updateWorkshop(
+            @PathVariable Long workshopId,
+            @Valid @RequestBody WorkshopDTO workshopDto) {
+        log.info("Request to edit details for Workshop ID: {}", workshopId);
+        return ResponseEntity.ok(workshopService.updateWorkshop(workshopId, workshopDto));
+    }
+
+    @DeleteMapping("/{workshopId}")
+    public ResponseEntity<Void> deleteWorkshop(@PathVariable Long workshopId) {
+        log.info("Request to delete Workshop ID: {}", workshopId);
+        workshopService.deleteWorkshop(workshopId);
+        return ResponseEntity.noContent().build();
     }
 }
