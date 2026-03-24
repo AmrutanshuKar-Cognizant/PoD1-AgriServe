@@ -6,7 +6,7 @@ import lombok.Data;
 
 @Data
 
-public class FarmerDocumentUploadRequestDto {
+public class FarmerDocumentUploadRequestDTO {
 
     @NotBlank(message = "Document type is required (e.g., Aadhar, Land Permit)")
 
