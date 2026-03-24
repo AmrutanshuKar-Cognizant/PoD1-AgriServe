@@ -2,50 +2,69 @@ package com.cognizant.agriserve.config;
 
 import com.cognizant.agriserve.dao.UserRepository;
 import com.cognizant.agriserve.entity.User;
+import com.cognizant.agriserve.entity.User.Role;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
-@Component
-@RequiredArgsConstructor
 @Slf4j
+@Configuration
+@RequiredArgsConstructor
 public class DatabaseSeeder implements CommandLineRunner {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
     @Override
+    @Transactional
     public void run(String... args) throws Exception {
+        // Only seed if the user table is empty
+        if (userRepository.count() == 0) {
+            log.info("Starting Database Seeding for AgriServe Internal Roles...");
 
-        String officerEmail = "officer@agriserve.com";
+            try {
+                // All staff will have this default password for testing
+                String commonPassword = passwordEncoder.encode("Password123");
 
-        // Check if the user already exists to prevent duplicate key errors on restart
-        if (!userRepository.existsByEmail(officerEmail)) {
-            log.info("Seeding database: Creating default Compliance Officer...");
+                // 1. Administrators (System Control)
+                createUser("System Admin", "admin@agriserve.com", Role.Admin, "9998887770", commonPassword);
 
-            User officer = new User();
-            officer.setName("Alice Compliance");
-            officer.setEmail(officerEmail);
+                // 2. Extension Officers (The ones who log sessions)
+                createUser("Extension Officer", "karthik@agriserve.com", Role.ExtensionOfficer, "9876543210", commonPassword);
 
-            // Starts with 9 and is 10 digits to perfectly pass your @Pattern validation
-            officer.setPhone("9876543210");
+                // 3. Compliance Officers (Regulatory checks)
+                createUser("Compliance Officer", "compliance@agriserve.com", Role.ComplianceOfficer, "9876543212", commonPassword);
 
-            // Hashes the password for Spring Security
-            officer.setPassword(passwordEncoder.encode("password123"));
+                // 4. Auditors (Reviewing logs)
+                createUser("Auditor Adyasha", "auditor@agriserve.com", Role.Auditor, "9876543213", commonPassword);
 
-            // Accesses your nested Enum exactly as you defined it
-            officer.setRole(User.Role.ComplianceOfficer);
+                // 5. Program Managers (Usage Analytics)
+                createUser("Manager Aditi", "manager@agriserve.com", Role.ProgramManager, "9876543214", commonPassword);
 
-            // Fills the @NotBlank requirement for the status field
-            officer.setStatus("ACTIVE");
+                log.info("Database Seeding Completed Successfully!");
+                log.info("Internal Staff created. Farmers should be registered via the Auth Controller.");
 
-            userRepository.save(officer);
-
-            log.info("Default Compliance Officer created successfully!");
+            } catch (Exception e) {
+                log.error("Seeding failed: {}", e.getMessage());
+            }
         } else {
-            log.info("Database seeding skipped: Compliance Officer already exists.");
+            log.info("Database already contains users. Skipping seeder.");
         }
+    }
+
+    private void createUser(String name, String email, Role role, String phone, String password) {
+        User user = new User();
+        user.setName(name);
+        user.setEmail(email);
+        user.setRole(role);
+        user.setPhone(phone);
+        user.setPassword(password);
+        user.setStatus("Active");
+
+        userRepository.save(user);
+        log.debug("Created internal user: {} with role: {}", email, role);
     }
 }
