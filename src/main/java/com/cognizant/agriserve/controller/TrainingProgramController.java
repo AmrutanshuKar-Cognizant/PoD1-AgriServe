@@ -1,41 +1,62 @@
 package com.cognizant.agriserve.controller;
 
-import com.cognizant.agriserve.dto.TrainingProgramDto;
+import com.cognizant.agriserve.dto.TrainingProgramDTO;
 import com.cognizant.agriserve.service.TrainingProgramService;
+import jakarta.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Slf4j
 @RestController
-@RequestMapping("/api/programs") // The base URL for all endpoints in this file
+@RequestMapping("/api/programs")
 public class TrainingProgramController {
 
     private final TrainingProgramService programService;
 
-    // Constructor Injection connects this controller to your business logic
     public TrainingProgramController(TrainingProgramService programService) {
         this.programService = programService;
     }
 
-    // --- ENDPOINT 1: Create a new Program ---
+    /**
+     * Creates a new training program.
+     * The service layer handles the UnauthorizedAccessException if the
+     * managerId does not belong to a Program Manager or Admin.
+     */
     @PostMapping
-    public ResponseEntity<TrainingProgramDto> createProgram(@RequestBody TrainingProgramDto programDto) {
-        // Send the incoming JSON data to the Service layer to be saved
-        TrainingProgramDto savedProgram = programService.createProgram(programDto);
-
-        // Return the saved data to the frontend with a "201 Created" status code
+    public ResponseEntity<TrainingProgramDTO> createProgram(@Valid @RequestBody TrainingProgramDTO programDto) {
+        log.info("Received request to create a new Training Program: {}", programDto.getTitle());
+        TrainingProgramDTO savedProgram = programService.createProgram(programDto);
         return new ResponseEntity<>(savedProgram, HttpStatus.CREATED);
     }
 
-    // --- ENDPOINT 2: Get all Programs ---
     @GetMapping
-    public ResponseEntity<List<TrainingProgramDto>> getAllPrograms() {
-        // Ask the Service layer for the list of all programs
-        List<TrainingProgramDto> programs = programService.getAllPrograms();
+    public ResponseEntity<List<TrainingProgramDTO>> getAllPrograms() {
+        log.info("Fetching all available Training Programs");
+        return ResponseEntity.ok(programService.getAllPrograms());
+    }
 
-        // Return the list with a "200 OK" status code
-        return ResponseEntity.ok(programs);
+    @GetMapping("/{programId}")
+    public ResponseEntity<TrainingProgramDTO> getProgramById(@PathVariable Long programId) {
+        log.info("Fetching details for Training Program ID: {}", programId);
+        return ResponseEntity.ok(programService.getProgramById(programId));
+    }
+
+    @PutMapping("/{programId}")
+    public ResponseEntity<TrainingProgramDTO> updateProgram(
+            @PathVariable Long programId,
+            @Valid @RequestBody TrainingProgramDTO programDto) {
+        log.info("Updating Training Program ID: {}", programId);
+        return ResponseEntity.ok(programService.updateProgram(programId, programDto));
+    }
+
+    @DeleteMapping("/{programId}")
+    public ResponseEntity<Void> deleteProgram(@PathVariable Long programId) {
+        log.info("Deleting Training Program ID: {}", programId);
+        programService.deleteProgram(programId);
+        return ResponseEntity.noContent().build();
     }
 }

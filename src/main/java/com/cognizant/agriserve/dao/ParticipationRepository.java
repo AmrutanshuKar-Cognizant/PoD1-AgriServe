@@ -15,4 +15,5 @@ public interface ParticipationRepository extends JpaRepository<Participation, Lo
 
     // Custom Method: Checks if a specific farmer is already registered for a workshop
     boolean existsByWorkshop_WorkshopIdAndFarmerId(Long workshopId, Long farmerId);
+    List<Participation> findByFarmerId(Long farmerId);
 }

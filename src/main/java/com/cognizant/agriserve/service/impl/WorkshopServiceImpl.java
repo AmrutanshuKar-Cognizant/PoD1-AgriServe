@@ -1,97 +1,106 @@
 package com.cognizant.agriserve.service.impl;
 
 import com.cognizant.agriserve.dao.WorkshopRepository;
-import com.cognizant.agriserve.dto.WorkshopDto;
+import com.cognizant.agriserve.dto.WorkshopDTO;
 import com.cognizant.agriserve.entity.Workshop;
+import com.cognizant.agriserve.exception.ResourceNotFoundException;
 import com.cognizant.agriserve.service.WorkshopService;
+import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 public class WorkshopServiceImpl implements WorkshopService {
 
     private final WorkshopRepository workshopRepository;
+    private final ModelMapper modelMapper;
 
-    // Constructor injection for required dependencies
-    public WorkshopServiceImpl(WorkshopRepository workshopRepository) {
+    public WorkshopServiceImpl(WorkshopRepository workshopRepository, ModelMapper modelMapper) {
         this.workshopRepository = workshopRepository;
+        this.modelMapper = modelMapper;
     }
 
     @Override
-    public List<WorkshopDto> getAllWorkshops() {
-        List<Workshop> rawWorkshops = workshopRepository.findAll();
-
-        // Map entities to DTOs to ensure database models are not exposed to the presentation layer
-        return rawWorkshops.stream().map(this::convertToDto).collect(Collectors.toList());
+    public List<WorkshopDTO> getAllWorkshops() {
+        log.info("Fetching all workshops");
+        return workshopRepository.findAll().stream().map(this::convertToDto).collect(Collectors.toList());
     }
 
     @Override
-    public List<WorkshopDto> getActiveWorkshopsForFarmers() {
-        List<Workshop> allWorkshops = workshopRepository.findAll();
-
-        // Filter out canceled or completed workshops so farmers only see relevant upcoming sessions
-        return allWorkshops.stream()
+    public List<WorkshopDTO> getActiveWorkshopsForFarmers() {
+        log.info("Filtering active workshops for farmers");
+        return workshopRepository.findAll().stream()
                 .filter(w -> "Scheduled".equals(w.getStatus()) || "Ongoing".equals(w.getStatus()))
                 .map(this::convertToDto)
                 .collect(Collectors.toList());
     }
-    // ... your existing methods ...
 
     @Override
-    public WorkshopDto scheduleWorkshop(WorkshopDto dto) {
-        // Map the incoming DTO to a raw Entity
-        Workshop newWorkshop = new Workshop();
-        newWorkshop.setOfficerId(dto.getOfficerId());
-        newWorkshop.setLocation(dto.getLocation());
-        newWorkshop.setDate(dto.getDate());
-
-        // Apply Business Rule: A brand new workshop should always start as 'Scheduled'
+    public WorkshopDTO scheduleWorkshop(WorkshopDTO dto) {
+        log.info("Scheduling a new workshop");
+        Workshop newWorkshop = modelMapper.map(dto, Workshop.class);
         newWorkshop.setStatus("Scheduled");
-
-        // Save to the database
         Workshop savedWorkshop = workshopRepository.save(newWorkshop);
-
-        // Convert the saved entity back to a DTO to send to the frontend
         return convertToDto(savedWorkshop);
     }
 
     @Override
-    public List<WorkshopDto> getWorkshopsByOfficer(Long officerId) {
-        // Uses the custom method we added to your JpaRepository earlier
-        List<Workshop> officerWorkshops = workshopRepository.findByOfficerId(officerId);
-
-        return officerWorkshops.stream()
+    public List<WorkshopDTO> getWorkshopsByOfficer(Long officerId) {
+        log.info("Fetching workshops for Officer ID: {}", officerId);
+        return workshopRepository.findByOfficerId(officerId).stream()
                 .map(this::convertToDto)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public WorkshopDto updateWorkshopStatus(Long workshopId, String status) {
-        // 1. Find the workshop. If it doesn't exist, throw an error.
+    public WorkshopDTO updateWorkshopStatus(Long workshopId, String status) {
+        log.info("Updating status for workshop ID: {}", workshopId);
+
+        // Fetch Workshop (404 Not Found)
         Workshop existingWorkshop = workshopRepository.findById(workshopId)
-                .orElseThrow(() -> new RuntimeException("Workshop not found with ID: " + workshopId));
+                .orElseThrow(() -> new ResourceNotFoundException("Workshop", "ID", workshopId));
 
-        // 2. Update the status
         existingWorkshop.setStatus(status);
+        Workshop updatedWorkshop = workshopRepository.save(existingWorkshop);
+        return convertToDto(updatedWorkshop);
+    }
+    // --- NEW: FULLY EDIT A WORKSHOP ---
+    @Override
+    public WorkshopDTO updateWorkshop(Long workshopId, WorkshopDTO dto) {
+        log.info("Attempting to edit details for Workshop ID: {}", workshopId);
 
-        // 3. Save and return
+        Workshop existingWorkshop = workshopRepository.findById(workshopId)
+                .orElseThrow(() -> new ResourceNotFoundException("Workshop", "ID", workshopId));
+
+        // Update core details
+        existingWorkshop.setLocation(dto.getLocation());
+        existingWorkshop.setDate(dto.getDate());
+        existingWorkshop.setOfficerId(dto.getOfficerId());
+
         Workshop updatedWorkshop = workshopRepository.save(existingWorkshop);
         return convertToDto(updatedWorkshop);
     }
 
-    /**
-     * Helper method to map a Workshop entity to a WorkshopDto.
-     */
-    private WorkshopDto convertToDto(Workshop workshop) {
-        return new WorkshopDto(
-                workshop.getWorkshopId(),
-                workshop.getTrainingProgram() != null ? workshop.getTrainingProgram().getTitle() : null,
-                workshop.getOfficerId(),
-                workshop.getLocation(),
-                workshop.getDate(),
-                workshop.getStatus()
-        );
+    // --- NEW: DELETE A WORKSHOP ---
+    @Override
+    public void deleteWorkshop(Long workshopId) {
+        log.info("Attempting to delete Workshop ID: {}", workshopId);
+        Workshop existingWorkshop = workshopRepository.findById(workshopId)
+                .orElseThrow(() -> new ResourceNotFoundException("Workshop", "ID", workshopId));
+
+        workshopRepository.delete(existingWorkshop);
+        log.info("Successfully deleted Workshop ID: {}", workshopId);
+    }
+
+    private WorkshopDTO convertToDto(Workshop workshop) {
+        WorkshopDTO dto = modelMapper.map(workshop, WorkshopDTO.class);
+        if (workshop.getTrainingProgram() != null) {
+            dto.setProgramTitle(workshop.getTrainingProgram().getTitle());
+        }
+        return dto;
     }
 }

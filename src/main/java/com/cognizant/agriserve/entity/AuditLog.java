@@ -17,7 +17,7 @@ public class AuditLog {
     private Integer auditId;
     @NotNull(message = "User cannot be null")
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "userId", nullable = false)
+    @JoinColumn(name = "userId", referencedColumnName = "userId", nullable = false)
     private User user;
     @NotBlank(message = "Action cannot be empty")
     private String action;

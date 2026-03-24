@@ -1,5 +1,7 @@
 package com.cognizant.agriserve.service.impl;
 
+import com.cognizant.agriserve.dao.AdvisorySessionRepository;
+import com.cognizant.agriserve.dao.TrainingProgramRepository;
 import com.cognizant.agriserve.dto.ComplianceRecordRequestDTO;
 import com.cognizant.agriserve.dto.ComplianceRecordResponseDTO;
 import com.cognizant.agriserve.entity.ComplianceRecord;
