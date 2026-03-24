@@ -3,7 +3,6 @@ package com.cognizant.agriserve.service.impl;
 import com.cognizant.agriserve.dao.*;
 import com.cognizant.agriserve.dto.*;
 import com.cognizant.agriserve.entity.*;
-import com.cognizant.agriserve.exception.ResourceNotFoundException;
 import com.cognizant.agriserve.service.AdvisorySessionService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;

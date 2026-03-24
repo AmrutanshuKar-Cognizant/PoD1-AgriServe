@@ -4,7 +4,6 @@ import com.cognizant.agriserve.dao.AdvisoryContentRepository;
 import com.cognizant.agriserve.dto.AdvisoryContentRequestDTO;
 import com.cognizant.agriserve.dto.AdvisoryContentResponseDTO;
 import com.cognizant.agriserve.entity.AdvisoryContent;
-import com.cognizant.agriserve.exception.ResourceNotFoundException;
 import com.cognizant.agriserve.service.AdvisoryContentService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
