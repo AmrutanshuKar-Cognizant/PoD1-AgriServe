@@ -1,7 +1,7 @@
 package com.cognizant.agriserve.controller;
 
 import com.cognizant.agriserve.dto.FarmerDocumentResponseDTO;
-import com.cognizant.agriserve.dto.FarmerDocumentUploadRequestDto;
+import com.cognizant.agriserve.dto.FarmerDocumentUploadRequestDTO;
 
 import com.cognizant.agriserve.service.FarmerDocumentService;
 
@@ -47,7 +47,7 @@ public class FarmerDocumentController {
 
             Principal principal,
 
-            @Valid @RequestBody FarmerDocumentUploadRequestDto requestDto) {
+            @Valid @RequestBody FarmerDocumentUploadRequestDTO requestDto) {
 
         String email = principal.getName();
 

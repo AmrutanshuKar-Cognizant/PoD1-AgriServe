@@ -1,5 +1,6 @@
 package com.cognizant.agriserve.service.impl;
 
+import com.cognizant.agriserve.dao.UserRepository;
 import com.cognizant.agriserve.dto.AuditRequestDTO;
 import com.cognizant.agriserve.dto.AuditResponseDTO;
 import com.cognizant.agriserve.entity.Audit;

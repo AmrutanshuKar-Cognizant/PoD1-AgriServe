@@ -1,7 +1,7 @@
 package com.cognizant.agriserve.service;
 
 import com.cognizant.agriserve.dto.FarmerDocumentResponseDTO;
-import com.cognizant.agriserve.dto.FarmerDocumentUploadRequestDto;
+import com.cognizant.agriserve.dto.FarmerDocumentUploadRequestDTO;
 import java.util.List;
 
 public interface FarmerDocumentService {
@@ -10,7 +10,7 @@ public interface FarmerDocumentService {
 
     // For the logged-in Farmer to upload a new document
 
-    FarmerDocumentResponseDTO uploadDocument(String email, FarmerDocumentUploadRequestDto requestDto);
+    FarmerDocumentResponseDTO uploadDocument(String email, FarmerDocumentUploadRequestDTO requestDto);
 
     // For the logged-in Farmer to view all their uploaded documents
 

@@ -3,6 +3,7 @@ package com.cognizant.agriserve.globalexception;
 import com.cognizant.agriserve.dto.ErrorResponseDTO;
 import com.cognizant.agriserve.exception.*;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
@@ -25,6 +26,8 @@ public class GlobalExceptionHandler {
             ResourceNotFoundException ex,
             HttpServletRequest request) {
 
+        log.error("Resource error: {}", ex.getMessage()); // Added logging from Code 2
+
         ErrorResponseDTO errorResponse = new ErrorResponseDTO(
                 LocalDateTime.now(),
                 HttpStatus.NOT_FOUND.value(),
@@ -35,120 +38,12 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
     }
 
-    // Catch 403: When the Bouncer kicks someone out
+    // Catch 403: Combined handler for Unauthorized Actions
     @ExceptionHandler(UnauthorizedActionException.class)
     public ResponseEntity<ErrorResponseDTO> handleUnauthorizedAction(
             UnauthorizedActionException ex,
             HttpServletRequest request) {
-
-        ErrorResponseDTO errorResponse = new ErrorResponseDTO(
-                LocalDateTime.now(),
-                HttpStatus.FORBIDDEN.value(),
-                "Forbidden",
-                ex.getMessage(),
-                request.getRequestURI()
-        );
-        return new ResponseEntity<>(errorResponse, HttpStatus.FORBIDDEN);
-    }
-
-    // Catch 400: Validation Failures (e.g., @NotBlank, @NotNull)
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<ErrorResponseDTO> handleValidationErrors(
-            MethodArgumentNotValidException ex,
-            HttpServletRequest request) {
-
-        String errorMessage = ex.getBindingResult().getFieldErrors().stream()
-                .map(error -> error.getField() + ": " + error.getDefaultMessage())
-                .collect(Collectors.joining(", "));
-
-        ErrorResponseDTO errorResponse = new ErrorResponseDTO(
-                LocalDateTime.now(),
-                HttpStatus.BAD_REQUEST.value(),
-                "Validation Failed",
-                errorMessage,
-                request.getRequestURI()
-        );
-        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
-    }
-
-    // Catch 400: Malformed JSON or Bad Enum Values
-    @ExceptionHandler(HttpMessageNotReadableException.class)
-    public ResponseEntity<ErrorResponseDTO> handleMalformedJson(
-            HttpMessageNotReadableException ex,
-            HttpServletRequest request) {
-
-        ErrorResponseDTO errorResponse = new ErrorResponseDTO(
-                LocalDateTime.now(),
-                HttpStatus.BAD_REQUEST.value(),
-                "Malformed JSON Request",
-                "The server could not read the request. Please double-check your JSON formatting, missing commas, and exact spelling of values.",
-                request.getRequestURI()
-        );
-        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
-    }
-
-    // Catch 409: Conflict (e.g., Email or Phone already exists in DB)
-    @ExceptionHandler(UserAlreadyExistsException.class)
-    public ResponseEntity<ErrorResponseDTO> handleUserAlreadyExists(
-            UserAlreadyExistsException ex,
-            HttpServletRequest request) {
-
-        ErrorResponseDTO errorResponse = new ErrorResponseDTO(
-                LocalDateTime.now(),
-                HttpStatus.CONFLICT.value(),
-                "Conflict",
-                ex.getMessage(),
-                request.getRequestURI()
-        );
-        return new ResponseEntity<>(errorResponse, HttpStatus.CONFLICT);
-    }
-
-    // --- NEW EXCEPTIONS ADDED FROM VERSION 2 ---
-
-    // Catch Business Rule Violations (Status dynamic based on exception)
-    @ExceptionHandler(ApiException.class)
-    public ResponseEntity<ErrorResponseDTO> handleApiException(
-            ApiException ex,
-            HttpServletRequest request) {
-
-        log.error("Business rule violation: {}", ex.getMessage());
-
-        ErrorResponseDTO errorResponse = new ErrorResponseDTO(
-                LocalDateTime.now(),
-                ex.getStatus().value(),
-                "Bad Request",
-                ex.getMessage(),
-                request.getRequestURI()
-        );
-        return new ResponseEntity<>(errorResponse, ex.getStatus());
-    }
-
-    // Catch 409: Resource Conflict (e.g., Already registered)
-    @ExceptionHandler(ResourceConflictException.class)
-    public ResponseEntity<ErrorResponseDTO> handleResourceConflictException(
-            ResourceConflictException ex,
-            HttpServletRequest request) {
-
-        log.error("Resource conflict: {}", ex.getMessage());
-
-        ErrorResponseDTO errorResponse = new ErrorResponseDTO(
-                LocalDateTime.now(),
-                HttpStatus.CONFLICT.value(),
-                "Resource Conflict",
-                ex.getMessage(),
-                request.getRequestURI()
-        );
-        return new ResponseEntity<>(errorResponse, HttpStatus.CONFLICT);
-    }
-
-    // Catch 403: Unauthorized Access (Alternative to UnauthorizedActionException)
-    @ExceptionHandler(UnauthorizedActionException.class)
-    public ResponseEntity<ErrorResponseDTO> handleUnauthorizedAccessException(
-            UnauthorizedActionException ex,
-            HttpServletRequest request) {
-
-        log.error("Unauthorized access attempt: {}", ex.getMessage());
-
+        log.error("Unauthorized access attempt at {}: {}", request.getRequestURI(), ex.getMessage());
         ErrorResponseDTO errorResponse = new ErrorResponseDTO(
                 LocalDateTime.now(),
                 HttpStatus.FORBIDDEN.value(),
@@ -159,39 +54,151 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errorResponse, HttpStatus.FORBIDDEN);
     }
 
-    // Catch 409: Database Constraint Violations
-    @ExceptionHandler(DataIntegrityViolationException.class)
-    public ResponseEntity<ErrorResponseDTO> handleDataIntegrityViolationException(
-            DataIntegrityViolationException ex,
+    // Catch 400: Validation Failures in RequestBody
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<ErrorResponseDTO> handleValidationErrors(
+            MethodArgumentNotValidException ex,
             HttpServletRequest request) {
+        String errorMessage = ex.getBindingResult().getFieldErrors().stream()
+                .map(error -> error.getField() + ": " + error.getDefaultMessage())
+                .collect(Collectors.joining(", "));
+        ErrorResponseDTO errorResponse = new ErrorResponseDTO(
+                LocalDateTime.now(),
+                HttpStatus.BAD_REQUEST.value(),
+                "Validation Failed",
+                errorMessage,
+                request.getRequestURI()
+        );
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+    }
 
-        log.error("Database constraint violation: {}", ex.getMessage());
+    // Catch 400: Validation Failures in URL Params
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ResponseEntity<ErrorResponseDTO> handleConstraintViolation(
+            ConstraintViolationException ex,
+            HttpServletRequest request) {
+        String message = ex.getConstraintViolations().stream()
+                .map(violation -> violation.getMessage())
+                .collect(Collectors.joining(", "));
+        log.warn("Constraint Violation at {}: {}", request.getRequestURI(), message);
+        ErrorResponseDTO errorResponse = new ErrorResponseDTO(
+                LocalDateTime.now(),
+                HttpStatus.BAD_REQUEST.value(),
+                "Validation Error",
+                message,
+                request.getRequestURI()
+        );
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+    }
 
+    // Catch 400: Malformed JSON
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<ErrorResponseDTO> handleMalformedJson(
+            HttpMessageNotReadableException ex,
+            HttpServletRequest request) {
+        ErrorResponseDTO errorResponse = new ErrorResponseDTO(
+                LocalDateTime.now(),
+                HttpStatus.BAD_REQUEST.value(),
+                "Malformed JSON Request",
+                "The server could not read the request. Please double-check your JSON formatting.",
+                request.getRequestURI()
+        );
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+    }
+
+    // Catch 409: User conflict
+    @ExceptionHandler(UserAlreadyExistsException.class)
+    public ResponseEntity<ErrorResponseDTO> handleUserAlreadyExists(
+            UserAlreadyExistsException ex,
+            HttpServletRequest request) {
         ErrorResponseDTO errorResponse = new ErrorResponseDTO(
                 LocalDateTime.now(),
                 HttpStatus.CONFLICT.value(),
-                "Data Integrity Violation",
-                "The request conflicts with existing data constraints.",
+                "Conflict",
+                ex.getMessage(),
                 request.getRequestURI()
         );
         return new ResponseEntity<>(errorResponse, HttpStatus.CONFLICT);
     }
 
-    // --- END OF NEW EXCEPTIONS ---
+    // Catch Business Rule Violations
+    @ExceptionHandler(ApiException.class)
+    public ResponseEntity<ErrorResponseDTO> handleApiException(
+            ApiException ex,
+            HttpServletRequest request) {
+        log.error("Business rule violation: {}", ex.getMessage());
+        ErrorResponseDTO errorResponse = new ErrorResponseDTO(
+                LocalDateTime.now(),
+                ex.getStatus().value(),
+                "Bad Request",
+                ex.getMessage(),
+                request.getRequestURI()
+        );
+        return new ResponseEntity<>(errorResponse, ex.getStatus());
+    }
 
-    // Catch 500: The Ultimate Safety Net for any unexpected server crashes
+    // Catch 409: Resource Conflict
+    @ExceptionHandler(ResourceConflictException.class)
+    public ResponseEntity<ErrorResponseDTO> handleResourceConflictException(
+            ResourceConflictException ex,
+            HttpServletRequest request) {
+        log.error("Resource conflict: {}", ex.getMessage());
+        ErrorResponseDTO errorResponse = new ErrorResponseDTO(
+                LocalDateTime.now(),
+                HttpStatus.CONFLICT.value(),
+                "Resource Conflict",
+                ex.getMessage(),
+                request.getRequestURI()
+        );
+        return new ResponseEntity<>(errorResponse, HttpStatus.CONFLICT);
+    }
+
+    // Catch 409: Database Constraint Violations
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<ErrorResponseDTO> handleDataIntegrityViolationException(
+            DataIntegrityViolationException ex,
+            HttpServletRequest request) {
+        log.error("Database constraint violation: {}", ex.getMessage());
+        ErrorResponseDTO errorResponse = new ErrorResponseDTO(
+                LocalDateTime.now(),
+                HttpStatus.CONFLICT.value(),
+                "Data Integrity Violation",
+                "Database Error: A related record was not found or violates a unique constraint.",
+                request.getRequestURI()
+        );
+        return new ResponseEntity<>(errorResponse, HttpStatus.CONFLICT);
+    }
+
+    // --- NEW FROM CODE 2: Catch Generic Runtime Exceptions ---
+    @ExceptionHandler(RuntimeException.class)
+    public ResponseEntity<ErrorResponseDTO> handleRuntimeException(
+            RuntimeException ex,
+            HttpServletRequest request) {
+
+        log.error("Runtime error: {}", ex.getMessage());
+
+        ErrorResponseDTO errorResponse = new ErrorResponseDTO(
+                LocalDateTime.now(),
+                HttpStatus.BAD_REQUEST.value(),
+                "Bad Request",
+                ex.getMessage(),
+                request.getRequestURI()
+        );
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+    }
+    // ---------------------------------------------------------
+
+    // Catch 500: Safety Net
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponseDTO> handleGlobalException(
             Exception ex,
             HttpServletRequest request) {
-
         log.error("CRITICAL SERVER ERROR at {}: {}", request.getRequestURI(), ex.getMessage(), ex);
-
         ErrorResponseDTO errorResponse = new ErrorResponseDTO(
                 LocalDateTime.now(),
                 HttpStatus.INTERNAL_SERVER_ERROR.value(),
                 "Internal Server Error",
-                "An unexpected error occurred. Please contact system support.",
+                "An unexpected error occurred.",
                 request.getRequestURI()
         );
         return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);

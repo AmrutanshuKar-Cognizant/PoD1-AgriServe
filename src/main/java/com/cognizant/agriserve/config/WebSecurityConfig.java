@@ -41,6 +41,7 @@ public class WebSecurityConfig {
                         // Role-Restricted Endpoints
                         .requestMatchers("/api/advisory-content/upload").hasAnyRole("ProgramManager", "Admin")
                         .requestMatchers("/api/advisory-sessions/log").hasRole("ExtensionOfficer")
+                        .requestMatchers("/api/compliance-records").hasRole("ComplianceOfficer")
 
 
                         // Default Rule: Everything else requires a valid JWT token
