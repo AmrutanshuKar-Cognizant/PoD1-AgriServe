@@ -22,63 +22,35 @@ import java.security.Principal;
 import java.util.List;
 
 @Slf4j
-
 @RestController
-
 @RequestMapping("/api/farmers/documents")
-
 @RequiredArgsConstructor
-
 public class FarmerDocumentController {
 
     private final FarmerDocumentService farmerDocumentService;
 
-    /**
-
-     * POST /api/farmers/documents
-
-     * Allows a logged-in farmer to securely upload a new document link.
-
-     */
-
+//     Allows a logged-in farmer to securely upload a new document link.
     @PostMapping
-
     public ResponseEntity<FarmerDocumentResponseDTO> uploadDocument(
-
             Principal principal,
-
             @Valid @RequestBody FarmerDocumentUploadRequestDTO requestDto) {
 
         String email = principal.getName();
-
         log.info("API Request: Uploading new document for farmer: {}", email);
-
         FarmerDocumentResponseDTO uploadedDocument = farmerDocumentService.uploadDocument(email, requestDto);
 
         return new ResponseEntity<>(uploadedDocument, HttpStatus.CREATED);
-
     }
 
-    /**
-
-     * GET /api/farmers/documents
-
-     * Fetches all documents uploaded by the currently logged-in farmer.
-
-     */
-
+//    Fetches all documents uploaded by the currently logged-in farmer.
     @GetMapping
-
     public ResponseEntity<List<FarmerDocumentResponseDTO>> getMyDocuments(Principal principal) {
 
         String email = principal.getName();
-
         log.info("API Request: Fetching all documents for farmer: {}", email);
-
         List<FarmerDocumentResponseDTO> documents = farmerDocumentService.getMyDocuments(email);
 
         return ResponseEntity.ok(documents);
-
     }
 
 }
