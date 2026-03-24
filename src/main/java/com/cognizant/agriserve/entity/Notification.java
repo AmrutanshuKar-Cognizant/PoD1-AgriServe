@@ -9,12 +9,19 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.PrePersist;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.time.LocalDateTime;
 
 
 
 @Entity
 @Table(name="notification")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Notification {
     public enum NotificationCategory {
         ADVISORY,
@@ -54,17 +61,6 @@ public class Notification {
     @Column(nullable = false)
     private LocalDateTime createdDate;
 
-    // Default Constructor
-    public Notification() {
-    }
-
-    // Parameterized Constructor
-    public Notification(Long userId, Long entityId, String message, NotificationCategory category) {
-        this.userId = userId;
-        this.entityId = entityId;
-        this.message = message;
-        this.category = category;
-    }
 
     // Automatically set the date and default status before saving to DB
     @PrePersist
@@ -77,59 +73,5 @@ public class Notification {
         }
     }
 
-    public Long getNotificationId() {
-        return notificationId;
-    }
 
-    public void setNotificationId(Long notificationId) {
-        this.notificationId = notificationId;
-    }
-
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
-
-    public Long getEntityId() {
-        return entityId;
-    }
-
-    public void setEntityId(Long entityId) {
-        this.entityId = entityId;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
-    public NotificationCategory getCategory() {
-        return category;
-    }
-
-    public void setCategory(NotificationCategory category) {
-        this.category = category;
-    }
-
-    public NotificationStatus getStatus() {
-        return status;
-    }
-
-    public void setStatus(NotificationStatus status) {
-        this.status = status;
-    }
-
-    public LocalDateTime getCreatedDate() {
-        return createdDate;
-    }
-
-    public void setCreatedDate(LocalDateTime createdDate) {
-        this.createdDate = createdDate;
-    }
 }
