@@ -142,9 +142,9 @@ public class GlobalExceptionHandler {
     }
 
     // Catch 403: Unauthorized Access (Alternative to UnauthorizedActionException)
-    @ExceptionHandler(UnauthorizedAccessException.class)
+    @ExceptionHandler(UnauthorizedActionException.class)
     public ResponseEntity<ErrorResponseDTO> handleUnauthorizedAccessException(
-            UnauthorizedAccessException ex,
+            UnauthorizedActionException ex,
             HttpServletRequest request) {
 
         log.error("Unauthorized access attempt: {}", ex.getMessage());

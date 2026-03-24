@@ -1,0 +1,19 @@
+package com.cognizant.agriserve.dao;
+
+import com.cognizant.agriserve.entity.Workshop;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+import java.time.LocalDateTime;
+import java.util.List;
+
+@Repository
+public interface WorkshopRepository extends JpaRepository<Workshop, Long> {
+
+    // Custom Method: Finds all workshops assigned to a specific Extension Officer
+    // This perfectly matches your JIRA Story EXTO-005 (Schedule View)
+    List<Workshop> findByOfficerId(Long officerId);
+
+    // Custom Method: Finds workshops for a specific program that happen after a certain date
+    List<Workshop> findByTrainingProgram_ProgramIdAndDateAfter(Long programId, LocalDateTime date);
+}
