@@ -1,11 +1,13 @@
+//handles farmer-releated operations
+
 package com.cognizant.agriserve.service;
 
 import com.cognizant.agriserve.dto.FarmerDTO;
 import com.cognizant.agriserve.dto.FarmerUpdateRequestDTO;
-
 import java.util.List;
 
 public interface FarmerService {
+
     // For the logged-in Farmer to view their own profile
     FarmerDTO getFarmerProfile(String email);
 

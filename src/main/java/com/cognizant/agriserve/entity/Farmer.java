@@ -1,15 +1,18 @@
-package com.cognizant.agriserve.entity;
+package com.cognizant.agriserve.entity; // all db tables are store here
 
-import jakarta.persistence.*;
-import jakarta.validation.constraints.*;
-import lombok.*;
-import org.hibernate.annotations.CreationTimestamp;
+import jakarta.persistence.*;  //used for JPA. ex: @Entity, @Id, @Column
+
+import jakarta.validation.constraints.*;  //used for validation rules. ex: @NotBlank, @NotNull, used bcoz prevent invalid data before saving
+
+import lombok.*;  // it reduces boilerplate code, automatically creates getter, setter, constructor
+
+import org.hibernate.annotations.CreationTimestamp; // both are automatically sets created time and updated time
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-@Entity
+@Entity  // marks class as db table
 @Table(name = "farmer")
 @Getter
 @Setter

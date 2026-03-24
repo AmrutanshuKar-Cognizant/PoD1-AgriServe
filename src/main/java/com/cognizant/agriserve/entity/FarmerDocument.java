@@ -10,11 +10,22 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "farmerDocument") // Standard plural naming
-@Getter
+
+@Getter  // automatically created getter and setter
 @Setter
+
+// creates empty constructor like -- Farmer farmer=new Farmer();
+// it is used bcoz of hibernate needs a default constructor to create entity objects
 @NoArgsConstructor
+
+// creates constructor with all fields -- Farmer farmer=new Farmer(id, name, dob, gender,...);
+// easy to create object with all values
 @AllArgsConstructor
+
+// provides clean way to create objects
 @Builder
+
+// it restricts values to fixed set, without enum user can enter anything
 public class FarmerDocument {
     public enum VerificationStatus{
         PENDING,
@@ -23,7 +34,8 @@ public class FarmerDocument {
     }
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)  //primary key value should be generated automatically and GenerationType is type of auto-generation
+    // in table looks like (documentId INT AUTO_INCREMENT PRIMARY KEY)
     private Long documentId;
 
     @NotBlank(message = "Document type is mandatory")
@@ -47,7 +59,7 @@ public class FarmerDocument {
     @NotNull(message = "Associated farmer is required")
     private Farmer farmer;
 
-    @CreationTimestamp
-    @Column(updatable = false)
+    @CreationTimestamp  // automatically set when record is created
+    @Column(updatable = false)  // cannot be updated
     private LocalDateTime createdAt;
 }

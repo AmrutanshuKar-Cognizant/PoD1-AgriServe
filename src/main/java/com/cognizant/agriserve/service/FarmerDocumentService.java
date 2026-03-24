@@ -1,3 +1,5 @@
+//handles document-releated operation
+
 package com.cognizant.agriserve.service;
 
 import com.cognizant.agriserve.dto.FarmerDocumentResponseDTO;

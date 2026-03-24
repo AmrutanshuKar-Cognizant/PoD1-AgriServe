@@ -1,7 +1,6 @@
 package com.cognizant.agriserve.dto;
 
 import lombok.Data;
-
 import java.time.LocalDate;
 
 @Data

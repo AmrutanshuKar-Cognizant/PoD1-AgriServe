@@ -1,83 +1,69 @@
 package com.cognizant.agriserve.controller;
 
-import com.cognizant.agriserve.dto.FarmerDocumentResponseDTO;
+import com.cognizant.agriserve.dto.FarmerDocumentResponseDTO;  // DTO is used for request input and response output
 import com.cognizant.agriserve.dto.FarmerDocumentUploadRequestDto;
 
-import com.cognizant.agriserve.service.FarmerDocumentService;
+import com.cognizant.agriserve.service.FarmerDocumentService; // for business logic
 
-import jakarta.validation.Valid;
+import jakarta.validation.Valid; // enables validation on request body
 
-import lombok.RequiredArgsConstructor;
-
-import lombok.extern.slf4j.Slf4j;
+import lombok.RequiredArgsConstructor;  // automatically creates constructor for all final fields
+import lombok.extern.slf4j.Slf4j;  // automatically creates logger object
 
 import org.springframework.http.HttpStatus;
-
 import org.springframework.http.ResponseEntity;
 
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.*; // spring annotation for REST API's
 
-import java.security.Principal;
-
+import java.security.Principal; // used to get logged-in user email
 import java.util.List;
 
 @Slf4j
 
-@RestController
+@RestController  // combines @Controller and @ResponseBody and returns JSON response automatically
 
-@RequestMapping("/api/farmers/documents")
+@RequestMapping("/api/farmers/documents")  // base URL for all API's
 
 @RequiredArgsConstructor
-
 public class FarmerDocumentController {
 
+    // service is injected
+    // lombok generates:  public FarmerController(FarmerService farmerService)
+    // { this.farmerService=farmerService; }
     private final FarmerDocumentService farmerDocumentService;
 
-    /**
-
-     * POST /api/farmers/documents
-
-     * Allows a logged-in farmer to securely upload a new document link.
-
-     */
-
+//  API 1: is for upload document
     @PostMapping
+    public ResponseEntity<FarmerDocumentResponseDTO> uploadDocument(  // DTO response
 
-    public ResponseEntity<FarmerDocumentResponseDTO> uploadDocument(
+            Principal principal,  // gets logged-in user
 
-            Principal principal,
+            @Valid @RequestBody FarmerDocumentUploadRequestDto requestDto) {  // @RequestBody -> JSON - DTO, @Valid -> validation applied
 
-            @Valid @RequestBody FarmerDocumentUploadRequestDto requestDto) {
+        String email = principal.getName();  // gets user email from JWT
 
-        String email = principal.getName();
+        log.info("API Request: Uploading new document for farmer: {}", email);  // logs activity
 
-        log.info("API Request: Uploading new document for farmer: {}", email);
-
+        // calls service layer passes email, request data, from here control goes to Service Layer
         FarmerDocumentResponseDTO uploadedDocument = farmerDocumentService.uploadDocument(email, requestDto);
 
+        // returns data, HTTP 201 (created)
         return new ResponseEntity<>(uploadedDocument, HttpStatus.CREATED);
 
     }
 
-    /**
 
-     * GET /api/farmers/documents
-
-     * Fetches all documents uploaded by the currently logged-in farmer.
-
-     */
-
+// API 2: get my documents
     @GetMapping
+    public ResponseEntity<List<FarmerDocumentResponseDTO>> getMyDocuments(Principal principal) {  // returns list of documents
 
-    public ResponseEntity<List<FarmerDocumentResponseDTO>> getMyDocuments(Principal principal) {
-
-        String email = principal.getName();
+        String email = principal.getName();  // get logged-in user
 
         log.info("API Request: Fetching all documents for farmer: {}", email);
 
-        List<FarmerDocumentResponseDTO> documents = farmerDocumentService.getMyDocuments(email);
+        List<FarmerDocumentResponseDTO> documents = farmerDocumentService.getMyDocuments(email); // fetch documents of that user
 
-        return ResponseEntity.ok(documents);
+        return ResponseEntity.ok(documents);  // return HTTP 200
 
     }
 
