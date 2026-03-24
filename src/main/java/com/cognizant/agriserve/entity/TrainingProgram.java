@@ -30,9 +30,7 @@ public class TrainingProgram {
     private LocalDate endDate;
     private String status;
 
-    // --- NEW FOREIGN KEY MAPPING ---
-    // Many programs can be created by One manager (User)
-    // FetchType.LAZY is an industry standard to make database queries faster
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "manager_id", nullable = false)
     private User manager;

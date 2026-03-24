@@ -9,12 +9,19 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.PrePersist;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.time.LocalDateTime;
 
 
 
 @Entity
 @Table(name = "audit")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Audit {
     public enum AuditStatus {
         PENDING,
@@ -45,17 +52,6 @@ public class Audit {
     @Column(nullable = false)
     private AuditStatus status;
 
-    // Default Constructor
-    public Audit() {
-    }
-
-    // Parameterized Constructor
-    public Audit(Long officerId, String scope, String findings, AuditStatus status) {
-        this.officerId = officerId;
-        this.scope = scope;
-        this.findings = findings;
-        this.status = status;
-    }
 
     // Automatically set the audit date to current server time if not provided
     @PrePersist
@@ -65,51 +61,4 @@ public class Audit {
         }
     }
 
-    public Long getAuditId() {
-        return auditId;
-    }
-
-    public void setAuditId(Long auditId) {
-        this.auditId = auditId;
-    }
-
-    public Long getOfficerId() {
-        return officerId;
-    }
-
-    public void setOfficerId(Long officerId) {
-        this.officerId = officerId;
-    }
-
-    public String getScope() {
-        return scope;
-    }
-
-    public void setScope(String scope) {
-        this.scope = scope;
-    }
-
-    public String getFindings() {
-        return findings;
-    }
-
-    public void setFindings(String findings) {
-        this.findings = findings;
-    }
-
-    public LocalDateTime getDate() {
-        return date;
-    }
-
-    public void setDate(LocalDateTime date) {
-        this.date = date;
-    }
-
-    public AuditStatus getStatus() {
-        return status;
-    }
-
-    public void setStatus(AuditStatus status) {
-        this.status = status;
-    }
 }
