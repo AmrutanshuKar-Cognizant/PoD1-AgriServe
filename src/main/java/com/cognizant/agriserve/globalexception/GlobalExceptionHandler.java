@@ -3,6 +3,7 @@ package com.cognizant.agriserve.globalexception;
 import com.cognizant.agriserve.dto.ErrorResponseDTO;
 import com.cognizant.agriserve.exception.*;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.ConstraintViolationException; // Added from Version 2
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
@@ -51,7 +52,7 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errorResponse, HttpStatus.FORBIDDEN);
     }
 
-    // Catch 400: Validation Failures (e.g., @NotBlank, @NotNull)
+    // Catch 400: Validation Failures in RequestBody (e.g., @NotBlank, @NotNull)
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ErrorResponseDTO> handleValidationErrors(
             MethodArgumentNotValidException ex,
@@ -70,6 +71,30 @@ public class GlobalExceptionHandler {
         );
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
+
+    // --- NEW FROM VERSION 2: PathVariable/RequestParam Validation ---
+    // Catch 400: Validation Failures in URL Params (e.g., ID is negative)
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ResponseEntity<ErrorResponseDTO> handleConstraintViolation(
+            ConstraintViolationException ex,
+            HttpServletRequest request) {
+
+        String message = ex.getConstraintViolations().stream()
+                .map(violation -> violation.getMessage())
+                .collect(Collectors.joining(", "));
+
+        log.warn("Constraint Violation at {}: {}", request.getRequestURI(), message);
+
+        ErrorResponseDTO errorResponse = new ErrorResponseDTO(
+                LocalDateTime.now(),
+                HttpStatus.BAD_REQUEST.value(),
+                "Validation Error",
+                message,
+                request.getRequestURI()
+        );
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+    }
+    // -----------------------------------------------------------------
 
     // Catch 400: Malformed JSON or Bad Enum Values
     @ExceptionHandler(HttpMessageNotReadableException.class)
@@ -102,8 +127,6 @@ public class GlobalExceptionHandler {
         );
         return new ResponseEntity<>(errorResponse, HttpStatus.CONFLICT);
     }
-
-    // --- NEW EXCEPTIONS ADDED FROM VERSION 2 ---
 
     // Catch Business Rule Violations (Status dynamic based on exception)
     @ExceptionHandler(ApiException.class)
@@ -141,7 +164,7 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errorResponse, HttpStatus.CONFLICT);
     }
 
-    // Catch 403: Unauthorized Access (Alternative to UnauthorizedActionException)
+    // Catch 403: Unauthorized Access
     @ExceptionHandler(UnauthorizedAccessException.class)
     public ResponseEntity<ErrorResponseDTO> handleUnauthorizedAccessException(
             UnauthorizedAccessException ex,
@@ -159,7 +182,8 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errorResponse, HttpStatus.FORBIDDEN);
     }
 
-    // Catch 409: Database Constraint Violations
+    // --- UPDATED FROM VERSION 2: Specific Database Message ---
+    // Catch 409: Database Constraint Violations (Foreign Key / Unique rules)
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ResponseEntity<ErrorResponseDTO> handleDataIntegrityViolationException(
             DataIntegrityViolationException ex,
@@ -171,13 +195,12 @@ public class GlobalExceptionHandler {
                 LocalDateTime.now(),
                 HttpStatus.CONFLICT.value(),
                 "Data Integrity Violation",
-                "The request conflicts with existing data constraints.",
+                "Database Error: A related record (Farmer, Officer, or Content) was not found, or it violates a unique constraint.",
                 request.getRequestURI()
         );
         return new ResponseEntity<>(errorResponse, HttpStatus.CONFLICT);
     }
-
-    // --- END OF NEW EXCEPTIONS ---
+    // ---------------------------------------------------------
 
     // Catch 500: The Ultimate Safety Net for any unexpected server crashes
     @ExceptionHandler(Exception.class)
