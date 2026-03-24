@@ -22,7 +22,7 @@ public class AdvisorySession {
 
     @NotNull(message = "Officer is required")
     @ManyToOne(optional = false)
-    @JoinColumn(name = "officer_id", nullable = false) // Assuming User has userId
+    @JoinColumn(name = "officer_id", referencedColumnName = "userId", nullable = false) // Assuming User has userId
     private User officer;
 
     @NotNull(message = "Farmer is required")

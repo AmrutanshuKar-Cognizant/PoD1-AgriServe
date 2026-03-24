@@ -32,7 +32,7 @@ public class TrainingProgram {
 
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "manager_id", nullable = false)
+    @JoinColumn(name = "manager_id", referencedColumnName = "userId", nullable = false)
     private User manager;
 
     @OneToMany(mappedBy = "trainingProgram", cascade = CascadeType.ALL)

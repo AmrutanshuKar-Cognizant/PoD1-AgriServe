@@ -43,7 +43,7 @@ public class FarmerDocument {
     private VerificationStatus verificationStatus = VerificationStatus.PENDING;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "farmer_id", nullable = false)
+    @JoinColumn(name = "farmer_id", referencedColumnName = "farmerId", nullable = false)
     @NotNull(message = "Associated farmer is required")
     private Farmer farmer;
 
