@@ -1,5 +1,6 @@
 package com.cognizant.agriserve.service.impl;
 
+import com.cognizant.agriserve.dao.UserRepository;
 import com.cognizant.agriserve.entity.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

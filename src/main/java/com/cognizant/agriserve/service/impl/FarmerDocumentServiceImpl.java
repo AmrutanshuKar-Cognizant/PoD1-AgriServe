@@ -12,6 +12,7 @@ import com.cognizant.agriserve.entity.Farmer;
 
 import com.cognizant.agriserve.entity.FarmerDocument;
 
+import com.cognizant.agriserve.exception.ResourceNotFoundException;
 import com.cognizant.agriserve.service.FarmerDocumentService;
 
 import lombok.RequiredArgsConstructor;

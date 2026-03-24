@@ -8,14 +8,14 @@ import java.util.List;
 
 public interface UserService {
 
-    UserResponseDTO getUserById(Integer userId);
+    UserResponseDTO getUserById(Long userId);
     UserResponseDTO getUserByEmail(String email);
     List<UserResponseDTO> getAllUsers();
     List<UserResponseDTO> getUsersByRole(User.Role role);
     List<UserResponseDTO> getUsersByStatus(String status);
     // Uses the validated Request DTO to prevent malicious updates
-    UserResponseDTO updateUser(Integer userId, UserRequestDTO updatedUserDTO);
-    void deactivateUser(Integer userId);
-    void deleteUser(Integer userId);
+    UserResponseDTO updateUser(Long userId, UserRequestDTO updatedUserDTO);
+    void deactivateUser(Long userId);
+    void deleteUser(Long userId);
 
 }
