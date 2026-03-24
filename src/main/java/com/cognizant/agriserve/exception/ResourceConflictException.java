@@ -3,10 +3,10 @@ package com.cognizant.agriserve.exception;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-@ResponseStatus(value = HttpStatus.FORBIDDEN)
-public class UnauthorizedActionException extends RuntimeException {
+@ResponseStatus(value = HttpStatus.CONFLICT)
+public class ResourceConflictException extends RuntimeException {
 
-    public UnauthorizedActionException(String message) {
+    public ResourceConflictException(String message) {
         super(message);
     }
-}
+} 
