@@ -1,7 +1,7 @@
 package com.cognizant.agriserve.service;
 
-import com.cognizant.agriserve.dto.FarmerDocumentResponseDTO;
-import com.cognizant.agriserve.dto.FarmerDocumentUploadRequestDTO;
+import com.cognizant.agriserve.dto.response.FarmerDocumentResponseDTO;
+import com.cognizant.agriserve.dto.request.FarmerDocumentUploadRequestDTO;
 import java.util.List;
 
 public interface FarmerDocumentService {

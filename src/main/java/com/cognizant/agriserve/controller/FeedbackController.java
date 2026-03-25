@@ -1,0 +1,33 @@
+package com.cognizant.agriserve.controller;
+
+import com.cognizant.agriserve.dto.request.FeedbackRequestDTO;
+import com.cognizant.agriserve.dto.response.FeedbackResponseDTO;
+import com.cognizant.agriserve.entity.Feedback;
+import com.cognizant.agriserve.service.FeedbackService;
+import jakarta.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import java.util.List;
+
+@Slf4j
+@RestController
+@RequestMapping("/api/feedback")
+public class FeedbackController {
+
+    @Autowired
+    private FeedbackService feedbackService;
+
+    @PostMapping("/Submit")
+    public ResponseEntity<Feedback> submitfeedback(@RequestBody @Valid FeedbackRequestDTO dto) {
+        log.info("REST request to submit feedback for Farmer ID: {}", dto.getFarmerId());
+        return ResponseEntity.ok(feedbackService.addFeedback(dto));
+    }
+
+    @GetMapping("/all")
+    public List<FeedbackResponseDTO> getAll() {
+        log.info("REST request to fetch all feedback records");
+        return feedbackService.getAllFeedback();
+    }
+}

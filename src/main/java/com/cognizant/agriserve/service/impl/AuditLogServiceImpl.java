@@ -1,7 +1,7 @@
 package com.cognizant.agriserve.service.impl;
 
 import com.cognizant.agriserve.dao.AuditLogRepository;
-import com.cognizant.agriserve.dto.AuditLogResponseDTO;
+import com.cognizant.agriserve.dto.response.AuditLogResponseDTO;
 import com.cognizant.agriserve.entity.AuditLog;
 import com.cognizant.agriserve.entity.User;
 import com.cognizant.agriserve.exception.AuditLogNotFoundException;

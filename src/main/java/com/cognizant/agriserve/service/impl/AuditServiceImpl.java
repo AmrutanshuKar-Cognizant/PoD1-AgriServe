@@ -1,21 +1,23 @@
 package com.cognizant.agriserve.service.impl;
 
+import com.cognizant.agriserve.dao.AuditRepository;
 import com.cognizant.agriserve.dao.UserRepository;
-import com.cognizant.agriserve.dto.AuditRequestDTO;
-import com.cognizant.agriserve.dto.AuditResponseDTO;
+import com.cognizant.agriserve.dto.request.AuditRequestDTO;
+import com.cognizant.agriserve.dto.response.AuditResponseDTO;
 import com.cognizant.agriserve.entity.Audit;
 import com.cognizant.agriserve.entity.Audit.AuditStatus;
-import com.cognizant.agriserve.dao.AuditRepository;
+import com.cognizant.agriserve.entity.User;
+import com.cognizant.agriserve.exception.ResourceNotFoundException;
+import com.cognizant.agriserve.exception.UnauthorizedActionException;
 import com.cognizant.agriserve.service.AuditService;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
-
-import com.cognizant.agriserve.exception.ResourceNotFoundException;
-import com.cognizant.agriserve.exception.UnauthorizedActionException;
 
 @Slf4j
 @Service
@@ -31,8 +33,25 @@ public class AuditServiceImpl implements AuditService {
         this.modelMapper = modelMapper;
     }
 
+    private Long getCurrentLoggedInUserId() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (authentication == null || !authentication.isAuthenticated() || "anonymousUser".equals(authentication.getPrincipal())) {
+            throw new UnauthorizedActionException("User is not authenticated. Please provide a valid JWT.");
+        }
+
+        String email = authentication.getName();
+
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new ResourceNotFoundException("Logged in user not found in database."));
+
+        return user.getUserId();
+    }
+
     @Override
-    public AuditResponseDTO initiateAudit(AuditRequestDTO requestDTO, Long currentLoggedInUserId) {
+    public AuditResponseDTO initiateAudit(AuditRequestDTO requestDTO) {
+        Long currentLoggedInUserId = getCurrentLoggedInUserId();
+
         log.info("Officer ID {} is initiating a new Audit with scope: {}", currentLoggedInUserId, requestDTO.getScope());
 
         Audit audit = mapToEntity(requestDTO);
@@ -90,7 +109,9 @@ public class AuditServiceImpl implements AuditService {
     }
 
     @Override
-    public AuditResponseDTO updateAudit(Long auditId, AuditRequestDTO requestDTO, Long currentLoggedInUserId) {
+    public AuditResponseDTO updateAudit(Long auditId, AuditRequestDTO requestDTO) {
+        Long currentLoggedInUserId = getCurrentLoggedInUserId();
+
         log.info("Officer ID {} is attempting to update Audit ID {}", currentLoggedInUserId, auditId);
 
         Audit existingAudit = auditRepository.findById(auditId)
@@ -112,7 +133,8 @@ public class AuditServiceImpl implements AuditService {
     }
 
     @Override
-    public void deleteAudit(Long auditId, Long currentLoggedInUserId) {
+    public void deleteAudit(Long auditId) {
+        Long currentLoggedInUserId = getCurrentLoggedInUserId();
         log.info("Officer ID {} is attempting to DELETE Audit ID {}", currentLoggedInUserId, auditId);
 
         Audit existingAudit = auditRepository.findById(auditId)

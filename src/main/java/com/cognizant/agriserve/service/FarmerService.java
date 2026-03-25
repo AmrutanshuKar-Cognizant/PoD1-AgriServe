@@ -1,7 +1,7 @@
 package com.cognizant.agriserve.service;
 
 import com.cognizant.agriserve.dto.FarmerDTO;
-import com.cognizant.agriserve.dto.FarmerUpdateRequestDTO;
+import com.cognizant.agriserve.dto.request.FarmerUpdateRequestDTO;
 
 import java.util.List;
 

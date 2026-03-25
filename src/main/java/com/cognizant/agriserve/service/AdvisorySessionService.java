@@ -1,7 +1,7 @@
 package com.cognizant.agriserve.service;
 
-import com.cognizant.agriserve.dto.AdvisorySessionRequestDTO;
-import com.cognizant.agriserve.dto.AdvisorySessionResponseDTO;
+import com.cognizant.agriserve.dto.request.AdvisorySessionRequestDTO;
+import com.cognizant.agriserve.dto.response.AdvisorySessionResponseDTO;
 import java.util.List;
 import java.util.Map;
 
