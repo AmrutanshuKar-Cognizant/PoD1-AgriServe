@@ -4,8 +4,8 @@ import com.cognizant.agriserve.dao.FeedbackRepository;
 import com.cognizant.agriserve.dao.SatisfactionMetricRepository;
 import com.cognizant.agriserve.dao.TrainingProgramRepository;
 import com.cognizant.agriserve.dao.UserRepository;
-import com.cognizant.agriserve.dto.SatisfactionMetricDTO;
-import com.cognizant.agriserve.dto.SatisfactionMetricResponseDTO;
+import com.cognizant.agriserve.dto.request.SatisfactionMetricRequestDTO;
+import com.cognizant.agriserve.dto.response.SatisfactionMetricResponseDTO;
 import com.cognizant.agriserve.entity.Feedback;
 import com.cognizant.agriserve.entity.SatisfactionMetric;
 import com.cognizant.agriserve.entity.TrainingProgram;
@@ -28,7 +28,7 @@ public class Satisfactionmetricimpl implements SatisfactionMetricservice {
     @Autowired private TrainingProgramRepository trainingRepo;
     @Autowired private UserRepository userRepo;
     @Override
-    public SatisfactionMetric evaluate(SatisfactionMetricDTO dto) {
+    public SatisfactionMetric evaluate(SatisfactionMetricRequestDTO dto) {
         log.info("Calculating performance metrics for Program ID: {}", dto.getProgramId());
 
         // 1. Fetch dependencies

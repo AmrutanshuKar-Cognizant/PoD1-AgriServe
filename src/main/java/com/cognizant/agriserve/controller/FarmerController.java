@@ -2,7 +2,7 @@ package com.cognizant.agriserve.controller;
 
 import com.cognizant.agriserve.dto.FarmerDTO;
 
-import com.cognizant.agriserve.dto.FarmerUpdateRequestDTO;
+import com.cognizant.agriserve.dto.request.FarmerUpdateRequestDTO;
 
 import com.cognizant.agriserve.service.FarmerService;
 

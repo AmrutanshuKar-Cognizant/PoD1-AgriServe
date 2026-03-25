@@ -1,7 +1,7 @@
 package com.cognizant.agriserve.controller;
 
-import com.cognizant.agriserve.dto.ComplianceRecordRequestDTO;
-import com.cognizant.agriserve.dto.ComplianceRecordResponseDTO;
+import com.cognizant.agriserve.dto.request.ComplianceRecordRequestDTO;
+import com.cognizant.agriserve.dto.response.ComplianceRecordResponseDTO;
 import com.cognizant.agriserve.entity.ComplianceRecord.ComplianceType;
 import com.cognizant.agriserve.service.ComplianceRecordService;
 import jakarta.validation.Valid;

@@ -1,7 +1,7 @@
 package com.cognizant.agriserve.controller;
 
-import com.cognizant.agriserve.dto.AuditRequestDTO;
-import com.cognizant.agriserve.dto.AuditResponseDTO;
+import com.cognizant.agriserve.dto.request.AuditRequestDTO;
+import com.cognizant.agriserve.dto.response.AuditResponseDTO;
 import com.cognizant.agriserve.entity.Audit.AuditStatus;
 import com.cognizant.agriserve.service.AuditService;
 import jakarta.validation.Valid;

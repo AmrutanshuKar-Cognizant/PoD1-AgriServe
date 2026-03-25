@@ -1,8 +1,8 @@
 package com.cognizant.agriserve.service.impl;
 
 import com.cognizant.agriserve.dao.UserRepository;
-import com.cognizant.agriserve.dto.UserRequestDTO;
-import com.cognizant.agriserve.dto.UserResponseDTO;
+import com.cognizant.agriserve.dto.request.UserRequestDTO;
+import com.cognizant.agriserve.dto.response.UserResponseDTO;
 import com.cognizant.agriserve.entity.User;
 import com.cognizant.agriserve.exception.ResourceNotFoundException;
 import com.cognizant.agriserve.service.UserService;

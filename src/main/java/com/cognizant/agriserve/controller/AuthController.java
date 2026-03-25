@@ -1,8 +1,8 @@
 package com.cognizant.agriserve.controller;
 
-import com.cognizant.agriserve.dto.AuthRequestDTO;
-import com.cognizant.agriserve.dto.AuthResponseDTO;
-import com.cognizant.agriserve.dto.FarmerRegistrationRequestDto;
+import com.cognizant.agriserve.dto.request.AuthRequestDTO;
+import com.cognizant.agriserve.dto.response.AuthResponseDTO;
+import com.cognizant.agriserve.dto.request.FarmerRegistrationRequestDto;
 import com.cognizant.agriserve.service.AuthService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

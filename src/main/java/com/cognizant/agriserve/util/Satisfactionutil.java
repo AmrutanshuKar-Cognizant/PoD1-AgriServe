@@ -1,13 +1,13 @@
 package com.cognizant.agriserve.util;
 
-import com.cognizant.agriserve.dto.SatisfactionMetricDTO;
+import com.cognizant.agriserve.dto.request.SatisfactionMetricRequestDTO;
 import com.cognizant.agriserve.entity.*;
 import java.time.LocalDate;
 
 public class Satisfactionutil {
 
 
-    public static SatisfactionMetric Satisfactionutili(SatisfactionMetricDTO dt,
+    public static SatisfactionMetric Satisfactionutili(SatisfactionMetricRequestDTO dt,
                                                        TrainingProgram program,
                                                        User manager,
                                                        Double averageScore) {

@@ -1,7 +1,7 @@
 package com.cognizant.agriserve.service;
 
-import com.cognizant.agriserve.dto.AuditRequestDTO;
-import com.cognizant.agriserve.dto.AuditResponseDTO;
+import com.cognizant.agriserve.dto.request.AuditRequestDTO;
+import com.cognizant.agriserve.dto.response.AuditResponseDTO;
 import com.cognizant.agriserve.entity.Audit.AuditStatus;
 
 import java.util.List;

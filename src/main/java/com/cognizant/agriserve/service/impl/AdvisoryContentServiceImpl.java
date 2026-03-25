@@ -1,8 +1,8 @@
 package com.cognizant.agriserve.service.impl;
 
 import com.cognizant.agriserve.dao.AdvisoryContentRepository;
-import com.cognizant.agriserve.dto.AdvisoryContentRequestDTO;
-import com.cognizant.agriserve.dto.AdvisoryContentResponseDTO;
+import com.cognizant.agriserve.dto.request.AdvisoryContentRequestDTO;
+import com.cognizant.agriserve.dto.response.AdvisoryContentResponseDTO;
 import com.cognizant.agriserve.entity.AdvisoryContent;
 import com.cognizant.agriserve.exception.ResourceNotFoundException;
 import com.cognizant.agriserve.service.AdvisoryContentService;

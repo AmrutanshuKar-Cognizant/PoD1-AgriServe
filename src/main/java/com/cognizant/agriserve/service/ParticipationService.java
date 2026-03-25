@@ -1,6 +1,6 @@
 package com.cognizant.agriserve.service;
 
-import com.cognizant.agriserve.dto.AttendanceUpdateRequestDTO;
+import com.cognizant.agriserve.dto.request.AttendanceUpdateRequestDTO;
 import com.cognizant.agriserve.dto.ParticipationDTO;
 import java.util.List;
 

@@ -4,8 +4,8 @@ import com.cognizant.agriserve.dao.AdvisorySessionRepository;
 import com.cognizant.agriserve.dao.FarmerRepository;
 import com.cognizant.agriserve.dao.FeedbackRepository;
 import com.cognizant.agriserve.dao.TrainingProgramRepository;
-import com.cognizant.agriserve.dto.FeedbackDTO;
-import com.cognizant.agriserve.dto.FeedbackResponseDTO;
+import com.cognizant.agriserve.dto.request.FeedbackRequestDTO;
+import com.cognizant.agriserve.dto.response.FeedbackResponseDTO;
 import com.cognizant.agriserve.entity.AdvisorySession;
 import com.cognizant.agriserve.entity.Farmer;
 import com.cognizant.agriserve.entity.Feedback;
@@ -27,7 +27,7 @@ public class FeedbackServiceimpl implements FeedbackService {
     @Autowired private AdvisorySessionRepository sessionRepo;
     @Autowired private TrainingProgramRepository trainingRepo;
     @Override
-    public Feedback addFeedback(FeedbackDTO dto) {
+    public Feedback addFeedback(FeedbackRequestDTO dto) {
         log.info("Recording farmer feedback for Session: {}", dto.getSessionId());
         Farmer f = farmerRepo.findById(dto.getFarmerId()).orElseThrow(() -> new ResourceNotFoundException("Farmer not found"));
         AdvisorySession s = sessionRepo.findById(dto.getSessionId()).orElseThrow(() -> new ResourceNotFoundException("Session not found"));

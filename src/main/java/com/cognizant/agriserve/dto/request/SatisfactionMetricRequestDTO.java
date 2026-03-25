@@ -1,4 +1,4 @@
-package com.cognizant.agriserve.dto;
+package com.cognizant.agriserve.dto.request;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class SatisfactionMetricDTO {
+public class SatisfactionMetricRequestDTO {
     @NotNull(message = "Feedback ID is required")
     private Long programId;
 

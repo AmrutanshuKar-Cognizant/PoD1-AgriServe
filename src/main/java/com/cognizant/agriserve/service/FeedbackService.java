@@ -1,13 +1,12 @@
 package com.cognizant.agriserve.service;
 
-import com.cognizant.agriserve.dao.*;
-import com.cognizant.agriserve.dto.FeedbackDTO;
-import com.cognizant.agriserve.dto.FeedbackResponseDTO;
+import com.cognizant.agriserve.dto.request.FeedbackRequestDTO;
+import com.cognizant.agriserve.dto.response.FeedbackResponseDTO;
 import com.cognizant.agriserve.entity.*;
 import java.util.List;
 
 
 public interface FeedbackService {
-   Feedback addFeedback(FeedbackDTO dto);
+   Feedback addFeedback(FeedbackRequestDTO dto);
    List<FeedbackResponseDTO> getAllFeedback();
 }

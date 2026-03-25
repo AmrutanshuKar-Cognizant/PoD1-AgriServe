@@ -21,19 +21,14 @@ public class TrainingProgramController {
         this.programService = programService;
     }
 
-    /**
-     * Creates a new training program.
-     * The service layer handles the UnauthorizedAccessException if the
-     * managerId does not belong to a Program Manager or Admin.
-     */
-    @PostMapping
+    @PostMapping("/create")
     public ResponseEntity<TrainingProgramDTO> createProgram(@Valid @RequestBody TrainingProgramDTO programDto) {
         log.info("Received request to create a new Training Program: {}", programDto.getTitle());
         TrainingProgramDTO savedProgram = programService.createProgram(programDto);
         return new ResponseEntity<>(savedProgram, HttpStatus.CREATED);
     }
 
-    @GetMapping
+    @GetMapping("/get")
     public ResponseEntity<List<TrainingProgramDTO>> getAllPrograms() {
         log.info("Fetching all available Training Programs");
         return ResponseEntity.ok(programService.getAllPrograms());

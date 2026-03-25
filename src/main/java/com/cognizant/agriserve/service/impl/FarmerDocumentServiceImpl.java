@@ -4,9 +4,9 @@ import com.cognizant.agriserve.dao.FarmerDocumentRepository;
 
 import com.cognizant.agriserve.dao.FarmerRepository;
 
-import com.cognizant.agriserve.dto.FarmerDocumentResponseDTO;
+import com.cognizant.agriserve.dto.response.FarmerDocumentResponseDTO;
 
-import com.cognizant.agriserve.dto.FarmerDocumentUploadRequestDTO;
+import com.cognizant.agriserve.dto.request.FarmerDocumentUploadRequestDTO;
 
 import com.cognizant.agriserve.entity.Farmer;
 

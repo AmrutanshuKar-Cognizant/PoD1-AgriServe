@@ -1,11 +1,11 @@
 package com.cognizant.agriserve.util;
 
-import com.cognizant.agriserve.dto.FeedbackDTO;
+import com.cognizant.agriserve.dto.request.FeedbackRequestDTO;
 import com.cognizant.agriserve.entity.*;
 import java.time.LocalDate;
 
 public class feedbackutil {
-    public static Feedback tofeedback(FeedbackDTO dto, Farmer farmer, AdvisorySession session, TrainingProgram program) {
+    public static Feedback tofeedback(FeedbackRequestDTO dto, Farmer farmer, AdvisorySession session, TrainingProgram program) {
         Feedback ft = new Feedback();
         ft.setFarmer(farmer);
         ft.setSession(session);

@@ -1,7 +1,7 @@
 package com.cognizant.agriserve.controller;
 
-import com.cognizant.agriserve.dto.UserRequestDTO;
-import com.cognizant.agriserve.dto.UserResponseDTO;
+import com.cognizant.agriserve.dto.request.UserRequestDTO;
+import com.cognizant.agriserve.dto.response.UserResponseDTO;
 import com.cognizant.agriserve.entity.User;
 import com.cognizant.agriserve.service.UserService;
 import jakarta.validation.Valid;

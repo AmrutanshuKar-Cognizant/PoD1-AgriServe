@@ -1,7 +1,7 @@
 package com.cognizant.agriserve.controller;
 
-import com.cognizant.agriserve.dto.FeedbackDTO;
-import com.cognizant.agriserve.dto.FeedbackResponseDTO;
+import com.cognizant.agriserve.dto.request.FeedbackRequestDTO;
+import com.cognizant.agriserve.dto.response.FeedbackResponseDTO;
 import com.cognizant.agriserve.entity.Feedback;
 import com.cognizant.agriserve.service.FeedbackService;
 import jakarta.validation.Valid;
@@ -20,7 +20,7 @@ public class FeedbackController {
     private FeedbackService feedbackService;
 
     @PostMapping("/Submit")
-    public ResponseEntity<Feedback> submitfeedback(@RequestBody @Valid FeedbackDTO dto) {
+    public ResponseEntity<Feedback> submitfeedback(@RequestBody @Valid FeedbackRequestDTO dto) {
         log.info("REST request to submit feedback for Farmer ID: {}", dto.getFarmerId());
         return ResponseEntity.ok(feedbackService.addFeedback(dto));
     }

@@ -1,7 +1,7 @@
 package com.cognizant.agriserve.controller;
 
-import com.cognizant.agriserve.dto.SatisfactionMetricDTO;
-import com.cognizant.agriserve.dto.SatisfactionMetricResponseDTO;
+import com.cognizant.agriserve.dto.request.SatisfactionMetricRequestDTO;
+import com.cognizant.agriserve.dto.response.SatisfactionMetricResponseDTO;
 import com.cognizant.agriserve.entity.SatisfactionMetric;
 import com.cognizant.agriserve.service.SatisfactionMetricservice;
 import jakarta.validation.Valid;
@@ -14,14 +14,14 @@ import java.util.List;
 
 @Slf4j
 @RestController
-@RequestMapping("/Satisfactionmetric")
+@RequestMapping("/api/Satisfactionmetric")
 public class satisfactionmetriccontroller {
 
     @Autowired
     private SatisfactionMetricservice metricservice;
 
     @PostMapping("/evaluate")
-    public ResponseEntity<SatisfactionMetric> evaluatefeedback(@RequestBody @Valid SatisfactionMetricDTO dt) {
+    public ResponseEntity<SatisfactionMetric> evaluatefeedback(@RequestBody @Valid SatisfactionMetricRequestDTO dt) {
         log.info("REST request to evaluate performance for Program ID: {}", dt.getProgramId());
         return ResponseEntity.ok(metricservice.evaluate(dt));
     }

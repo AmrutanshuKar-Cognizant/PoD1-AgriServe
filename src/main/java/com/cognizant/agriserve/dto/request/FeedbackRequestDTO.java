@@ -1,4 +1,4 @@
-package com.cognizant.agriserve.dto;
+package com.cognizant.agriserve.dto.request;
 
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class FeedbackDTO {
+public class FeedbackRequestDTO {
     @NotNull(message = "Session ID is mandatory")
     private Long sessionId;
 
