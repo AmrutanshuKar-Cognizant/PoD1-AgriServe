@@ -1,0 +1,5 @@
+$kind: http-request
+name: Get workshop by officer ID
+url: http://localhost:8081/api/workshops/officer/2
+method: GET
+order: 1380846633328661

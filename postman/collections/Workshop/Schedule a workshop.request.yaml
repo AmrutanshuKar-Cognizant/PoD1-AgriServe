@@ -1,0 +1,5 @@
+$kind: http-request
+name: Schedule a workshop
+url: http://localhost:8081/api/workshops
+method: POST
+order: 1774419306923
