@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface AuditService {
 
-    AuditResponseDTO initiateAudit(AuditRequestDTO requestDTO, Long currentLoggedInUserId);
+    AuditResponseDTO initiateAudit(AuditRequestDTO requestDTO);
 
     AuditResponseDTO getAuditById(Long auditId);
 
@@ -20,7 +20,7 @@ public interface AuditService {
 
     List<AuditResponseDTO> getAuditsByOfficerIdAndStatus(Long officerId, AuditStatus status);
 
-    AuditResponseDTO updateAudit(Long auditId, AuditRequestDTO requestDTO, Long currentLoggedInUserId);
+    AuditResponseDTO updateAudit(Long auditId, AuditRequestDTO requestDTO);
 
-    void deleteAudit(Long auditId, Long currentLoggedInUserId);
+    void deleteAudit(Long auditId);
 }
