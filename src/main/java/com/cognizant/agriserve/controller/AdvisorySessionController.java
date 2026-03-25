@@ -1,7 +1,7 @@
 package com.cognizant.agriserve.controller;
 
-import com.cognizant.agriserve.dto.AdvisorySessionRequestDTO;
-import com.cognizant.agriserve.dto.AdvisorySessionResponseDTO;
+import com.cognizant.agriserve.dto.request.AdvisorySessionRequestDTO;
+import com.cognizant.agriserve.dto.response.AdvisorySessionResponseDTO;
 import com.cognizant.agriserve.service.AdvisorySessionService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;

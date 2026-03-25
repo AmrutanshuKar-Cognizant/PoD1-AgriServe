@@ -1,7 +1,6 @@
-package com.cognizant.agriserve.dto;
+package com.cognizant.agriserve.dto.response;
 
 import lombok.Data;
-import java.time.LocalDateTime;
 
 @Data
 public class AdvisoryContentResponseDTO {

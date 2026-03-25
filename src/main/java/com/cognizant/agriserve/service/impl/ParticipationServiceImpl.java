@@ -1,7 +1,7 @@
 package com.cognizant.agriserve.service.impl;
 
 import com.cognizant.agriserve.dao.ParticipationRepository;
-import com.cognizant.agriserve.dto.AttendanceUpdateRequestDTO;
+import com.cognizant.agriserve.dto.request.AttendanceUpdateRequestDTO;
 import com.cognizant.agriserve.dto.ParticipationDTO;
 import com.cognizant.agriserve.entity.Participation;
 import com.cognizant.agriserve.exception.ResourceConflictException;

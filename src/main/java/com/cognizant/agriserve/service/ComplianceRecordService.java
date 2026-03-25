@@ -1,14 +1,14 @@
 package com.cognizant.agriserve.service;
 
-import com.cognizant.agriserve.dto.ComplianceRecordRequestDTO;
-import com.cognizant.agriserve.dto.ComplianceRecordResponseDTO;
+import com.cognizant.agriserve.dto.request.ComplianceRecordRequestDTO;
+import com.cognizant.agriserve.dto.response.ComplianceRecordResponseDTO;
 import com.cognizant.agriserve.entity.ComplianceRecord.ComplianceType;
 
 import java.util.List;
 
 public interface ComplianceRecordService {
 
-    ComplianceRecordResponseDTO createComplianceRecord(ComplianceRecordRequestDTO requestDTO, Long currentLoggedInUserId);
+    ComplianceRecordResponseDTO createComplianceRecord(ComplianceRecordRequestDTO requestDTO);
 
     ComplianceRecordResponseDTO getComplianceRecordById(Long complianceId);
 
@@ -20,7 +20,7 @@ public interface ComplianceRecordService {
 
     List<ComplianceRecordResponseDTO> getRecordsByEntityAndType(Long entityId, ComplianceType type);
 
-    ComplianceRecordResponseDTO updateComplianceRecord(Long complianceId, ComplianceRecordRequestDTO requestDTO, Long currentLoggedInUserId);
+    ComplianceRecordResponseDTO updateComplianceRecord(Long complianceId, ComplianceRecordRequestDTO requestDTO);
 
-    void deleteComplianceRecord(Long complianceId, Long currentLoggedInUserId);
+    void deleteComplianceRecord(Long complianceId);
 }

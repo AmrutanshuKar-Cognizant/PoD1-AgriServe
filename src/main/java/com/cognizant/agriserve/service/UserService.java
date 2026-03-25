@@ -1,7 +1,7 @@
 package com.cognizant.agriserve.service;
 
-import com.cognizant.agriserve.dto.UserRequestDTO;
-import com.cognizant.agriserve.dto.UserResponseDTO;
+import com.cognizant.agriserve.dto.request.UserRequestDTO;
+import com.cognizant.agriserve.dto.response.UserResponseDTO;
 import com.cognizant.agriserve.entity.User;
 
 import java.util.List;
