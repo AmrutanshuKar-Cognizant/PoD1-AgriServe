@@ -2,7 +2,7 @@ package com.cognizant.agriserve.controller;
 
 import com.cognizant.agriserve.dto.request.AuthRequestDTO;
 import com.cognizant.agriserve.dto.response.AuthResponseDTO;
-import com.cognizant.agriserve.dto.request.FarmerRegistrationRequestDto;
+import com.cognizant.agriserve.dto.request.FarmerRegistrationRequestDTO;
 import com.cognizant.agriserve.service.AuthService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +21,7 @@ public class AuthController {
 
     // REGISTER A NEW FARMER
     @PostMapping("/register/farmer")
-    public ResponseEntity<String> register(@Valid @RequestBody FarmerRegistrationRequestDto request) {
+    public ResponseEntity<String> register(@Valid @RequestBody FarmerRegistrationRequestDTO request) {
 
         // Log the attempt (assuming your DTO has a getEmail() method)
         log.info("API Request: Registering new farmer with email: {}", request.getEmail());

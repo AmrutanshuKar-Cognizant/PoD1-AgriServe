@@ -15,7 +15,7 @@ import java.util.List;
 @Slf4j
 @RestController
 @RequestMapping("/api/users")
-@RequiredArgsConstructor // Replaces @Autowired for cleaner constructor injection
+@RequiredArgsConstructor
 
 public class UserController {
     private final UserService userService;

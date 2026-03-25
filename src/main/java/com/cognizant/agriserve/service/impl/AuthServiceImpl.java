@@ -2,9 +2,9 @@ package com.cognizant.agriserve.service.impl;
 
 import com.cognizant.agriserve.dao.FarmerRepository;
 import com.cognizant.agriserve.dao.UserRepository;
-import com.cognizant.agriserve.dto.request.AuthRequestDTO;
-import com.cognizant.agriserve.dto.response.AuthResponseDTO;
-import com.cognizant.agriserve.dto.request.FarmerRegistrationRequestDto;
+import com.cognizant.agriserve.dto.AuthRequestDTO;
+import com.cognizant.agriserve.dto.AuthResponseDTO;
+import com.cognizant.agriserve.dto.FarmerRegistrationRequestDTO;
 import com.cognizant.agriserve.entity.Farmer;
 import com.cognizant.agriserve.entity.User;
 import com.cognizant.agriserve.service.AuthService;
@@ -31,7 +31,7 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     @Transactional
-    public String registerFarmer(FarmerRegistrationRequestDto dto) {
+    public String registerFarmer(FarmerRegistrationRequestDTO dto) {
         log.info("Attempting to register new farmer with email: {}", dto.getEmail());
 
         // 1. Prevent SQL crashes by checking for duplicate emails first

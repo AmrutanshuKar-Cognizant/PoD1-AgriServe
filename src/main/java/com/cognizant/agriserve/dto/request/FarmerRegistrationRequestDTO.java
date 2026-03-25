@@ -8,7 +8,7 @@ import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 @Data
-public class FarmerRegistrationRequestDto {
+public class FarmerRegistrationRequestDTO {
 
     // CREDENTIALS FOR THE USER TABLE
     @NotBlank(message = "Email is required")
