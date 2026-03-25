@@ -9,7 +9,6 @@ import java.util.List;
 @Repository
 public interface TrainingProgramRepository extends JpaRepository<TrainingProgram, Long> {
 
-    // Custom Method: Spring automatically writes the SQL to find programs by their status
-    // Useful for showing farmers only "Scheduled" or "Active" programs
+
     List<TrainingProgram> findByStatus(String status);
 }

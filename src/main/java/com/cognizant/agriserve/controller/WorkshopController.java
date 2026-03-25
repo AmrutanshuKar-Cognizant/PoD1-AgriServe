@@ -19,7 +19,7 @@ import java.util.List;
 public class WorkshopController {
 
     private final WorkshopService workshopService;
-    private final UserRepository userRepository; // Needed for role validation
+    private final UserRepository userRepository;
 
     public WorkshopController(WorkshopService workshopService, UserRepository userRepository) {
         this.workshopService = workshopService;
@@ -30,11 +30,10 @@ public class WorkshopController {
     public ResponseEntity<WorkshopDTO> scheduleWorkshop(@Valid @RequestBody WorkshopDTO workshopDto) {
         log.info("Checking permissions for Workshop scheduling...");
 
-        // Security Check: Only Managers/Admins can schedule workshops
+
         User requester = userRepository.findById(workshopDto.getOfficerId())
                 .orElseThrow(() -> new UnauthorizedActionException("User not found to verify permissions"));
 
-        // Note: You can replace 'getOfficerId' with a dedicated 'requesterId' field if preferred
         if (requester.getRole() != User.Role.ProgramManager && requester.getRole() != User.Role.Admin) {
             log.error("Unauthorized Attempt: User {} is not a Program Manager", requester.getUserId());
             throw new UnauthorizedActionException("Only Program Managers are authorized to schedule workshops.");
@@ -44,7 +43,7 @@ public class WorkshopController {
         WorkshopDTO scheduledWorkshop = workshopService.scheduleWorkshop(workshopDto);
         return new ResponseEntity<>(scheduledWorkshop, HttpStatus.CREATED);
     }
-
+//farmer access
     @GetMapping("/active")
     public ResponseEntity<List<WorkshopDTO>> getActiveWorkshops() {
         log.info("Fetching all active workshops for farmer discovery view");

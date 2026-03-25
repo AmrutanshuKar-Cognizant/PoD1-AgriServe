@@ -7,6 +7,7 @@ import com.cognizant.agriserve.dto.response.AuthResponseDTO;
 import com.cognizant.agriserve.dto.request.FarmerRegistrationRequestDTO;
 import com.cognizant.agriserve.entity.Farmer;
 import com.cognizant.agriserve.entity.User;
+import com.cognizant.agriserve.exception.ResourceNotFoundException;
 import com.cognizant.agriserve.service.AuthService;
 import com.cognizant.agriserve.util.AuthUtil;
 import lombok.RequiredArgsConstructor;
@@ -93,7 +94,7 @@ public class AuthServiceImpl implements AuthService {
 
         // 2. If we reach here, the password was correct! Fetch the user to get their role.
         User user = userRepository.findByEmail(dto.getEmail())
-                .orElseThrow(() -> new RuntimeException("User not found after authentication"));
+                .orElseThrow(() -> new ResourceNotFoundException("User not found after authentication"));
 
         // 3. Generate the JWT Token
         String token = authUtil.generateToken(user.getEmail(), user.getRole().name());

@@ -1,0 +1,5 @@
+$kind: http-request
+name: Update attendance
+url: ""
+method: PUT
+order: 3420690258801891

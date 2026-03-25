@@ -7,6 +7,7 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
@@ -22,8 +23,8 @@ public class AdvisorySessionController {
     @PostMapping("/log")
     public ResponseEntity<AdvisorySessionResponseDTO> logSession(
             @Valid @RequestBody AdvisorySessionRequestDTO dto,
-            @RequestHeader("Officer-ID") @Min(1) Long officerId) {
-        return ResponseEntity.ok(sessionService.logAdvisorySession(dto, officerId));
+             Authentication authentication) {
+        return ResponseEntity.ok(sessionService.logAdvisorySession(dto,authentication));
     }
 
     @GetMapping("/history/{farmerId}")

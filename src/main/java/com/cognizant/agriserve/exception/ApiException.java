@@ -4,7 +4,7 @@ import lombok.Getter;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-// This tells Spring to return a 400 BAD REQUEST status
+
 @ResponseStatus(value = HttpStatus.BAD_REQUEST)
 public class ApiException extends RuntimeException {
 
