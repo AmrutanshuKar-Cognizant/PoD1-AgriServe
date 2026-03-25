@@ -7,6 +7,7 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
@@ -20,8 +21,8 @@ public class AdvisoryContentController {
 
     @PostMapping("/upload")
     public ResponseEntity<AdvisoryContentResponseDTO> uploadContent(
-            @Valid @RequestBody AdvisoryContentRequestDTO requestDto) { // Changed to RequestDTO
-        return ResponseEntity.ok(contentService.saveContent(requestDto));
+            @Valid @RequestBody AdvisoryContentRequestDTO requestDto, Authentication authentication) { // Changed to RequestDTO
+        return ResponseEntity.ok(contentService.saveContent(requestDto,authentication));
     }
 
     @GetMapping("/active")
@@ -30,8 +31,8 @@ public class AdvisoryContentController {
     }
 
     @PutMapping("/delete/{id}")
-    public ResponseEntity<String> removeContent(@PathVariable @Min(value = 1, message = "ID must be positive") Long id) {
-        contentService.softDeleteContent(id);
+    public ResponseEntity<String> removeContent(@PathVariable @Min(value = 1, message = "ID must be positive") Long id,Authentication authentication) {
+        contentService.softDeleteContent(id,authentication);
         return ResponseEntity.ok("Content marked as Inactive.");
     }
 }

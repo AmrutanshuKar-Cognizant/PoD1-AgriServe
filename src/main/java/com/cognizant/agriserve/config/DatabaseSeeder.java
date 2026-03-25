@@ -43,6 +43,7 @@ public class DatabaseSeeder implements CommandLineRunner {
 
                 // 5. Program Managers (Usage Analytics)
                 createUser("Manager Aditi", "manager@agriserve.com", Role.ProgramManager, "9876543214", commonPassword);
+                createUser("Manager harshith", "harshith@agriserve.com", Role.ProgramManager, "9573454208", commonPassword);
 
                 log.info("Database Seeding Completed Successfully!");
                 log.info("Internal Staff created. Farmers should be registered via the Auth Controller.");
