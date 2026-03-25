@@ -12,13 +12,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class FeedbackRequestDTO {
-    @NotNull(message = "Session ID is mandatory")
     private Long sessionId;
 
     @NotNull(message = "Farmer ID is mandatory")
     private Long farmerId;
 
-    @NotNull(message = "Program ID is mandatory")
     private Long programId;
 
     @Min(value = 1, message = "Rating must be at least 1")

@@ -21,14 +21,14 @@ public class TrainingProgramController {
         this.programService = programService;
     }
 
-    @PostMapping("/create")
+    @PostMapping
     public ResponseEntity<TrainingProgramDTO> createProgram(@Valid @RequestBody TrainingProgramDTO programDto) {
         log.info("Received request to create a new Training Program: {}", programDto.getTitle());
         TrainingProgramDTO savedProgram = programService.createProgram(programDto);
         return new ResponseEntity<>(savedProgram, HttpStatus.CREATED);
     }
 
-    @GetMapping("/get")
+    @GetMapping
     public ResponseEntity<List<TrainingProgramDTO>> getAllPrograms() {
         log.info("Fetching all available Training Programs");
         return ResponseEntity.ok(programService.getAllPrograms());

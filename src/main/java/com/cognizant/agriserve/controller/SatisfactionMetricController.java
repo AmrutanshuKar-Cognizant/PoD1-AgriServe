@@ -15,7 +15,7 @@ import java.util.List;
 @Slf4j
 @RestController
 @RequestMapping("/api/Satisfactionmetric")
-public class satisfactionmetriccontroller {
+public class SatisfactionMetricController {
 
     @Autowired
     private SatisfactionMetricservice metricservice;
