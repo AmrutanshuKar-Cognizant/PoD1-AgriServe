@@ -21,7 +21,10 @@ public class AdvisoryContent {
     @Column(nullable = false)
     private String title;
     @NotBlank(message = "Category is mandatory")
-    @Column(nullable = false)
+
+    @ManyToOne
+    @JoinColumn(name ="uploaded_By",referencedColumnName = "userId")
+    private User uploaded_By;
     private String category;
     private String fileUri;
     private String description;
