@@ -2,6 +2,7 @@ package com.cognizant.agriserve.config;
 
 import com.cognizant.agriserve.filter.JwtAuthFilter;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -13,13 +14,18 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.servlet.HandlerExceptionResolver;
 
 @Configuration
 @EnableWebSecurity
-@RequiredArgsConstructor
 public class WebSecurityConfig {
 
     private final JwtAuthFilter jwtAuthFilter;
+    private final HandlerExceptionResolver resolver;
+    public WebSecurityConfig(JwtAuthFilter jwtAuthFilter,@Qualifier("handlerExceptionResolver")HandlerExceptionResolver resolver){
+        this.jwtAuthFilter=jwtAuthFilter;
+        this.resolver=resolver;
+    }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -31,7 +37,11 @@ public class WebSecurityConfig {
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
-
+                .exceptionHandling(exception -> exception
+                        .accessDeniedHandler((request, response, accessDeniedException) -> {
+                            resolver.resolveException(request, response, null, accessDeniedException);
+                        })
+                )
                 // 3. Configure API Endpoint Access Rules
                 .authorizeHttpRequests(auth -> auth
 
@@ -39,7 +49,7 @@ public class WebSecurityConfig {
                         .requestMatchers("/api/auth/**").permitAll()
 
                         // Role-Restricted Endpoints
-                        .requestMatchers("/api/advisory-content/upload").hasAnyRole("ProgramManager", "Admin")
+                        .requestMatchers("/api/advisory-content/**").hasAnyRole("ProgramManager", "Admin")
                         .requestMatchers("/api/advisory-sessions/log").hasRole("ExtensionOfficer")
 
 
