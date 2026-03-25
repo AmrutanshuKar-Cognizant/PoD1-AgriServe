@@ -30,8 +30,6 @@ public class TrainingProgramDTO {
 
     private String status;
 
-    // ... your other fields (title, startDate, etc.)
-
     private Long managerId;
 
 }

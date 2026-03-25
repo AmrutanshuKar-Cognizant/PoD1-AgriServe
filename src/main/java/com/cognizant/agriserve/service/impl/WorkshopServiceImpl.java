@@ -19,10 +19,10 @@ import java.util.stream.Collectors;
 public class WorkshopServiceImpl implements WorkshopService {
 
     private final WorkshopRepository workshopRepository;
-    private final TrainingProgramRepository programRepository; // <-- 1. Declare the repository
+    private final TrainingProgramRepository programRepository;
     private final ModelMapper modelMapper;
 
-    // <-- 2. Inject it through the constructor
+    //Inject  through the constructor
     public WorkshopServiceImpl(WorkshopRepository workshopRepository, TrainingProgramRepository programRepository, ModelMapper modelMapper) {
         this.workshopRepository = workshopRepository;
         this.programRepository = programRepository;
@@ -48,13 +48,11 @@ public class WorkshopServiceImpl implements WorkshopService {
     public WorkshopDTO scheduleWorkshop(WorkshopDTO dto) {
         log.info("Scheduling a new workshop for Program ID: {}", dto.getProgramId());
 
-        // <-- 3. PROPER VALIDATION: Ensure the program actually exists!
         TrainingProgram program = programRepository.findById(dto.getProgramId())
                 .orElseThrow(() -> new ResourceNotFoundException("Training Program", "ID", dto.getProgramId()));
 
         Workshop newWorkshop = modelMapper.map(dto, Workshop.class);
 
-        // <-- 4. Attach the fully fetched program
         newWorkshop.setTrainingProgram(program);
         newWorkshop.setStatus("Scheduled");
 
