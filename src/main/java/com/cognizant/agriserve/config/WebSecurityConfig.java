@@ -69,7 +69,8 @@ public class WebSecurityConfig {
                         .requestMatchers("/api/programs/**").hasRole("ProgramManager")
                         .requestMatchers("/api/users/**").hasRole("Admin")
                         .requestMatchers("/api/workshops/**").hasRole("ProgramManager")
-
+                        .requestMatchers("/api/feedback/**").hasRole("Farmer")
+                        .requestMatchers("/api/Satisfactionmetric/**").hasAnyRole("ProgramManager","Admin")
 
                         // Default Rule: Everything else requires a valid JWT token
                         .anyRequest().authenticated()
