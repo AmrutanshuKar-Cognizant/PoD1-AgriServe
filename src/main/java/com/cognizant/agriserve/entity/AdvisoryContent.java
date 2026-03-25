@@ -2,13 +2,14 @@ package com.cognizant.agriserve.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import jakarta.validation.constraints.NotNull;
+import lombok.*;
+
 import java.time.LocalDateTime;
 
-@Data
 @AllArgsConstructor
+@Getter
+@Setter
 @NoArgsConstructor
 @Entity
 @Table(name = "advisoryContent")
@@ -20,11 +21,13 @@ public class AdvisoryContent {
     @NotBlank(message = "Title is mandatory")
     @Column(nullable = false)
     private String title;
-    @NotBlank(message = "Category is mandatory")
+
 
     @ManyToOne
-    @JoinColumn(name ="uploaded_By",referencedColumnName = "userId")
-    private User uploaded_By;
+    @JoinColumn(name ="uploaded_By") // Database column name [cite: 89]
+    @NotNull(message = "Uploader is required") // Use @NotNull for Objects [cite: 31]
+    private User uploadedBy; // Java field name [cite: 32]
+    @NotBlank(message = "Category is mandatory")
     private String category;
     private String fileUri;
     private String description;

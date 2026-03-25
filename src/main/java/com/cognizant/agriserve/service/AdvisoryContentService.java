@@ -1,7 +1,7 @@
 package com.cognizant.agriserve.service;
 
-import com.cognizant.agriserve.dto.AdvisoryContentRequestDTO;
-import com.cognizant.agriserve.dto.AdvisoryContentResponseDTO;
+import com.cognizant.agriserve.dto.request.AdvisoryContentRequestDTO;
+import com.cognizant.agriserve.dto.response.AdvisoryContentResponseDTO;
 import com.cognizant.agriserve.entity.AdvisoryContent;
 import org.springframework.security.core.Authentication;
 

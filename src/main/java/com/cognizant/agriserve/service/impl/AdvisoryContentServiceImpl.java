@@ -2,8 +2,8 @@ package com.cognizant.agriserve.service.impl;
 
 import com.cognizant.agriserve.dao.AdvisoryContentRepository;
 import com.cognizant.agriserve.dao.UserRepository;
-import com.cognizant.agriserve.dto.AdvisoryContentRequestDTO;
-import com.cognizant.agriserve.dto.AdvisoryContentResponseDTO;
+import com.cognizant.agriserve.dto.request.AdvisoryContentRequestDTO;
+import com.cognizant.agriserve.dto.response.AdvisoryContentResponseDTO;
 import com.cognizant.agriserve.entity.AdvisoryContent;
 import com.cognizant.agriserve.entity.User;
 import com.cognizant.agriserve.exception.ResourceNotFoundException;
@@ -36,6 +36,7 @@ public class AdvisoryContentServiceImpl implements AdvisoryContentService {
         // 2. Set default server-side values
         content.setStatus("Active");
         content.setUploadedDate(java.time.LocalDateTime.now());
+        content.setUploadedBy(uploader);
 
         // 3. Save to database
         AdvisoryContent saved = contentRepo.save(content);
@@ -52,18 +53,22 @@ public class AdvisoryContentServiceImpl implements AdvisoryContentService {
     }
 
     @Override
-    public void softDeleteContent(Long id,Authentication authentication) {
-        User user=curuser(authentication);
-        AdvisoryContent content = contentRepo.findById(id).orElseThrow(() -> new ResourceNotFoundException("Cannot delete. Advisory Content not found with ID: " + id));
+    public void softDeleteContent(Long id, Authentication authentication) {
+        User user = curuser(authentication);
+        AdvisoryContent content = contentRepo.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Advisory Content not found ID: " + id));
 
-        if(user.getRole().equals(User.Role.Admin)){
+        if (user.getRole().equals(User.Role.Admin)) {
             content.setStatus("Inactive");
             contentRepo.save(content);
             return;
         }
-        if(!(content.getUploaded_By().getEmail().equals(user.getEmail()))){
-            throw new UnauthorizedActionException("You are not authorized");
+
+        // SAFE CHECK: Check for null before calling .getEmail()
+        if (content.getUploadedBy() == null || !content.getUploadedBy().getEmail().equals(user.getEmail())) {
+            throw new UnauthorizedActionException("You are not authorized to delete this content.");
         }
+
         content.setStatus("Inactive");
         contentRepo.save(content);
     }
