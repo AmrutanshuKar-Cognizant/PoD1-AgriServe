@@ -1,0 +1,5 @@
+$kind: http-request
+name: Delete a program by ID
+url: http://localhost:8081/api/programs/3
+method: DELETE
+order: 4485299888834447

@@ -34,38 +34,36 @@ public class TrainingProgramServiceImpl implements TrainingProgramService {
 
     @Override
     public TrainingProgramDTO createProgram(TrainingProgramDTO dto) {
-        log.info("Validating business rules for new Training Program...");
+        log.info("Validating business rules and fetching JWT identity...");
 
-        // 1. Business Rule Validation (400 Bad Request)
-        if (dto.getStartDate() != null && dto.getEndDate() != null && dto.getStartDate().isAfter(dto.getEndDate())) {
-            throw new ApiException(HttpStatus.BAD_REQUEST, "Program start date cannot be later than the end date.");
-        }
+        String loggedInUserEmail = org.springframework.security.core.context.SecurityContextHolder
+                .getContext().getAuthentication().getName();
 
-        // 2. Fetch the Manager from the database (404 Not Found)
-        log.info("Fetching Manager details for User ID: {}", dto.getManagerId());
-        User manager = userRepository.findById(dto.getManagerId())
-                .orElseThrow(() -> new ResourceNotFoundException("Manager", "ID", dto.getManagerId()));
+        User manager = userRepository.findByEmail(loggedInUserEmail)
+                .orElseThrow(() -> new ResourceNotFoundException("Manager", "Email", loggedInUserEmail));
 
-        // 3. Security/Role Check (403 Forbidden)
         if (manager.getRole() != User.Role.ProgramManager && manager.getRole() != User.Role.Admin) {
-            log.error("Security breach attempt: User {} tried to create a program without proper roles.", manager.getUserId());
+            log.error("Security breach attempt: User {} tried to create a program.", manager.getUserId());
             throw new UnauthorizedActionException(
                     "User ID " + manager.getUserId() + " does not have permission to create training programs."
             );
         }
 
-        // 4. Map DTO to Entity and set relationships
+        if (dto.getStartDate() != null && dto.getEndDate() != null && dto.getStartDate().isAfter(dto.getEndDate())) {
+            throw new ApiException(HttpStatus.BAD_REQUEST, "Program start date cannot be later than the end date.");
+        }
+
         TrainingProgram newProgram = modelMapper.map(dto, TrainingProgram.class);
+
         newProgram.setManager(manager);
         newProgram.setStatus(dto.getStatus() != null ? dto.getStatus() : "Draft");
 
-        // 5. Save to Database
         log.info("Saving Training Program to database...");
         TrainingProgram savedProgram = programRepository.save(newProgram);
 
-        // 6. Map back to DTO to return to the frontend
         TrainingProgramDTO responseDto = modelMapper.map(savedProgram, TrainingProgramDTO.class);
-        responseDto.setManagerId(manager.getUserId().longValue());
+
+        responseDto.setManagerId(manager.getUserId());
 
         return responseDto;
     }
@@ -90,7 +88,6 @@ public class TrainingProgramServiceImpl implements TrainingProgramService {
     public TrainingProgramDTO getProgramById(Long programId) {
         log.info("Fetching Training Program details for ID: {}", programId);
 
-        // Fetch Program (404 Not Found)
         TrainingProgram program = programRepository.findById(programId)
                 .orElseThrow(() -> new ResourceNotFoundException("Training Program", "ID", programId));
 
@@ -102,21 +99,17 @@ public class TrainingProgramServiceImpl implements TrainingProgramService {
         return dto;
     }
 
-    // --- NEW: EDIT A PROGRAM ---
     @Override
     public TrainingProgramDTO updateProgram(Long programId, TrainingProgramDTO dto) {
         log.info("Attempting to update Training Program ID: {}", programId);
 
-        // 1. Check if program exists
         TrainingProgram existingProgram = programRepository.findById(programId)
                 .orElseThrow(() -> new ResourceNotFoundException("Training Program", "ID", programId));
 
-        // 2. Validate new dates
         if (dto.getStartDate() != null && dto.getEndDate() != null && dto.getStartDate().isAfter(dto.getEndDate())) {
             throw new ApiException(HttpStatus.BAD_REQUEST, "Program start date cannot be later than the end date.");
         }
 
-        // 3. Update the fields
         existingProgram.setTitle(dto.getTitle());
         existingProgram.setDescription(dto.getDescription());
         existingProgram.setStartDate(dto.getStartDate());
@@ -125,14 +118,12 @@ public class TrainingProgramServiceImpl implements TrainingProgramService {
             existingProgram.setStatus(dto.getStatus());
         }
 
-        // 4. Save and return
         TrainingProgram updatedProgram = programRepository.save(existingProgram);
         TrainingProgramDTO responseDto = modelMapper.map(updatedProgram, TrainingProgramDTO.class);
         if (updatedProgram.getManager() != null) responseDto.setManagerId(updatedProgram.getManager().getUserId().longValue());
         return responseDto;
     }
 
-    // --- NEW: DELETE A PROGRAM ---
     @Override
     public void deleteProgram(Long programId) {
         log.info("Attempting to delete Training Program ID: {}", programId);

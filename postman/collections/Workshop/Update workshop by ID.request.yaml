@@ -1,0 +1,5 @@
+$kind: http-request
+name: Update workshop by ID
+url: http://localhost:8081/api/workshops/1
+method: PUT
+order: 4475019587089328

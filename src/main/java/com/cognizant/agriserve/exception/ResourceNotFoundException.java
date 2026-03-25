@@ -12,8 +12,8 @@ public class ResourceNotFoundException extends RuntimeException {
     private final String fieldName;
     private final Object fieldValue;
 
-    // 1. YOUR TEAMMATE'S CONSTRUCTOR
-    // Used like: throw new ResourceNotFoundException("Manager", "id", 5);
+
+    //throw new ResourceNotFoundException("Manager", "id", 5);
     public ResourceNotFoundException(String resourceName, String fieldName, Object fieldValue) {
         super(String.format("%s not found with %s : '%s'", resourceName, fieldName, fieldValue));
         this.resourceName = resourceName;
@@ -21,8 +21,8 @@ public class ResourceNotFoundException extends RuntimeException {
         this.fieldValue = fieldValue;
     }
 
-    // 2. YOUR CONSTRUCTOR
-    // Used like: throw new ResourceNotFoundException("User not found with ID: 5");
+
+    //throw new ResourceNotFoundException("User not found with ID: 5");
     public ResourceNotFoundException(String message) {
         super(message);
         this.resourceName = null;

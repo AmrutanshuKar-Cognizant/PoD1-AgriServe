@@ -14,7 +14,8 @@ public class WorkshopDTO {
 
     private Long workshopId;
 
-    @NotBlank(message = "Program title is required")
+    @NotNull(message = "Program ID is required")
+    private Long programId;
     private String programTitle;
 
     @NotNull(message = "Officer ID is required")
