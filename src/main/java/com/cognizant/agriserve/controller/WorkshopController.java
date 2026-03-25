@@ -44,7 +44,7 @@ public class WorkshopController {
         WorkshopDTO scheduledWorkshop = workshopService.scheduleWorkshop(workshopDto);
         return new ResponseEntity<>(scheduledWorkshop, HttpStatus.CREATED);
     }
-
+//farmer access
     @GetMapping("/active")
     public ResponseEntity<List<WorkshopDTO>> getActiveWorkshops() {
         log.info("Fetching all active workshops for farmer discovery view");
