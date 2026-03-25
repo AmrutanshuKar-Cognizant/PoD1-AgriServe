@@ -1,22 +1,24 @@
 package com.cognizant.agriserve.service.impl;
 
 import com.cognizant.agriserve.dao.AdvisorySessionRepository;
+import com.cognizant.agriserve.dao.ComplianceRecordRepository;
 import com.cognizant.agriserve.dao.TrainingProgramRepository;
-import com.cognizant.agriserve.dto.ComplianceRecordRequestDTO;
-import com.cognizant.agriserve.dto.ComplianceRecordResponseDTO;
+import com.cognizant.agriserve.dto.request.ComplianceRecordRequestDTO;
+import com.cognizant.agriserve.dto.response.ComplianceRecordResponseDTO;
 import com.cognizant.agriserve.entity.ComplianceRecord;
 import com.cognizant.agriserve.entity.ComplianceRecord.ComplianceType;
-import com.cognizant.agriserve.dao.ComplianceRecordRepository;
+import com.cognizant.agriserve.entity.User;
+import com.cognizant.agriserve.exception.ResourceNotFoundException;
+import com.cognizant.agriserve.exception.UnauthorizedActionException;
 import com.cognizant.agriserve.service.ComplianceRecordService;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
-
-import com.cognizant.agriserve.exception.ResourceNotFoundException;
-import com.cognizant.agriserve.exception.UnauthorizedActionException;
 
 @Slf4j
 @Service
@@ -25,20 +27,40 @@ public class ComplianceRecordServiceImpl implements ComplianceRecordService {
     private final ComplianceRecordRepository complianceRecordRepository;
     private final TrainingProgramRepository trainingProgramRepository;
     private final AdvisorySessionRepository advisorySessionRepository;
+    private final UserRepository userRepository;
     private final ModelMapper modelMapper;
 
     public ComplianceRecordServiceImpl(ComplianceRecordRepository complianceRecordRepository,
                                        TrainingProgramRepository trainingProgramRepository,
                                        AdvisorySessionRepository advisorySessionRepository,
+                                       UserRepository userRepository,
                                        ModelMapper modelMapper) {
         this.complianceRecordRepository = complianceRecordRepository;
         this.trainingProgramRepository = trainingProgramRepository;
         this.advisorySessionRepository = advisorySessionRepository;
+        this.userRepository = userRepository;
         this.modelMapper = modelMapper;
     }
 
+    private Long getCurrentLoggedInUserId() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (authentication == null || !authentication.isAuthenticated() || "anonymousUser".equals(authentication.getPrincipal())) {
+            throw new UnauthorizedActionException("User is not authenticated. Please provide a valid JWT.");
+        }
+
+        String email = authentication.getName();
+
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new ResourceNotFoundException("Logged in user not found in database."));
+
+        return user.getUserId();
+    }
+
     @Override
-    public ComplianceRecordResponseDTO createComplianceRecord(ComplianceRecordRequestDTO requestDTO, Long currentLoggedInUserId) {
+    public ComplianceRecordResponseDTO createComplianceRecord(ComplianceRecordRequestDTO requestDTO) {
+
+        Long currentLoggedInUserId = getCurrentLoggedInUserId();
 
         log.info("Officer ID {} is attempting to create a new {} record for Entity ID {}",
                 currentLoggedInUserId, requestDTO.getType(), requestDTO.getEntityId());
@@ -111,7 +133,10 @@ public class ComplianceRecordServiceImpl implements ComplianceRecordService {
     }
 
     @Override
-    public ComplianceRecordResponseDTO updateComplianceRecord(Long complianceId, ComplianceRecordRequestDTO requestDTO, Long currentLoggedInUserId) {
+    public ComplianceRecordResponseDTO updateComplianceRecord(Long complianceId, ComplianceRecordRequestDTO requestDTO) {
+
+        Long currentLoggedInUserId = getCurrentLoggedInUserId();
+
         log.info("Officer ID {} is attempting to update Compliance Record ID {}", currentLoggedInUserId, complianceId);
 
         ComplianceRecord existingRecord = complianceRecordRepository.findById(complianceId)
@@ -147,7 +172,10 @@ public class ComplianceRecordServiceImpl implements ComplianceRecordService {
     }
 
     @Override
-    public void deleteComplianceRecord(Long complianceId, Long currentLoggedInUserId) {
+    public void deleteComplianceRecord(Long complianceId) {
+
+        Long currentLoggedInUserId = getCurrentLoggedInUserId();
+
         log.info("Officer ID {} is attempting to DELETE Compliance Record ID {}", currentLoggedInUserId, complianceId);
 
         ComplianceRecord existingRecord = complianceRecordRepository.findById(complianceId)

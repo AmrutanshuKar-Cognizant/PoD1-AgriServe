@@ -1,7 +1,7 @@
 package com.cognizant.agriserve.controller;
 
-import com.cognizant.agriserve.dto.FarmerDocumentResponseDTO;
-import com.cognizant.agriserve.dto.FarmerDocumentUploadRequestDTO;
+import com.cognizant.agriserve.dto.response.FarmerDocumentResponseDTO;
+import com.cognizant.agriserve.dto.request.FarmerDocumentUploadRequestDTO;
 
 import com.cognizant.agriserve.service.FarmerDocumentService;
 

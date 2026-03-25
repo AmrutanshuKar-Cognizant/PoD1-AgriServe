@@ -30,6 +30,8 @@ public class TrainingProgramDTO {
 
     private String status;
 
-    @NotNull(message = "Manager ID is required to track program ownership")
+    // ... your other fields (title, startDate, etc.)
+
     private Long managerId;
+
 }

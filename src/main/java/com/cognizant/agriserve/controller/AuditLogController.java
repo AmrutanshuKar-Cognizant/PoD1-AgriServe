@@ -1,6 +1,6 @@
 package com.cognizant.agriserve.controller;
 
-import com.cognizant.agriserve.dto.AuditLogResponseDTO;
+import com.cognizant.agriserve.dto.response.AuditLogResponseDTO;
 import com.cognizant.agriserve.service.AuditLogService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

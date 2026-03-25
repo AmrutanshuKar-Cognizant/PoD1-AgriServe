@@ -1,6 +1,6 @@
 package com.cognizant.agriserve.controller;
 
-import com.cognizant.agriserve.dto.AttendanceUpdateRequestDTO;
+import com.cognizant.agriserve.dto.request.AttendanceUpdateRequestDTO;
 import com.cognizant.agriserve.dto.ParticipationDTO;
 import com.cognizant.agriserve.service.ParticipationService;
 import jakarta.validation.Valid;
@@ -36,7 +36,7 @@ public class ParticipationController {
     }
 
     @GetMapping("/farmer/{farmerId}")
-    public ResponseEntity<List<ParticipationDTO>> getParticipationsByFarmerId(@PathVariable Long farmerId) {
+    public ResponseEntity<List<ParticipationDTO>> getParticipationByFarmerId(@PathVariable Long farmerId) {
         log.info("Fetching history for Farmer ID: {}", farmerId);
         return ResponseEntity.ok(participationService.getParticipationByFarmerId(farmerId));
     }

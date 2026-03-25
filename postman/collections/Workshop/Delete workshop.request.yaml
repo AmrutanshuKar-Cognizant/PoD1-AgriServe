@@ -1,0 +1,5 @@
+$kind: http-request
+name: Delete workshop
+url: http://localhost:8081/api/workshops/3
+method: DELETE
+order: 4488391554334871

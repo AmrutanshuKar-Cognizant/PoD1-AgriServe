@@ -34,38 +34,45 @@ public class TrainingProgramServiceImpl implements TrainingProgramService {
 
     @Override
     public TrainingProgramDTO createProgram(TrainingProgramDTO dto) {
-        log.info("Validating business rules for new Training Program...");
+        log.info("Validating business rules and fetching JWT identity...");
 
-        // 1. Business Rule Validation (400 Bad Request)
-        if (dto.getStartDate() != null && dto.getEndDate() != null && dto.getStartDate().isAfter(dto.getEndDate())) {
-            throw new ApiException(HttpStatus.BAD_REQUEST, "Program start date cannot be later than the end date.");
-        }
+        // 1. EXTRACT JWT IDENTITY: Get the email from the logged-in user's token
+        String loggedInUserEmail = org.springframework.security.core.context.SecurityContextHolder
+                .getContext().getAuthentication().getName();
 
-        // 2. Fetch the Manager from the database (404 Not Found)
-        log.info("Fetching Manager details for User ID: {}", dto.getManagerId());
-        User manager = userRepository.findById(dto.getManagerId())
-                .orElseThrow(() -> new ResourceNotFoundException("Manager", "ID", dto.getManagerId()));
+        // 2. Fetch the Manager from the database using their token email (404 Not Found)
+        User manager = userRepository.findByEmail(loggedInUserEmail)
+                .orElseThrow(() -> new ResourceNotFoundException("Manager", "Email", loggedInUserEmail));
 
         // 3. Security/Role Check (403 Forbidden)
         if (manager.getRole() != User.Role.ProgramManager && manager.getRole() != User.Role.Admin) {
-            log.error("Security breach attempt: User {} tried to create a program without proper roles.", manager.getUserId());
+            log.error("Security breach attempt: User {} tried to create a program.", manager.getUserId());
             throw new UnauthorizedActionException(
                     "User ID " + manager.getUserId() + " does not have permission to create training programs."
             );
         }
 
-        // 4. Map DTO to Entity and set relationships
+        // 4. Business Rule Validation (400 Bad Request)
+        if (dto.getStartDate() != null && dto.getEndDate() != null && dto.getStartDate().isAfter(dto.getEndDate())) {
+            throw new ApiException(HttpStatus.BAD_REQUEST, "Program start date cannot be later than the end date.");
+        }
+
+        // 5. Map DTO to Entity and AUTOMATICALLY set relationships
         TrainingProgram newProgram = modelMapper.map(dto, TrainingProgram.class);
+
+        // This overrides anything sent in Postman and locks the program to the logged-in user
         newProgram.setManager(manager);
         newProgram.setStatus(dto.getStatus() != null ? dto.getStatus() : "Draft");
 
-        // 5. Save to Database
+        // 6. Save to Database
         log.info("Saving Training Program to database...");
         TrainingProgram savedProgram = programRepository.save(newProgram);
 
-        // 6. Map back to DTO to return to the frontend
+        // 7. Map back to DTO to return to the frontend
         TrainingProgramDTO responseDto = modelMapper.map(savedProgram, TrainingProgramDTO.class);
-        responseDto.setManagerId(manager.getUserId().longValue());
+
+        // Use the manually created setter to attach the correct ID
+        responseDto.setManagerId(manager.getUserId());
 
         return responseDto;
     }
