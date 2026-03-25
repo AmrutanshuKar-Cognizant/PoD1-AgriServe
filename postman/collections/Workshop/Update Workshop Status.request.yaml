@@ -1,0 +1,5 @@
+$kind: http-request
+name: Update Workshop Status
+url: http://localhost:8081/api/workshops/2/status
+method: PATCH
+order: 4471586530367442

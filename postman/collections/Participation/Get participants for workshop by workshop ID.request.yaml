@@ -1,0 +1,5 @@
+$kind: http-request
+name: Get participants for workshop by workshop ID
+url: http://localhost:8081/api/participations/workshop/1
+method: GET
+order: 2235881086203896

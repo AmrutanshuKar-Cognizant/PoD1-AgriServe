@@ -29,7 +29,7 @@ public class Workshop {
     private Long officerId;
     private String location;
 
-    private LocalDateTime date; // Modern LocalDateTime replaces java.util.Date
+    private LocalDateTime date;
 
     private String status;
 

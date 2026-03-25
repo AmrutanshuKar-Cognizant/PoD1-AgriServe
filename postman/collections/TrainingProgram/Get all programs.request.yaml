@@ -1,0 +1,5 @@
+$kind: http-request
+name: Get all programs
+url: http://localhost:8081/api/programs
+method: GET
+order: 275313525048650
