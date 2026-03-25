@@ -1,5 +1,0 @@
-$kind: http-request
-name: Get all programs
-url: ""
-method: GET
-order: 275313525048650

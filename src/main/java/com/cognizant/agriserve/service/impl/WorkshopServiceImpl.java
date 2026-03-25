@@ -1,7 +1,9 @@
 package com.cognizant.agriserve.service.impl;
 
+import com.cognizant.agriserve.dao.TrainingProgramRepository; // <-- Added Import
 import com.cognizant.agriserve.dao.WorkshopRepository;
 import com.cognizant.agriserve.dto.WorkshopDTO;
+import com.cognizant.agriserve.entity.TrainingProgram;
 import com.cognizant.agriserve.entity.Workshop;
 import com.cognizant.agriserve.exception.ResourceNotFoundException;
 import com.cognizant.agriserve.service.WorkshopService;
@@ -17,10 +19,13 @@ import java.util.stream.Collectors;
 public class WorkshopServiceImpl implements WorkshopService {
 
     private final WorkshopRepository workshopRepository;
+    private final TrainingProgramRepository programRepository; // <-- 1. Declare the repository
     private final ModelMapper modelMapper;
 
-    public WorkshopServiceImpl(WorkshopRepository workshopRepository, ModelMapper modelMapper) {
+    // <-- 2. Inject it through the constructor
+    public WorkshopServiceImpl(WorkshopRepository workshopRepository, TrainingProgramRepository programRepository, ModelMapper modelMapper) {
         this.workshopRepository = workshopRepository;
+        this.programRepository = programRepository;
         this.modelMapper = modelMapper;
     }
 
@@ -41,9 +46,18 @@ public class WorkshopServiceImpl implements WorkshopService {
 
     @Override
     public WorkshopDTO scheduleWorkshop(WorkshopDTO dto) {
-        log.info("Scheduling a new workshop");
+        log.info("Scheduling a new workshop for Program ID: {}", dto.getProgramId());
+
+        // <-- 3. PROPER VALIDATION: Ensure the program actually exists!
+        TrainingProgram program = programRepository.findById(dto.getProgramId())
+                .orElseThrow(() -> new ResourceNotFoundException("Training Program", "ID", dto.getProgramId()));
+
         Workshop newWorkshop = modelMapper.map(dto, Workshop.class);
+
+        // <-- 4. Attach the fully fetched program
+        newWorkshop.setTrainingProgram(program);
         newWorkshop.setStatus("Scheduled");
+
         Workshop savedWorkshop = workshopRepository.save(newWorkshop);
         return convertToDto(savedWorkshop);
     }
@@ -59,8 +73,6 @@ public class WorkshopServiceImpl implements WorkshopService {
     @Override
     public WorkshopDTO updateWorkshopStatus(Long workshopId, String status) {
         log.info("Updating status for workshop ID: {}", workshopId);
-
-        // Fetch Workshop (404 Not Found)
         Workshop existingWorkshop = workshopRepository.findById(workshopId)
                 .orElseThrow(() -> new ResourceNotFoundException("Workshop", "ID", workshopId));
 
@@ -68,15 +80,13 @@ public class WorkshopServiceImpl implements WorkshopService {
         Workshop updatedWorkshop = workshopRepository.save(existingWorkshop);
         return convertToDto(updatedWorkshop);
     }
-    // --- NEW: FULLY EDIT A WORKSHOP ---
+
     @Override
     public WorkshopDTO updateWorkshop(Long workshopId, WorkshopDTO dto) {
         log.info("Attempting to edit details for Workshop ID: {}", workshopId);
-
         Workshop existingWorkshop = workshopRepository.findById(workshopId)
                 .orElseThrow(() -> new ResourceNotFoundException("Workshop", "ID", workshopId));
 
-        // Update core details
         existingWorkshop.setLocation(dto.getLocation());
         existingWorkshop.setDate(dto.getDate());
         existingWorkshop.setOfficerId(dto.getOfficerId());
@@ -85,7 +95,6 @@ public class WorkshopServiceImpl implements WorkshopService {
         return convertToDto(updatedWorkshop);
     }
 
-    // --- NEW: DELETE A WORKSHOP ---
     @Override
     public void deleteWorkshop(Long workshopId) {
         log.info("Attempting to delete Workshop ID: {}", workshopId);
@@ -99,6 +108,7 @@ public class WorkshopServiceImpl implements WorkshopService {
     private WorkshopDTO convertToDto(Workshop workshop) {
         WorkshopDTO dto = modelMapper.map(workshop, WorkshopDTO.class);
         if (workshop.getTrainingProgram() != null) {
+            // Because we fetch the full program now, this title will automatically be populated!
             dto.setProgramTitle(workshop.getTrainingProgram().getTitle());
         }
         return dto;

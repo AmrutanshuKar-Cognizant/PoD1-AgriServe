@@ -1,5 +1,0 @@
-$kind: http-request
-name: Get a program by ID
-url: http://localhost:8081/api/programs/1
-method: GET
-order: 4424799280193227
