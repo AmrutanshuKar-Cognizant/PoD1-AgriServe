@@ -1,4 +1,4 @@
-package com.cognizant.agriserve.dto;
+package com.cognizant.agriserve.dto.request;
 
 import lombok.Data;
 

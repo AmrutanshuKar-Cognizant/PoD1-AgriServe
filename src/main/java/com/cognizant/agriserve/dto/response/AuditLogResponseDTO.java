@@ -1,4 +1,4 @@
-package com.cognizant.agriserve.dto;
+package com.cognizant.agriserve.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

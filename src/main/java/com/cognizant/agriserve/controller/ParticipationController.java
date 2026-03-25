@@ -1,6 +1,6 @@
 package com.cognizant.agriserve.controller;
 
-import com.cognizant.agriserve.dto.AttendanceUpdateRequestDTO;
+import com.cognizant.agriserve.dto.request.AttendanceUpdateRequestDTO;
 import com.cognizant.agriserve.dto.ParticipationDTO;
 import com.cognizant.agriserve.service.ParticipationService;
 import jakarta.validation.Valid;

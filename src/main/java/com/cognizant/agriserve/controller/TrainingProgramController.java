@@ -21,7 +21,6 @@ public class TrainingProgramController {
         this.programService = programService;
     }
 
-
     @PostMapping
     public ResponseEntity<TrainingProgramDTO> createProgram(@Valid @RequestBody TrainingProgramDTO programDto) {
         log.info("Received request to create a new Training Program: {}", programDto.getTitle());

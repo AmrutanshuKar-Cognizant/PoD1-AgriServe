@@ -1,8 +1,7 @@
 package com.cognizant.agriserve.controller;
 
-import com.cognizant.agriserve.dto.AdvisoryContentRequestDTO;
-import com.cognizant.agriserve.dto.AdvisoryContentResponseDTO;
-import com.cognizant.agriserve.entity.AdvisoryContent;
+import com.cognizant.agriserve.dto.request.AdvisoryContentRequestDTO;
+import com.cognizant.agriserve.dto.response.AdvisoryContentResponseDTO;
 import com.cognizant.agriserve.service.AdvisoryContentService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
