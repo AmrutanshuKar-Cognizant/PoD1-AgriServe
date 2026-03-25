@@ -33,16 +33,16 @@ public class DatabaseSeeder implements CommandLineRunner {
                 createUser("System Admin", "admin@agriserve.com", Role.Admin, "9998887770", commonPassword);
 
                 // 2. Extension Officers (The ones who log sessions)
-                createUser("Officer", "karthik@agriserve.com", Role.ExtensionOfficer, "9876543210", commonPassword);
+                createUser("Extension Officer", "karthik@agriserve.com", Role.ExtensionOfficer, "9876543210", commonPassword);
 
                 // 3. Compliance Officers (Regulatory checks)
-                createUser("Compliance Lead", "compliance@agriserve.com", Role.ComplianceOfficer, "9876543212", commonPassword);
+                createUser("Compliance Officer", "compliance@agriserve.com", Role.ComplianceOfficer, "9876543212", commonPassword);
 
                 // 4. Auditors (Reviewing logs)
-                createUser("Auditor David", "auditor@agriserve.com", Role.Auditor, "9876543213", commonPassword);
+                createUser("Auditor Adyasha", "auditor@agriserve.com", Role.Auditor, "9876543213", commonPassword);
 
                 // 5. Program Managers (Usage Analytics)
-                createUser("Manager Elena", "manager@agriserve.com", Role.ProgramManager, "9876543214", commonPassword);
+                createUser("Manager Aditi", "manager@agriserve.com", Role.ProgramManager, "9876543214", commonPassword);
 
                 log.info("Database Seeding Completed Successfully!");
                 log.info("Internal Staff created. Farmers should be registered via the Auth Controller.");

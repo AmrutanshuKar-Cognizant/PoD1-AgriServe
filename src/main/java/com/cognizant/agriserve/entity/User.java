@@ -39,8 +39,7 @@ public class User {
     @Column(unique = true)
     private String phone;
 
-    @NotBlank(message = "Password cannot be empty")
-    @Size(min = 6, message = "Password must have at least 6 characters")
+    @Column(nullable = false, length = 255)
     private String password;
 
     @NotBlank(message = "Status cannot be empty")

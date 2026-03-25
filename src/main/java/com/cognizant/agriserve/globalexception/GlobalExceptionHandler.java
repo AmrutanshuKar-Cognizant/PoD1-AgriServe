@@ -24,21 +24,14 @@ import java.util.stream.Collectors;
 @Slf4j
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler(AccessDeniedException.class)
-    public ResponseEntity<Map<String, Object>> handleAccessDenied(AccessDeniedException ex) {
-        Map<String, Object> body = new HashMap<>();
-        body.put("timestamp", Instant.now());
-        body.put("status", 403);
-        body.put("error", "Forbidden");
-        body.put("message", "You do not have permission to access this resource.");
-        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(body);
-    }
-
     // Catch 404: When an ID isn't in the database
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<ErrorResponseDTO> handleResourceNotFound(
             ResourceNotFoundException ex,
             HttpServletRequest request) {
+
+        log.error("Resource error: {}", ex.getMessage()); // Added logging from Code 2
+
         ErrorResponseDTO errorResponse = new ErrorResponseDTO(
                 LocalDateTime.now(),
                 HttpStatus.NOT_FOUND.value(),
@@ -180,6 +173,25 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errorResponse, HttpStatus.CONFLICT);
     }
 
+    // --- NEW FROM CODE 2: Catch Generic Runtime Exceptions ---
+    @ExceptionHandler(RuntimeException.class)
+    public ResponseEntity<ErrorResponseDTO> handleRuntimeException(
+            RuntimeException ex,
+            HttpServletRequest request) {
+
+        log.error("Runtime error: {}", ex.getMessage());
+
+        ErrorResponseDTO errorResponse = new ErrorResponseDTO(
+                LocalDateTime.now(),
+                HttpStatus.BAD_REQUEST.value(),
+                "Bad Request",
+                ex.getMessage(),
+                request.getRequestURI()
+        );
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+    }
+    // ---------------------------------------------------------
+
     // Catch 500: Safety Net
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponseDTO> handleGlobalException(
@@ -194,5 +206,15 @@ public class GlobalExceptionHandler {
                 request.getRequestURI()
         );
         return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<Map<String, Object>> handleAccessDenied(AccessDeniedException ex) {
+        Map<String, Object> body = new HashMap<>();
+        body.put("timestamp", Instant.now());
+        body.put("status", 403);
+        body.put("error", "Forbidden");
+        body.put("message", "You do not have permission to access this resource.");
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(body);
     }
 }
