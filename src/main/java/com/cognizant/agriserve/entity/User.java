@@ -44,4 +44,5 @@ public class User {
 
     @NotBlank(message = "Status cannot be empty")
     private String status;
+
 }
