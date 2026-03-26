@@ -14,15 +14,12 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "advisoryContent")
 public class AdvisoryContent {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long contentId;
     @NotBlank(message = "Title is mandatory")
     @Column(nullable = false)
     private String title;
-
-
     @ManyToOne
     @JoinColumn(name ="uploaded_By") // Database column name [cite: 89]
     @NotNull(message = "Uploader is required") // Use @NotNull for Objects [cite: 31]
