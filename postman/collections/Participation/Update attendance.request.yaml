@@ -1,5 +1,18 @@
 $kind: http-request
 name: Update attendance
-url: ""
+url: http://localhost:8081/api/participations/attendance
 method: PUT
+body:
+  type: json
+  content: "{\r
+
+    \    \"participationId\":1,\r
+
+    \    \"newAttendanceStatus\":\"Present\"\r
+
+    }"
+auth:
+  type: bearer
+  credentials:
+    token: eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJrYXJ0aGlrQGFncmlzZXJ2ZS5jb20iLCJyb2xlIjoiRXh0ZW5zaW9uT2ZmaWNlciIsImlhdCI6MTc3NDQ3MDYzNywiZXhwIjoxNzc0NTU3MDM3fQ.QiJVyNycc4hbxt7fPKW17Hhn0oHlmbSuN3UEcEM3ZDwy1EyC4R2XbhTZp46bEn9JxP5yYPW09uMS9C-GND8syw
 order: 3420690258801891
