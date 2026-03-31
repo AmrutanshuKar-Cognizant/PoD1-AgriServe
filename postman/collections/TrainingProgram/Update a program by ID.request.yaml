@@ -2,4 +2,24 @@ $kind: http-request
 name: Update a program by ID
 url: http://localhost:8081/api/programs/2
 method: PUT
+body:
+  type: json
+  content: "{\r
+
+    \    \"title\": \"Advanced Organic Farming Techniques\",\r
+
+    \    \"description\": \"An updated comprehensive guide to organic
+    fertilizers and pest control.\",\r
+
+    \    \"startDate\": \"2026-06-01\",\r
+
+    \    \"endDate\": \"2026-06-15\",\r
+
+    \    \"status\": \"Active\"\r
+
+    }"
+auth:
+  type: bearer
+  credentials:
+    token: eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJtYW5hZ2VyQGFncmlzZXJ2ZS5jb20iLCJyb2xlIjoiUHJvZ3JhbU1hbmFnZXIiLCJpYXQiOjE3NzQ0NzA1OTMsImV4cCI6MTc3NDU1Njk5M30.3_sRrFvTncm8eSmbIK42HC4A2FrZxczT9ij_FQsNy_wmYIYL6AFmvJbach-iaq-83KI_OMShSN4n2Riyv6SPXA
 order: 4459363510728878

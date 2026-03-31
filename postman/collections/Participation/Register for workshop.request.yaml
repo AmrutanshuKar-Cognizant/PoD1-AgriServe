@@ -2,4 +2,11 @@ $kind: http-request
 name: Register for workshop
 url: http://localhost:8081/api/participations/register
 method: POST
+body:
+  type: json
+  content: "{\r\n    \"workshopId\":4\r\n}"
+auth:
+  type: bearer
+  credentials:
+    token: eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJyYW0uc2luZ2hAZXhhbXBsZS5jb20iLCJyb2xlIjoiRmFybWVyIiwiaWF0IjoxNzc0NDcwMjM2LCJleHAiOjE3NzQ1NTY2MzZ9.qmm0SBkpu3MGsJsyWW3mSygbHhlvOHZZDFkAjTvFJRKEyMg6i0AeOgfY5esJ6xcFStTw64q07tpd5KENTXExCA
 order: 1774429932954

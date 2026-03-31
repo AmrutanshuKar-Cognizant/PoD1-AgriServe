@@ -31,8 +31,13 @@ public class WorkshopController {
         log.info("Checking permissions for Workshop scheduling...");
 
 
-        User requester = userRepository.findById(workshopDto.getOfficerId())
-                .orElseThrow(() -> new UnauthorizedActionException("User not found to verify permissions"));
+        String loggedInUserEmail = org.springframework.security.core.context.SecurityContextHolder
+                .getContext().getAuthentication().getName();
+
+
+        User requester = userRepository.findByEmail(loggedInUserEmail)
+                .orElseThrow(() -> new UnauthorizedActionException("Logged-in user not found in database"));
+
 
         if (requester.getRole() != User.Role.ProgramManager && requester.getRole() != User.Role.Admin) {
             log.error("Unauthorized Attempt: User {} is not a Program Manager", requester.getUserId());

@@ -1,0 +1,5 @@
+$kind: http-request
+name: Farmer Registration
+url: http://localhost:8081/api/auth/register
+method: POST
+order: 2006436797945310

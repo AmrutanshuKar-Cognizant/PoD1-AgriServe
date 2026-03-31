@@ -1,5 +1,0 @@
-$kind: http-request
-name: Login
-url: http://localhost:8081/api/auth/login
-method: POST
-order: 1774438498934

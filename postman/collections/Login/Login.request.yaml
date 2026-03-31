@@ -1,0 +1,16 @@
+$kind: http-request
+name: Login
+url: http://localhost:8081/api/auth/login
+method: POST
+body:
+  type: json
+  content: "{\r
+
+    \    \"email\":\"karthik@agriserve.com\",\r
+
+    \    \"password\":\"Password123\"\r
+
+    }"
+auth:
+  type: basic
+order: 1774438498934

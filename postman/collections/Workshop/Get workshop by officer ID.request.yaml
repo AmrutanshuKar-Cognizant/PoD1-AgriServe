@@ -2,4 +2,8 @@ $kind: http-request
 name: Get workshop by officer ID
 url: http://localhost:8081/api/workshops/officer/2
 method: GET
+auth:
+  type: bearer
+  credentials:
+    token: eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJrYXJ0aGlrQGFncmlzZXJ2ZS5jb20iLCJyb2xlIjoiRXh0ZW5zaW9uT2ZmaWNlciIsImlhdCI6MTc3NDQ3MDYzNywiZXhwIjoxNzc0NTU3MDM3fQ.QiJVyNycc4hbxt7fPKW17Hhn0oHlmbSuN3UEcEM3ZDwy1EyC4R2XbhTZp46bEn9JxP5yYPW09uMS9C-GND8syw
 order: 1380846633328661
