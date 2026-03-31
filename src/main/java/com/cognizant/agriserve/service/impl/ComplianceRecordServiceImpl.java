@@ -80,6 +80,7 @@ public class ComplianceRecordServiceImpl implements ComplianceRecordService {
         }
 
         ComplianceRecord complianceRecord = mapToEntity(requestDTO);
+        complianceRecord.setComplianceId(null);
         complianceRecord.setOfficerId(currentLoggedInUserId);
 
         ComplianceRecord savedRecord = complianceRecordRepository.save(complianceRecord);

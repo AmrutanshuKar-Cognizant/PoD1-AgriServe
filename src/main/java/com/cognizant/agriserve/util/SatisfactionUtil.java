@@ -4,7 +4,7 @@ import com.cognizant.agriserve.dto.request.SatisfactionMetricRequestDTO;
 import com.cognizant.agriserve.entity.*;
 import java.time.LocalDate;
 
-public class Satisfactionutil {
+public class SatisfactionUtil {
 
 
     public static SatisfactionMetric Satisfactionutili(SatisfactionMetricRequestDTO dt,

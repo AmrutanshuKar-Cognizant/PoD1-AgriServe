@@ -12,7 +12,7 @@ import com.cognizant.agriserve.entity.TrainingProgram;
 import com.cognizant.agriserve.entity.User;
 import com.cognizant.agriserve.exception.ResourceNotFoundException;
 import com.cognizant.agriserve.service.SatisfactionMetricservice;
-import com.cognizant.agriserve.util.Satisfactionutil;
+import com.cognizant.agriserve.util.SatisfactionUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,7 +22,7 @@ import java.util.List;
 
 @Slf4j
 @Service
-public class Satisfactionmetricimpl implements SatisfactionMetricservice {
+public class SatisfactionMetricimpl implements SatisfactionMetricservice {
     @Autowired private SatisfactionMetricRepository metricrepo;
     @Autowired private FeedbackRepository feedbackRepo;
     @Autowired private TrainingProgramRepository trainingRepo;
@@ -55,7 +55,7 @@ public class Satisfactionmetricimpl implements SatisfactionMetricservice {
         log.info("Calculated Average Score for Program {}: {}", dto.getProgramId(), average);
 
         // 4. Use Utility to map and Save
-        SatisfactionMetric metric = Satisfactionutil.Satisfactionutili(dto, p, m, average);
+        SatisfactionMetric metric = SatisfactionUtil.Satisfactionutili(dto, p, m, average);
 
         return metricrepo.save(metric);
     }

@@ -12,7 +12,7 @@ import com.cognizant.agriserve.entity.Feedback;
 import com.cognizant.agriserve.entity.TrainingProgram;
 import com.cognizant.agriserve.exception.ResourceNotFoundException;
 import com.cognizant.agriserve.service.FeedbackService;
-import com.cognizant.agriserve.util.feedbackutil;
+import com.cognizant.agriserve.util.FeedbackUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -33,7 +33,7 @@ public class FeedbackServiceimpl implements FeedbackService {
         AdvisorySession s = sessionRepo.findById(dto.getSessionId()).orElseThrow(() -> new ResourceNotFoundException("Session not found"));
         TrainingProgram p = trainingRepo.findById(dto.getProgramId()).orElseThrow(() -> new ResourceNotFoundException("Program not found"));
 
-        return feedbackRepo.save(feedbackutil.tofeedback(dto, f, s, p));
+        return feedbackRepo.save(FeedbackUtil.tofeedback(dto, f, s, p));
     }
     @Override
     public List<FeedbackResponseDTO> getAllFeedback() {

@@ -1,11 +1,9 @@
 package com.cognizant.agriserve.config;
 
 import com.cognizant.agriserve.filter.JwtAuthFilter;
-import org.apache.tomcat.util.http.Method;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -66,9 +64,10 @@ public class WebSecurityConfig {
                         .requestMatchers("/api/participations/workshop/{workshopId}",
                                 "/api/participations/farmer/{farmerId}").hasAnyRole("ExtensionOfficer", "ProgramManager", "Admin")
                         .requestMatchers("/api/participations/attendance").hasRole("ExtensionOfficer")
-                        .requestMatchers("/api/progr ams/**").hasRole("ProgramManager")
+                        .requestMatchers("/api/programs/**").hasRole("ProgramManager")
                         .requestMatchers("/api/users/**").hasRole("Admin")
                         .requestMatchers("/api/workshops/**").hasRole("ProgramManager")
+                        .requestMatchers("/api/workshops/active").hasRole("Farmer")
                         .requestMatchers("/api/feedback/**").hasRole("Farmer")
                         .requestMatchers("/api/Satisfactionmetric/**").hasAnyRole("ProgramManager","Admin")
 

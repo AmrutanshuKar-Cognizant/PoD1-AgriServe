@@ -7,8 +7,7 @@ import com.cognizant.agriserve.dao.*;
 import com.cognizant.agriserve.dto.request.SatisfactionMetricRequestDTO;
 import com.cognizant.agriserve.dto.response.SatisfactionMetricResponseDTO;
 import com.cognizant.agriserve.entity.*;
-import com.cognizant.agriserve.exception.ResourceNotFoundException;
-import com.cognizant.agriserve.service.impl.Satisfactionmetricimpl;
+import com.cognizant.agriserve.service.impl.SatisfactionMetricimpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -22,7 +21,7 @@ import java.util.List;
 import java.util.Optional;
 
 @ExtendWith(MockitoExtension.class)
-public class SatisfactionmetricimplTest {
+public class SatisfactionMetricimplTest {
 
     @Mock private SatisfactionMetricRepository metricrepo;
     @Mock private FeedbackRepository feedbackRepo;
@@ -30,7 +29,7 @@ public class SatisfactionmetricimplTest {
     @Mock private UserRepository userRepo;
 
     @InjectMocks
-    private Satisfactionmetricimpl satisfactionService;
+    private SatisfactionMetricimpl satisfactionService;
 
     private SatisfactionMetricRequestDTO requestDTO;
     private TrainingProgram program;
