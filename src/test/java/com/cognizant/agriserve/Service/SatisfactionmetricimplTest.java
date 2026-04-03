@@ -1,4 +1,4 @@
-package com.cognizant.agriserve.Service;
+package com.cognizant.agriserve.service;
 
 import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -7,8 +7,7 @@ import com.cognizant.agriserve.dao.*;
 import com.cognizant.agriserve.dto.request.SatisfactionMetricRequestDTO;
 import com.cognizant.agriserve.dto.response.SatisfactionMetricResponseDTO;
 import com.cognizant.agriserve.entity.*;
-import com.cognizant.agriserve.exception.ResourceNotFoundException;
-import com.cognizant.agriserve.service.impl.Satisfactionmetricimpl;
+import com.cognizant.agriserve.service.impl.SatisfactionMetricimpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -22,15 +21,15 @@ import java.util.List;
 import java.util.Optional;
 
 @ExtendWith(MockitoExtension.class)
-public class SatisfactionmetricimplTest {
+public class SatisfactionMetricimplTest {
 
-    @Mock private SatisfactionMetricRepository metricrepo;
+    @Mock private SatisfactionMetricRepository metricRepo;
     @Mock private FeedbackRepository feedbackRepo;
     @Mock private TrainingProgramRepository trainingRepo;
     @Mock private UserRepository userRepo;
 
     @InjectMocks
-    private Satisfactionmetricimpl satisfactionService;
+    private SatisfactionMetricimpl satisfactionService;
 
     private SatisfactionMetricRequestDTO requestDTO;
     private TrainingProgram program;
@@ -70,7 +69,7 @@ public class SatisfactionmetricimplTest {
 
         SatisfactionMetric savedMetric = new SatisfactionMetric();
         savedMetric.setScore(4.0);
-        when(metricrepo.save(any(SatisfactionMetric.class))).thenReturn(savedMetric);
+        when(metricRepo.save(any(SatisfactionMetric.class))).thenReturn(savedMetric);
 
         // Act
         SatisfactionMetric result = satisfactionService.evaluate(requestDTO);
@@ -78,7 +77,7 @@ public class SatisfactionmetricimplTest {
         // Assert
         assertNotNull(result);
         assertEquals(4.0, result.getScore());
-        verify(metricrepo, times(1)).save(any(SatisfactionMetric.class));
+        verify(metricRepo, times(1)).save(any(SatisfactionMetric.class));
     }
 
     @Test
