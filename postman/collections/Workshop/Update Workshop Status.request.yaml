@@ -1,5 +1,14 @@
 $kind: http-request
 name: Update Workshop Status
-url: http://localhost:8081/api/workshops/2/status
+url: http://localhost:8081/api/workshops/4/status?status=Active
 method: PATCH
+queryParams:
+  status: Active
+body:
+  type: text
+  content: '"active"'
+auth:
+  type: bearer
+  credentials:
+    token: eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJtYW5hZ2VyQGFncmlzZXJ2ZS5jb20iLCJyb2xlIjoiUHJvZ3JhbU1hbmFnZXIiLCJpYXQiOjE3NzQ0NzA1OTMsImV4cCI6MTc3NDU1Njk5M30.3_sRrFvTncm8eSmbIK42HC4A2FrZxczT9ij_FQsNy_wmYIYL6AFmvJbach-iaq-83KI_OMShSN4n2Riyv6SPXA
 order: 4471586530367442

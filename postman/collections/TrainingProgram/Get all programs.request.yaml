@@ -2,4 +2,8 @@ $kind: http-request
 name: Get all programs
 url: http://localhost:8081/api/programs
 method: GET
+auth:
+  type: bearer
+  credentials:
+    token: eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJtYW5hZ2VyQGFncmlzZXJ2ZS5jb20iLCJyb2xlIjoiUHJvZ3JhbU1hbmFnZXIiLCJpYXQiOjE3NzQ0NzA1OTMsImV4cCI6MTc3NDU1Njk5M30.3_sRrFvTncm8eSmbIK42HC4A2FrZxczT9ij_FQsNy_wmYIYL6AFmvJbach-iaq-83KI_OMShSN4n2Riyv6SPXA
 order: 275313525048650

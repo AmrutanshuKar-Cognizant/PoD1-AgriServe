@@ -1,9 +1,13 @@
 package com.cognizant.agriserve.service.impl;
 
+import com.cognizant.agriserve.dao.FarmerRepository;
 import com.cognizant.agriserve.dao.ParticipationRepository;
+import com.cognizant.agriserve.dao.UserRepository;
 import com.cognizant.agriserve.dto.request.AttendanceUpdateRequestDTO;
 import com.cognizant.agriserve.dto.ParticipationDTO;
+import com.cognizant.agriserve.entity.Farmer;
 import com.cognizant.agriserve.entity.Participation;
+import com.cognizant.agriserve.entity.User;
 import com.cognizant.agriserve.exception.ResourceConflictException;
 import com.cognizant.agriserve.exception.ResourceNotFoundException;
 import com.cognizant.agriserve.service.ParticipationService;
@@ -19,15 +23,27 @@ import java.util.stream.Collectors;
 public class ParticipationServiceImpl implements ParticipationService {
 
     private final ParticipationRepository participationRepository;
+    private final UserRepository userRepository;
+    private final FarmerRepository farmerRepository;
     private final ModelMapper modelMapper;
 
-    public ParticipationServiceImpl(ParticipationRepository participationRepository, ModelMapper modelMapper) {
+    public ParticipationServiceImpl(ParticipationRepository participationRepository, UserRepository userRepository, FarmerRepository farmerRepository, ModelMapper modelMapper) {
         this.participationRepository = participationRepository;
+        this.userRepository = userRepository;
+        this.farmerRepository = farmerRepository;
         this.modelMapper = modelMapper;
     }
 
     @Override
-    public ParticipationDTO registerForWorkshop(ParticipationDTO dto) {
+    public ParticipationDTO registerForWorkshop(ParticipationDTO dto, String email) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+
+        Farmer farmer = farmerRepository.findByUser(user)
+                .orElseThrow(() -> new ResourceNotFoundException("Farmer not found"));
+
+        dto.setFarmerId(farmer.getFarmerId());
+
         log.info("Attempting to register Farmer ID: {} for Workshop ID: {}", dto.getFarmerId(), dto.getWorkshopId());
 
         boolean alreadyRegistered = participationRepository
@@ -82,7 +98,6 @@ public class ParticipationServiceImpl implements ParticipationService {
     public List<ParticipationDTO> getParticipationByFarmerId(Long farmerId) {
         log.info("Fetching all workshop registrations for Farmer ID: {}", farmerId);
 
-        // Ensure you add findByFarmerId to your ParticipationRepository!
         List<Participation> farmerHistory = participationRepository.findByFarmerId(farmerId);
 
         return farmerHistory.stream()

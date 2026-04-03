@@ -66,7 +66,7 @@ public class WebSecurityConfig {
                         .requestMatchers("/api/participations/workshop/{workshopId}",
                                 "/api/participations/farmer/{farmerId}").hasAnyRole("ExtensionOfficer", "ProgramManager", "Admin")
                         .requestMatchers("/api/participations/attendance").hasRole("ExtensionOfficer")
-                        .requestMatchers("/api/progr ams/**").hasRole("ProgramManager")
+                        .requestMatchers("/api/programs/**").hasRole("ProgramManager")
                         .requestMatchers("/api/users/**").hasRole("Admin")
                         .requestMatchers("/api/workshops/**").hasRole("ProgramManager")
                         .requestMatchers("/api/feedback/**").hasRole("Farmer")

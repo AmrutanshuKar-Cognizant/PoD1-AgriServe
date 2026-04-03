@@ -15,7 +15,6 @@ public class ParticipationDTO {
     @NotNull(message = "Workshop ID is mandatory")
     private Long workshopId;
 
-    @NotNull(message = "Farmer ID is mandatory")
     private Long farmerId;
 
     private String attendanceStatus;
