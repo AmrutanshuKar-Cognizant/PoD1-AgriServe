@@ -1,4 +1,4 @@
-package com.cognizant.agriserve.Service;
+package com.cognizant.agriserve.service;
 
 import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -23,7 +23,7 @@ import java.util.Optional;
 @ExtendWith(MockitoExtension.class)
 public class SatisfactionMetricimplTest {
 
-    @Mock private SatisfactionMetricRepository metricrepo;
+    @Mock private SatisfactionMetricRepository metricRepo;
     @Mock private FeedbackRepository feedbackRepo;
     @Mock private TrainingProgramRepository trainingRepo;
     @Mock private UserRepository userRepo;
@@ -69,7 +69,7 @@ public class SatisfactionMetricimplTest {
 
         SatisfactionMetric savedMetric = new SatisfactionMetric();
         savedMetric.setScore(4.0);
-        when(metricrepo.save(any(SatisfactionMetric.class))).thenReturn(savedMetric);
+        when(metricRepo.save(any(SatisfactionMetric.class))).thenReturn(savedMetric);
 
         // Act
         SatisfactionMetric result = satisfactionService.evaluate(requestDTO);
@@ -77,7 +77,7 @@ public class SatisfactionMetricimplTest {
         // Assert
         assertNotNull(result);
         assertEquals(4.0, result.getScore());
-        verify(metricrepo, times(1)).save(any(SatisfactionMetric.class));
+        verify(metricRepo, times(1)).save(any(SatisfactionMetric.class));
     }
 
     @Test
